@@ -6,7 +6,7 @@ if __name__ == '__main__':
     import os
     
     from PyQt4 import QtCore, QtGui
-    
+    ##
     # Tell Qt Designer where it can find the directory containing the plugins and
     # Python where it can find the widgets.
     env = os.environ.copy()
