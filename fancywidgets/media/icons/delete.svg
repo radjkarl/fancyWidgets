@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.0//EN'  'http://www.w3.org/Graphics/SVG/1.0/DTD/svg10.dtd'>
+<svg id="svg9961" xmlns="http://www.w3.org/2000/svg" height="250" width="250" version="1.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs id="defs9963">
+  <linearGradient id="linearGradient22177" y2="583.36" gradientUnits="userSpaceOnUse" x2="346.5" y1="437.36" x1="200.5">
+   <stop id="stop8411" stop-color="#fff" stop-opacity=".65934" offset="0"/>
+   <stop id="stop8413" stop-color="#fff" stop-opacity="0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g id="layer1">
+  <path id="path20271" stroke-linejoin="round" d="m356 511.86a82 80 0 1 1 -164 0 82 80 0 1 1 164 0z" fill-rule="evenodd" transform="matrix(1.3688 0 0 1.4031 -249.91 -592.96)" stroke="#a40000" stroke-linecap="round" stroke-width="17.487" fill="#d3d7cf"/>
+  <path id="path20273" d="m346.5 510.36a73 73 0 1 1 -146 0 73 73 0 1 1 146 0z" fill-rule="evenodd" transform="matrix(1.7127 0 0 1.7127 -343.78 -749.1)" fill="url(#linearGradient22177)"/>
+  <path id="text20299" fill="#a40000" d="m183.38 190.37l-43.1-64.48 41.37-63.384h-29.95l-25.79 41.214-27.69-41.397-29.426 0.183 41.716 64.304-45.177 63.56h29.771l30.636-43.23 27.35 43.23h30.29"/>
+ </g>
+</svg>

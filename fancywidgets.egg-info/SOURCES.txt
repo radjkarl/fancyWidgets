@@ -1,0 +1,15 @@
+setup.py
+bin/fwdesigner.pyw
+fancywidgets/FwTextEditor.py
+fancywidgets/MinimalTextEditor.py
+fancywidgets/__init__.py
+fancywidgets/_dialogs.py
+fancywidgets/_textEditorUtils.py
+fancywidgets.egg-info/PKG-INFO
+fancywidgets.egg-info/SOURCES.txt
+fancywidgets.egg-info/dependency_links.txt
+fancywidgets.egg-info/requires.txt
+fancywidgets.egg-info/top_level.txt
+fwQtDesigner_plugins/FwTextEditorPlugin.py
+fwQtDesigner_plugins/__init__.py
+fwQtDesigner_plugins/analogclockplugin.py
