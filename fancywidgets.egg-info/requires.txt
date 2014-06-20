@@ -1,2 +1,0 @@
-fancytools
-autoxinit >= 0.1.0

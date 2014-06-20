@@ -1,2 +1,0 @@
-fwQtDesigner_plugins
-fancywidgets
