@@ -1,4 +1,4 @@
-__all__ = ['FwMinimalTextEditor', 'FwTextEditor', '_dialogs', '_textEditorUtils', 'fwdesigner', 'Qt', 'ToolBarFont', 'ToolBarFormat', 'ToolBarEdit', 'PathStr', 'getExistingDirectory', 'getOpenFileName', 'getSaveFileName', 'Date', 'Find']
+__all__ = ['FwImageView', 'FwMinimalTextEditor', 'FwTabWidget', 'FwTextEditor', '_dialogs', '_textEditorUtils', 'dock', 'dockArea', 'mainwindow', 'messageDock', 'table', 'tabs', 'ImageExporter', 'pgImageView', 'Qt', 'ToolBarFont', 'ToolBarFormat', 'ToolBarEdit', 'PathStr', 'getExistingDirectory', 'getOpenFileName', 'getSaveFileName', 'Date', 'Find', 'Dock', 'DockLabel', 'QWidget', 'pgDockDrop', 'pgDockLabel', 'DockArea', 'l', 'pgDockArea', 'MessageDock', 'StreamSignal', 'Table', '_Header', '_HeaderMenu', '_TableMenu', 'Tabs']
 # Don't modify the line above, or this line!
 
 

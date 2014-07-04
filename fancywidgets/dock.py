@@ -69,7 +69,7 @@ class DockLabel(pgDockLabel):
 	
 	def __init__(self, text, dock, app=None):
 		self.app = app
-		pgDockLabel.__init__(self, text, dock)
+		pgDockLabel.__init__(self, text, dock, app)
 
 
 	#def mouseDoubleClickEvent(self, ev):
