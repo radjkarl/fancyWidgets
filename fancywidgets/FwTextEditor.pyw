@@ -20,10 +20,11 @@ class FwTextEditor(QtGui.QMainWindow):
         self.setWindowFlags(Qt.Widget) #allow to use mainwindow as widget
 
         self.text = QtGui.QTextEdit(self)
+
         self.text.setTabStopWidth(12)
         self.setCentralWidget(self.text)
-
-        self.addToolBar(ToolBarEdit(self.text))
+        self.toolbar_edit = ToolBarEdit(self.text)
+        self.addToolBar(self.toolbar_edit)
         self.addToolBarBreak()
         self.addToolBar(ToolBarFont(self.text))
         self.addToolBarBreak()

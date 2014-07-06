@@ -7,6 +7,7 @@ from _textEditorUtils import ToolBarFormat, ToolBarFont
 
 
 class FwMinimalTextEditor(QtGui.QMainWindow):
+    
 
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self,parent)

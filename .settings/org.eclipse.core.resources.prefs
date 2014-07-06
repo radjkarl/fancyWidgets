@@ -1,9 +1,11 @@
 eclipse.preferences.version=1
+encoding//fancywidgets/Dialogs.py=utf-8
 encoding//fancywidgets/FwImageView.pyw=utf-8
 encoding//fancywidgets/FwTabWidget.pyw=utf-8
-encoding//fancywidgets/_dialogs.py=utf-8
 encoding//fancywidgets/dock.py=utf-8
 encoding//fancywidgets/dockArea.py=utf-8
 encoding//fancywidgets/messageDock.py=utf-8
+encoding//fancywidgets/parametertree/Parameter.py=utf-8
+encoding//fancywidgets/parametertree/newParameterTypes.py=utf-8
+encoding//fancywidgets/parametertree/parameterTypes.py=utf-8
 encoding//fancywidgets/table.py=utf-8
-encoding//fancywidgets/tabs.py=utf-8

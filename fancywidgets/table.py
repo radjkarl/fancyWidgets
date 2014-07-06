@@ -1,25 +1,50 @@
 # -*- coding: utf-8 -*-
+
+#own
 from QtRec import QtGui, QtCore
+import _dialogs
 
-###########
-
-
-#from appBase import utils
+#foreign
+import csv
 
 class _TableMenu(QtGui.QWidget):
 	def __init__(self, table):
 		QtGui.QWidget.__init__(self)
 		self._table = table
 		self._menu=QtGui.QMenu(self)
-		#size = QtGui.QMenu('')
-		#TODO: ctrl+a machen, dann löschen
-		#TODO: wie mit bereiten umgehen -wenn diese kopiert oder gelöscht werden??
-		self._menu.addAction('Clean').triggered.connect(self._table.cleanTable)
-		#size = self._menu.addMenu('Size')
-		#size.addAction('add Row').triggered.connect(self._table.addRow)
-		#size.addAction('remove Row').triggered.connect(self._table.removeRow)
-		#size.addAction('add Column').triggered.connect(self._table.addCol)
-		#size.addAction('remove Column').triggered.connect(self._table.removeCol)
+
+		a = self._menu.addAction('Clean')
+		a.triggered.connect(self._table.cleanTable)
+		
+		self._menu.addSeparator()
+		
+		a = self._menu.addAction('Copy')
+		a.triggered.connect(self._table.copy)
+		a.setShortcuts(QtGui.QKeySequence.Copy)
+
+		a  = self._menu.addAction('Paste')
+		a.triggered.connect(self._table.paste)
+		a.setShortcuts(QtGui.QKeySequence.Paste)
+
+		a  = self._menu.addAction('Cut')
+		a.triggered.connect(self._table.cut)
+		a.setShortcuts(QtGui.QKeySequence.Cut)
+		
+		self._menu.addSeparator()
+
+		a  = self._menu.addAction('Insert row/column')
+		a.triggered.connect(self._table.insertBlankCells)
+		a.setShortcuts(QtGui.QKeySequence.ZoomIn)
+		
+		a  = self._menu.addAction('Remove row/column')
+		a.triggered.connect(self._table.removeBlankCells)
+		a.setShortcuts(QtGui.QKeySequence.ZoomOut)
+		
+		self._menu.addSeparator()
+
+		self._menu.addAction('Open').triggered.connect(self._table.open)
+		self._menu.addAction('Save').triggered.connect(self._table.save)
+		self._menu.addAction('Save As').triggered.connect(self._table.saveAs)
 
 
 	def show(self, evt):
@@ -28,34 +53,25 @@ class _TableMenu(QtGui.QWidget):
 
 
 class _HeaderMenu(QtGui.QWidget):
+	'''an individual header menu for QTableWidgets
+	 - not used at the moment'''
 	def __init__(self, header):
 		QtGui.QWidget.__init__(self)
-		#self._table = table
 		self._header = header
 
 	def show(self, evt):
-		#print col#, evt
 		menu=QtGui.QMenu(self)
-
-
-		#size = self._menu.addMenu('Sittze')
 		menu.addAction('test')#.triggered.connect(self._table.addRow)
-		#index = self._header.currentIndex()
-		#print self._header.indexWidget(index)
-		#print self._table.indexWidget(index)
-
-		#widget = self._table.indexWidget(self._header.currentIndex())
-		#globalPos = widget.mapToGlobal(widget.pos())
-		#print self._header.indexWidget(self._header.currentIndex())#indexWidget(col)
 		menu.popup(evt.globalPos())#evt.globalPos())
-		#self._menu.show()
 
 
 class _Header(QtGui.QHeaderView):
-	
+	'''an individual header for QTableWidgets enables a 
+	context menu on right click 
+	- not used at the moment'''
+
 	def __init__(self, orientation, parent=None):
 		QtGui.QHeaderView.__init__(self, orientation, parent)
-		#super(_HeaderMenu, self).__init__(parent)
 		self._menu = _HeaderMenu(self)
 		self.setResizeMode(QtGui.QHeaderView.Fixed)
 
@@ -69,109 +85,85 @@ class _Header(QtGui.QHeaderView):
 
 
 
-#class _TableHistory(object):
-
-	#def __init__(self):
-		#self._len_hist = 10
-		#self._n = self._len_hist-1
-		#self._l = []
-		#for i in range(self._len_hist):
-			#self._l.append(None)
-		#self._len_hist -= 1
-
-
-	#def newLog(self,method, *args):
-		#self._l.append((method,args))
-		#self._l.pop(0)
-		#self._n = self._len_hist
-
-
-	#def changeLog(self, method, *args):
-		#self._l[self._n] = (method,args)
-
-
-	#def undo(self):
-		#u = self._l[self._n]
-		#if u:
-			#self._execute(u)
-		#if self._n > 0:
-			#self._n -= 1
-
-
-	#def redo(self):
-		#if self._n < self._len_hist:
-			#self._n += 1
-		#u = self._l[self._n]
-		#if u:
-			#self._execute(u)
-
-
-	#def _execute(self,u):
-			#args = u[1]
-			#if not args:
-				#return u[0]
-			#if len(args) == 1:
-				#return u[0](args)
-			#return u[0](*args)
-
-
 
 class Table(QtGui.QTableWidget):
+	'''
+	A QTableWidget with:
+	* Shortcuts: copy, paste, cut, insert/delete row/column
+	* Context Menu
+	* Cell range operations (copy, paste on multiple cells)
+	* Save/open
+	* import from clipboard
+	* dynamic add of new rows and cells when needed
+	'''
+	sigPathChanged = QtCore.pyqtSignal(object) # file path
+
 	def __init__(self, rows=3,cols=3,parent=None):
 		super(Table, self).__init__(rows,cols,parent)
-		#self._plus = QtGui.QTableWidgetItem('+/-')
 		self._menu = _TableMenu(self)
 		self._colFixed = False
 		self._rowFixed = False
-		#self._history = _TableHistory()
-		#self.log = self._history.newLog
-		#self.changeLog = self._history.changeLog
+		self._path = None
 	#	self.setHorizontalHeader(_Header(QtCore.Qt.Horizontal, self))
 		self.setCurrentCell(0,0)
-	#	self.itemClicked.connect(self._logItem)
-		#self.currentItemChanged.connect(self._ifEmptyCleanTable)
-		#self.itemEntered.connect(self._logItem2)
-		#self.cellEntered.connect(self._logCellEntry)
-		#self.itemChanged.connect(self._logItem)
-		self.currentCellChanged.connect(self._ifBorderAddRow)#)
-		#k = QtGui.QShortcut(self)
-		#k.setKey(QtGui.QKeySequence.MoveToNextLine)
-		#k.setContext(QtCore.Qt.ApplicationShortcut)
-		#k.activated.connect(self._ifBorderAddRow)
+		self.currentCellChanged.connect(self._ifAtBorderAddRow)#)
 
-	def _ifBorderAddRow(self,row, column, lastRow, lastColumn):
+
+	def open(self, path):
+		if not path:
+			path = _dialogs.getOpenFileName(filter='*.csv')
+		if path:
+			self.clearContents()
+			text = open(path,'r').read()
+			table = self._textToTable(text, ',')
+			self.importTable(table)
+			self._setPath(path)
+
+
+	def _setPath(self, path): 
+		self._path = path 
+		self.sigPathChanged.emit(path)
+
+
+	def save(self):
+		'''
+		save to file - override last saved file
+		'''
+		self.saveAs(self._path)
+
+
+	def saveAs(self, path):
+		'''
+		save to file under given name
+		'''
+		if not path:
+			path = _dialogs.getSaveFileName(filter='*.csv')
+			if path:
+				self._setPath(path)
+
+				with open(unicode(self._path), 'wb') as stream:
+					writer = csv.writer(stream)
+					for row in range(self.rowCount()):
+						rowdata = []
+						for column in range(self.columnCount()):
+							item = self.item(row, column)
+							if item is not None:
+								rowdata.append(
+									unicode(item.text()).encode('utf8'))
+							else:
+								rowdata.append('')
+						writer.writerow(rowdata)
+
+			
+		
+
+	def _ifAtBorderAddRow(self,row, column, lastRow, lastColumn):
 		if row == self.rowCount()-1:
 			if not self._rowFixed:
 				self.setRowCount(row+2)
 		if column == self.columnCount()-1:
 			if not self._colFixed:
 				self.setColumnCount(column+2)
-
-		#item = self.item(lastRow,lastColumn)
-		#print item
-		#last cell is empty / deleted:
-		#if item and item.text() == '':
-		#	print 55
-		#	self.cleanTable()
-
-	#def _logCellEntry(self, row, col):
-		#print row,col
-		#item = self.itemAt(row,col)
-		#try:
-			#item.lastText = item.text()
-		#except:
-			#pass
-		##if not item:
-			##self._lastEntry = (row,col,'')
-		##else:
-			##self._lastEntry = (row,col,item.text())
-		#
-	#def _logItem(self, item):
-		#try:
-		##print item,888, x
-			#self.log(self.setItemText,item.row(),item.column(),item.lastEntry)
-		#except:
-			#self.log(self.setItemText,item.row(),item.column(),'')
 
 
 	def mousePressEvent(self, event):
@@ -193,57 +185,53 @@ class Table(QtGui.QTableWidget):
 			self.copy()
 			self.delete()
 		elif event.matches(QtGui.QKeySequence.ZoomIn):#Ctrl+Plus
-			print 'TODO: add Collums/Row'
+			self.insertBlankCells()
 		elif event.matches(QtGui.QKeySequence.ZoomOut):#Ctrl+Minus
-			print 'TODO: remove Collums/Row'
+			self.removeBlankCells()
 		elif event.matches(QtGui.QKeySequence.Delete):
 			self.delete()
 		elif event.matches(QtGui.QKeySequence.Paste):
 			self.paste()
-		#elif event.matches(QtGui.QKeySequence.Undo):
-			#self._history.undo()
-		#elif event.matches(QtGui.QKeySequence.Redo):
-			#self._history.redo()
 		else:
 			QtGui.QTableWidget.keyPressEvent(self, event)
 
 
-
-	#def addRow(self):
-		#if not self._rowFixed:
-			#c = self.rowCount()
-			#self.setRowCount(c+1)
-			#self.log(self.setRowCount,c-1)
-
-
-	#def removeRow(self):
-		#if not self._rowFixed:
-			#c = self.rowCount()
-			#self.setRowCount(c-1)
-			#self.log(self.setRowCount,c+1)
-
-
-	#def addCol(self):
-		#if not self._colFixed:
-			#c = self.columnCount()
-			#self.setColumnCount(c+1)
-			#self.log(self.setColumnCount,c-1)
-
-
-	#def removeCol(self):
-		#if not self._colFixed:
-			#c = self.columnCount()
-			#self.setColumnCount(c-1)
-			#self.log(self.setColumnCount,c+1)
+	def insertBlankCells(self):
+		#TODO: insert only cells for selected range
+		r = self.selectedRanges()
+		if len(r) > 1:
+			print 'Cannot insert cells on multiple selections'
+			return
+		r = r[0]
+		if r.leftColumn() == r.rightColumn():
+			self.insertColumn(r.leftColumn())
+		elif r.leftRow() == r.rightRow():
+			self.insertRow(r.leftRow())
+		else:
+			print 'Need one line of rows or columns to insert blank cells'
+			
+			
+	def removeBlankCells(self):
+		#TODO: remove only cells for selected range
+		r = self.selectedRanges()
+		if len(r) > 1:
+			print 'Cannot remove cells on multiple selections'
+			return
+		r = r[0]
+		if r.leftColumn() == r.rightColumn():
+			self.removeColumn(r.leftColumn())
+		elif r.leftRow() == r.rightRow():
+			self.removeRow(r.leftRow())
+		else:
+			print 'Need one line of rows or columns to insert blank cells'
 
 
 	def delete(self):
 		for item in self.selectedItems():
 			r,c = item.row(), item.column()
 			self.takeItem(r,c)
-			#self.setItemText(r,c,'')
-			#self.log(self.takeItem,r,c)
 		self.cleanTable()
+
 
 	def cleanTable(self):
 		r =self.rowCount()
@@ -287,6 +275,11 @@ class Table(QtGui.QTableWidget):
 		self._colFixed = value
 
 
+	def cut(self):
+		self.copy()
+		self.delete()
+
+
 	def copy(self):
 		firstRange = self.selectedRanges()[0]
 		#deselect all other ranges, to show shat only the first one will copied
@@ -310,9 +303,10 @@ class Table(QtGui.QTableWidget):
 		QtGui.QApplication.clipboard().setText(text)
 
 
-	def paste(self):
-		#get the text from the clipboard
-		text = str(QtGui.QApplication.clipboard().text())
+	def _textToTable(self, text, separator='\t'):
+		'''
+		format csv, [[...]], ((..)) strings to a 2d table  
+		'''
 		table = None
 		if text.startswith('[[') or text.startswith('(('):
 			try:
@@ -327,26 +321,39 @@ class Table(QtGui.QTableWidget):
 				pass
 		if not table:
 			#create the list from the clipboard-text
-			#therefore the text has to be formeted like this:
+			#therefore the text has to be formated like this:
 				# "1\t2\3\n4\t5\6\n"
 			table = text.split('\n')
 			n = 0
 			while n < len(table):
-				sline = table[n].split('\t')
+				sline = table[n].split(separator)
 				if sline != ['']:
 					table[n] = sline
 				else:
 					table.pop(n)
 					n -= 1
-				n += 1
-		self.importTable(table)
+				n += 1	
+		return table	
+
+
+	def paste(self):
+		#get the text from the clipboard
+		text = str(QtGui.QApplication.clipboard().text())
+		if text:
+			table = self._textToTable(text)
+			self.importTable(table)
 
 
 	def importTable(self, table):#, fitShape=True):
 		if table:
-			r = self.selectedRanges()[0]
-			startRow = r.topRow()
-			startCol = r.leftColumn()
+			try:
+				#try to get array to paste in from selection
+				r = self.selectedRanges()[0]
+				startRow = r.topRow()
+				startCol = r.leftColumn()
+			except IndexError:
+				startRow = 0
+				startCol = 0
 			lastRow = startRow+len(table)
 			lastCol = startCol+len(table[0])
 			if not self._rowFixed:
@@ -355,27 +362,16 @@ class Table(QtGui.QTableWidget):
 			if not self._colFixed:
 				if self.columnCount() < lastCol:
 					self.setColumnCount(lastCol)
-			#self.setColumnCount(startCol+len(table[0]))
-			for row in range(self.rowCount()):
-				for col in range(self.columnCount()):
-					try:
-						newText = str(table[row][col])
-						r,c = row+startRow,col+startCol
-						self.setItemText(r,c, newText, True)
-					except:
-						pass
+			for row,line in enumerate(table):
+				for col, text in enumerate(line):
+					r,c = row+startRow,col+startCol
+					self.setItemText(r,c, text)
+
 
 	def setItemText(self, row, col, text):
-		#print row, col
 		item = self.item(row,col)
 		if not item:
-			lasttext = ''
-		else:
-			lasttext = item.text()
-		#if addLog:
-		#	self.log(self.setItemText,row,col,lasttext)
-		#else:
-			#self.changeLog(self.setItemText,row,col,lasttext)
-		newItem = QtGui.QTableWidgetItem()
-		newItem.setText(text)
-		self.setItem(row,col,newItem)
+			item = QtGui.QTableWidgetItem()
+			self.setItem(row,col,item)
+		item.setText(text)
+		

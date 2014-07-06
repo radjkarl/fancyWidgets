@@ -3,6 +3,8 @@
 	<name>fancyWidgets</name>
 	<comment></comment>
 	<projects>
+		<project>pyqtgraph</project>
+		<project>QtRec</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

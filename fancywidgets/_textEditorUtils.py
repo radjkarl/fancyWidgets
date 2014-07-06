@@ -12,7 +12,7 @@ import time
 from PyQt4 import QtGui, QtCore, QtSvg # QtSvg has to be imported under windows to show svg icons
 from PyQt4.QtCore import Qt
 #own
-import _dialogs
+from fancywidgets import Dialogs
 from fancytools.os import PathStr
 
 var = 0
@@ -26,6 +26,9 @@ tf = True
 ts = True
 iconfolder = PathStr(__file__).dirname().join("media","icons","foundation-icon-fonts-3")
 #iconfolder = os.path.join(os.path.dirname(os.path.dirname(__file__)),"media","icons","foundation-icon-fonts-3")
+
+dialogs = Dialogs()
+
 
 class Find(QtGui.QDialog):
     def __init__(self,parent = None):
@@ -138,7 +141,8 @@ class Date(QtGui.QDialog):
 
 
 class ToolBarEdit(QtGui.QToolBar):
-    
+    sigPathChanged = QtCore.pyqtSignal(object) # file path
+
     def __init__(self, textEdit):
         QtGui.QToolBar.__init__(self, 'Options')
         self.text = textEdit
@@ -228,15 +232,17 @@ class ToolBarEdit(QtGui.QToolBar):
         self.text.clear()
 
     def Open(self):
-        filename = _dialogs.getOpenFileName()
+        filename = dialogs.getOpenFileName()
         if filename: # there is no fname in case the user canceled the menu
             f = open(filename, 'r')
             filedata = f.read()
             self.text.setText(filedata)
+            self.sigPathChanged.emit(filename)
             f.close()
 
+
     def Save(self):
-        filename = _dialogs.getSaveFileName(filter="Text (*.txt);;PDF (*.pdf);;HTML (*.html)")
+        filename = dialogs.getSaveFileName(filter="Text (*.txt);;PDF (*.pdf);;HTML (*.html)")
         if filename:
             ftype = filename.filetype()#filename.split('.')[-1]
             if ftype.lower() == 'html':
@@ -251,6 +257,8 @@ class ToolBarEdit(QtGui.QToolBar):
                 filedata = self.text.toPlainText()
                 f.write(filedata)
                 f.close()
+            self.sigPathChanged.emit(filename)
+
 
     def PageView(self):
         preview = QtGui.QPrintPreviewDialog()

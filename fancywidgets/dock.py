@@ -6,22 +6,95 @@ import pyqtgraph.dockarea as pgDock
 #-> docks müssen beim speichern berücksichtigt werden
 #-> doppelclick fährt docks ein
 
-from QtRec.QtGui import QWidget
+#from QtRec import QtGui, QtCore
+from pyqtgraph.Qt import QtGui, QtCore
 
-pgDock.Dock.__bases__ = (QWidget, pgDockDrop)
+#pgDock.Dock.__bases__ = (QtGui.QWidget, pgDockDrop)
 class Dock(pgDock.Dock):
 	'''adding function: setWidget to normal Dock-class'''
-	print pgDock.Dock.__bases__
-	def __init__(self, name, app=None, area=None, size=(1,1), widget=None, hideTitle=False, autoOrientation=False):
-		super(Dock, self).__init__(name, area, size, widget, hideTitle, autoOrientation)
+	def __init__(self, name, area=None, size=(1,1), 
+				widget=None, hideTitle=False, autoOrientation=False,
+				closable=True
+				):
+		super(Dock, self).__init__(name, area, size, widget, hideTitle, 
+								autoOrientation, closable)
 		self._pparent = None
-		self.app = app
-		self.label = DockLabel(name, self, app=self.app)
+
+		self._saved_state = None
+		
+		self.label.menu = DockLabelMenu(self)
+		
+		#TODO: floating dock, when outside window 
+		#TODO: double click hides dock (except of label)
+		
+		
+		
+		
+		
+		#self.label.mouseMoveEvent = self.mouseMoveEvent
+		#self.label.mouseReleaseEvent = self.mouseReleaseEvent
+		#self.label.mouseDoubleClickEvent = self.mouseDoubleClickEvent
+
+
+		#self.label.menu.show()
+
+# 		self._float_dock = False
+# 
+# 	def mouseMoveEvent(self, ev):
+# 		if not self.label.startedDrag and (ev.pos() - self.label.pressPos).manhattanLength() > QtGui.QApplication.startDragDistance():
+# 			self._float_dock = False
+# 		else:
+# 			self._float_dock = True
+# 		print 55
+# 		self.startDrag()
+# 
+# 		ev.accept()
+# 			
+# 	def mouseReleaseEvent(self, ev):
+# 		if not self.startedDrag:
+# 			self.label.sigClicked.emit(self.label, ev)
+# 		if self._float_dock:
+# 			self.dock.float()
+# 			self._float_dock = False
+# 		print 44
+# 		ev.accept()
+# 		
+# 	def mouseDoubleClickEvent(self, ev):
+# 		print 77
+# 		if ev.button() == QtCore.Qt.LeftButton:
+# 			self.dock.float()
+
+
+
+	def toggleHide(self):
+		if self.widgetArea.isVisible():
+			#self.label.setParent(self.area)
+			#for w in self.widgets:
+			#	w.hide()
+			#self.setStretch(10,10)
+			self.widgetArea.hide()
+			#self.sigStretchChanged.emit()
+		else:
+			self.widgetArea.show()
+
+	def toggleFullscreen(self):
+		if self.isFullScreen():
+			self.embedd()
+			self.showNormal()
+			if self._saved_state:
+				self.area.addDock(self)
+				self.area.restoreState(self._saved_state)
+				self._saved_state = None
+		else:
+			if self.area:
+				self._saved_state = self.area.saveState()
+			self.release()
+			self.showFullScreen()
 
 
 
 
-
+	#TODO: do i still need this method???
 	def setWidget(self, widget, index=0, row=None, col=0, rowspan=1, colspan=1):
 		"""
 		Add a new widget to the interior of this Dock.
@@ -46,7 +119,7 @@ class Dock(pgDock.Dock):
 	def release(self):
 		self._pparent = self.parentWidget()
 		self.setParent(None)
-		self.hideTitleBar()
+		#self.hideTitleBar()
 
 
 	#def dropEvent(self, ev=None):
@@ -61,60 +134,111 @@ class Dock(pgDock.Dock):
 	def embedd(self):
 		if self._pparent:
 			self.setParent(self._pparent)
-			self.showTitleBar()
+			#self.showTitleBar()
 			self._pparent = None
 
 
-class DockLabel(pgDockLabel):
+class DockLabelMenu(QtGui.QMenu):
 	
-	def __init__(self, text, dock, app=None):
-		self.app = app
-		pgDockLabel.__init__(self, text, dock, app)
+	def __init__(self, dock, *args):
+		QtGui.QMenu.__init__(self, *args)
+		
+		self.dock = dock
+
+		self.action_fullscreen = QtGui.QAction('Fullscreen', self, checkable=True)
+		self.addAction(self.action_fullscreen)
+		self.action_hide = QtGui.QAction('Hide', self, checkable=True)
+		self.addAction(self.action_hide)
+		self.action_name = self.addAction('Set Name')
+
+		#connect signals
+		self.action_fullscreen.triggered.connect(self.dock.toggleFullscreen)
+		self.action_hide.triggered.connect(self.dock.toggleHide)
+		self.action_name.triggered.connect(self.setLabelName)
+
+		#enable this menu on right click:
+		self.dock.label.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+		self.connect(self.dock.label,QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self._showContextMenu)
+
+		self.editor = None #set-name-editor
 
 
-	#def mouseDoubleClickEvent(self, ev):
-		#if ev.button() == QtCore.Qt.LeftButton:
+	def setLabelName(self):
+		if not self.editor:
+			self.editor = QtGui.QLineEdit(self.dock.label)
+			self.editor.setText(self.dock.label.text())
+			#set smaller size to fit text in label:
+			font = QtGui.QFont("Arial", 7)    
+			self.editor.setFont(font)
+			#transfer text to dockLabel when finished:
+			self.editor.editingFinished.connect(self._setLabelNameFinished)
+		self.editor.show()
+
+
+	def _setLabelNameFinished(self):
+		self.dock.label.setText(self.editor.text() )
+		self.editor.hide()
+
+
+	def _showContextMenu(self, point):
+		self.exec_( self.dock.label.mapToGlobal(point) )
+
+
+
+
 			#self.dock.hide()
 			#self.dock.parentWidget().addWidget(self)
 
-	def updateStyle(self):
-		r = '3px'
-		if self.dim or not self.app:
-			fg = '#aaa'
-			bg = '#44a'
-			border = '#339'
-		else:
-			fg = self.app.COLOR_FG
-			bg = self.app.COLOR_BG
-			border = self.app.COLOR_BORDER
-		
-		if self.orientation == 'vertical':
-			self.vStyle = """DockLabel {
-				background-color : %s;
-				color : %s;
-				border-top-right-radius: 0px;
-				border-top-left-radius: %s;
-				border-bottom-right-radius: 0px;
-				border-bottom-left-radius: %s;
-				border-width: 0px;
-				border-right: 2px solid %s;
-				padding-top: 3px;
-				padding-bottom: 3px;
-			}""" % (bg, fg, r, r, border)
-			self.setStyleSheet(self.vStyle)
-		else:
-			self.hStyle = """DockLabel {
-				background-color : %s;
-				color : %s;
-				border-top-right-radius: %s;
-				border-top-left-radius: %s;
-				border-bottom-right-radius: 0px;
-				border-bottom-left-radius: 0px;
-				border-width: 0px;
-				border-bottom: 2px solid %s;
-				padding-left: 3px;
-				padding-right: 3px;
-			}""" % (bg, fg, r, r, border)
-			self.setStyleSheet(self.hStyle)
+# 	def updateStyle(self):
+# 		#TODO: über globales menu // self.app weg
+# 		r = '3px'
+# 		if self.dim or not self.app:
+# 			fg = '#aaa'
+# 			bg = '#44a'
+# 			border = '#339'
+# 		else:
+# 			fg = self.app.COLOR_FG
+# 			bg = self.app.COLOR_BG
+# 			border = self.app.COLOR_BORDER
+# 		
+# 		if self.orientation == 'vertical':
+# 			self.vStyle = """DockLabel {
+# 				background-color : %s;
+# 				color : %s;
+# 				border-top-right-radius: 0px;
+# 				border-top-left-radius: %s;
+# 				border-bottom-right-radius: 0px;
+# 				border-bottom-left-radius: %s;
+# 				border-width: 0px;
+# 				border-right: 2px solid %s;
+# 				padding-top: 3px;
+# 				padding-bottom: 3px;
+# 			}""" % (bg, fg, r, r, border)
+# 			self.setStyleSheet(self.vStyle)
+# 		else:
+# 			self.hStyle = """DockLabel {
+# 				background-color : %s;
+# 				color : %s;
+# 				border-top-right-radius: %s;
+# 				border-top-left-radius: %s;
+# 				border-bottom-right-radius: 0px;
+# 				border-bottom-left-radius: 0px;
+# 				border-width: 0px;
+# 				border-bottom: 2px solid %s;
+# 				padding-left: 3px;
+# 				padding-right: 3px;
+# 			}""" % (bg, fg, r, r, border)
+# 			self.setStyleSheet(self.hStyle)
 
+if __name__ == '__main__':
+	import sys
+	from fancywidgets import DockArea
+	app = QtGui.QApplication(sys.argv)
+	win = QtGui.QMainWindow()
+	area = DockArea()
 
+	win.setCentralWidget(area)#self.area)
+	d = Dock('one')#TODO: fold/unfold
+	area.addDock(d)
+	win.show()
+	sys.exit(app.exec_())

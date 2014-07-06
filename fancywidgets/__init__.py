@@ -1,4 +1,4 @@
-__all__ = ['FwImageView', 'FwMinimalTextEditor', 'FwTabWidget', 'FwTextEditor', '_dialogs', '_textEditorUtils', 'dock', 'dockArea', 'mainwindow', 'messageDock', 'table', 'tabs', 'ImageExporter', 'pgImageView', 'Qt', 'ToolBarFont', 'ToolBarFormat', 'ToolBarEdit', 'PathStr', 'getExistingDirectory', 'getOpenFileName', 'getSaveFileName', 'Date', 'Find', 'Dock', 'DockLabel', 'QWidget', 'pgDockDrop', 'pgDockLabel', 'DockArea', 'l', 'pgDockArea', 'MessageDock', 'StreamSignal', 'Table', '_Header', '_HeaderMenu', '_TableMenu', 'Tabs']
+__all__ = ['FwImageView', 'FwMinimalTextEditor', 'FwTabWidget', 'FwTextEditor', '_dialogs', '_textEditorUtils', 'dock', 'dockArea', 'messageDock', 'table', 'ImageExporter', 'pgImageView', 'Qt', 'ToolBarFont', 'ToolBarFormat', 'ToolBarEdit', 'PathStr', 'getExistingDirectory', 'getOpenFileName', 'getSaveFileName', 'Date', 'Find', 'Dock', 'DockLabelMenu', 'pgDockDrop', 'pgDockLabel', 'DockArea', 'QWidget', 'l', 'pgDockArea', 'MessageDock', 'StreamSignal', 'Table', '_Header', '_HeaderMenu', '_TableMenu']
 # Don't modify the line above, or this line!
 
 
