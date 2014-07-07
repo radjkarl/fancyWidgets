@@ -20,7 +20,7 @@ from PyQt4 import QtGui
     #return kwargs
 class Dialogs(object):
     '''
-    xxxxxxxxxxxxxxxxxxxxxxx
+    * saves the last path to save and open a file/directory
     
     '''
     

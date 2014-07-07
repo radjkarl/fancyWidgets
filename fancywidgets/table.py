@@ -2,8 +2,7 @@
 
 #own
 from QtRec import QtGui, QtCore
-import _dialogs
-
+from fancywidgets import Dialogs
 #foreign
 import csv
 
@@ -11,6 +10,7 @@ class _TableMenu(QtGui.QWidget):
 	def __init__(self, table):
 		QtGui.QWidget.__init__(self)
 		self._table = table
+		self._dialogs = Dialogs()
 		self._menu=QtGui.QMenu(self)
 
 		a = self._menu.addAction('Clean')
@@ -111,7 +111,7 @@ class Table(QtGui.QTableWidget):
 
 	def open(self, path):
 		if not path:
-			path = _dialogs.getOpenFileName(filter='*.csv')
+			path = self._dialogs.getOpenFileName(filter='*.csv')
 		if path:
 			self.clearContents()
 			text = open(path,'r').read()
@@ -137,7 +137,7 @@ class Table(QtGui.QTableWidget):
 		save to file under given name
 		'''
 		if not path:
-			path = _dialogs.getSaveFileName(filter='*.csv')
+			path = self._dialogs.getSaveFileName(filter='*.csv')
 			if path:
 				self._setPath(path)
 
