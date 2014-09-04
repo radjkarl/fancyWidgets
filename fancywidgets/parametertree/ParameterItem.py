@@ -3,48 +3,86 @@
 from pyqtgraph.parametertree.ParameterItem import ParameterItem as OldPI
 from pyqtgraph.Qt import QtGui, QtCore
 
-import os, nIOp
 
 class ParameterItem(OldPI):
 	
 	def __init__(self, param, depth=0):
+		
+
+		if param.opts.get('sliding', False):
+			self.controls = QtGui.QWidget()
+			btnlayout = QtGui.QVBoxLayout() 
+			btnlayout.setContentsMargins(0, 0, 0, 0)
+			btnlayout.setSpacing(0)
+			self.controls.setLayout(btnlayout)
+			slideBtnUp = QtGui.QPushButton()
+			slideBtnDown = QtGui.QPushButton()
+			for btn in (slideBtnUp, slideBtnDown):
+				btn.setFixedWidth(10)
+				btn.setFixedHeight(10)
+				btnlayout.addWidget(btn)
+			slideBtnUp.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_ArrowUp))
+			slideBtnDown.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_ArrowDown))
+			slideBtnUp.clicked.connect(lambda: self.slideChild(-1))#param.slide(-1))
+			slideBtnDown.clicked.connect(lambda: self.slideChild(1))#param.slide(1))
+			#self.setText = self._setTextSliding
+		  #  layout.addLayout(btnlayout)
+
+
 		super(ParameterItem, self).__init__(param, depth)
+
 
 		if param.opts.get('duplicatable', False):
 			self.contextMenu.addAction("Duplicate").triggered.connect(param.duplicate)
 		if param.opts.get('type')=='group' or param.opts.get('isGroup', False):
 			self.updateDepth(depth)
 
-		icon = param.opts.get('icon', False)
-		#if not icon:
-			#try:
-				#icon = param.opts.get('master', False).icon
-			#except:
-				#pass
-		if icon:
-			iconpath = os.path.join(os.path.dirname(nIOp.__file__), icon)
+		iconpath = param.opts.get('icon', False)
+		if iconpath:
+			#iconpath = os.path.join(os.path.dirname(nIOp.__file__), icon)
 			i = QtGui.QIcon(iconpath)
 			self.setIcon(0, i)
 
-		#tip = param.opts.get('tip', False)
-		#if tip:
-		#	w.setToolTip(tip)
+
+		#TODO: test
+		tip = param.opts.get('tip', False)
+		if tip:
+			self.setToolTip(0, tip)
 
 
-	def childRemoved(self, param, child):
-		for i in range(self.childCount()):
-			item = self.child(i)
-			try:
-				# quit and dirty fix:
-				# all postprocesses have items of QTreeWidgetItem which don't have .param
-				# I dont know why ... but ignoring them allows me to make them removable
-				if item.param is child:
-					self.takeChild(i)
-					break
-			except:
-				pass
+	def slideChild(self, nPos):
+		c = self.treeWidget().currentItem()
+		for n in range(self.childCount ()):
+			if c == self.child(n):
+				c.param.slide(nPos)
+				cnew  = self.child(n+nPos)
+				return self.treeWidget().setCurrentItem(cnew, 0)
+		#self.treeWidget().setCurrentItem(c, 0)
+		
 
 
+	def treeWidgetChanged(self):
+		super(ParameterItem, self).treeWidgetChanged()
+		if self.param.opts.get('sliding', False):
+			t = self.treeWidget()
+			i = t.itemWidget(self,0)
+			if i == None:
+				t.setItemWidget(self, 0, self.controls)
+				#move the name a bit
+				#if self.text(0)
+				#self._setTextSliding(0,self.text(0))
+			else:
+				#TODO: does this work??
+				i.insertWidget(0,self.controls)
+
+# 	def _setTextSliding(self, index, text):
+# 		print index, text,99999999999
+# 		#if there are sliding arrows at the left: move the item text a bit
+# 		if index == 0:
+# 			return OldPI.setText(self, index, '  %s'%text)
+# 		return OldPI.setText(self, index, text)
+
+	#WHERE DID THAT COME FROM???
 	def updateDepth(self, depth):
 		## Change item's appearance based on its depth in the tree
 		## This allows highest-level groups to be displayed more prominently.
@@ -67,37 +105,18 @@ class ParameterItem(OldPI):
 				self.setSizeHint(0, QtCore.QSize(0, 20))
 
 
-
-	def columnChangedEvent(self, col):
-		"""Exact copy of pyqtgraphs-original only str() with unicode() replaced
-		"""
-		if col == 0:
-			if self.ignoreNameColumnChange:
-				return
-			try:##EDIT:str() to unicode()
-				newName = self.param.setName(unicode(self.text(col)))
-			except:
-				self.setText(0, self.param.name())
-				raise
-				
-			try:
-				self.ignoreNameColumnChange = True
-				self.nameChanged(self, newName)  ## If the parameter rejects the name change, we need to set it back.
-			finally:
-				self.ignoreNameColumnChange = False
+# 	def childRemoved(self, param, child):
+# 		for i in range(self.childCount()):
+# 			item = self.child(i)
+# 			try:
+# 				# quit and dirty fix:
+# 				# all postprocesses have items of QTreeWidgetItem which don't have .param
+# 				# I dont know why ... but ignoring them allows me to make them removable
+# 				if item.param is child:
+# 					self.takeChild(i)
+# 					break
+# 			except:
+# 				pass
 
 
 
-
-	#def text(self,col):
-		#return self._text
-
-
-	#def setText(self,pos, name):
-		##limit max len of the paramters name
-		#self._text = name
-		#if len(name) > 9:
-			#name = name[:9] + '\n' + name[9:]
-		#print pos,name, type(name)
-		#
-		#super(ParameterItem,self).setText(pos,'1')

@@ -1,10 +1,8 @@
 #foreign
-import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 #own
 from _textEditorUtils import ToolBarFormat, ToolBarFont
-
 
 class FwMinimalTextEditor(QtGui.QMainWindow):
     
@@ -16,17 +14,16 @@ class FwMinimalTextEditor(QtGui.QMainWindow):
         self.text = QtGui.QTextEdit(self)
         self.text.setTabStopWidth(12)
         self.setCentralWidget(self.text)
-
         self.addToolBar(ToolBarFont(self.text))
         self.addToolBarBreak()
-
         toolBar = ToolBarFormat(self.text)
         self.addToolBar(toolBar)
         toolBar.setIconSize(QtCore.QSize(16,16))
         #self.setGeometry(100,100,700,700)
-        
+
 
 if __name__ == "__main__":
+    import sys
     app = QtGui.QApplication(sys.argv)
     editor= FwMinimalTextEditor()
     editor.show()

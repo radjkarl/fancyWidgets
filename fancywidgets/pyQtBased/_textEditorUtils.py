@@ -12,8 +12,10 @@ import time
 from PyQt4 import QtGui, QtCore, QtSvg # QtSvg has to be imported under windows to show svg icons
 from PyQt4.QtCore import Qt
 #own
-from fancywidgets import Dialogs
-from fancytools.os import PathStr
+from fancywidgets.pyQtBased.Dialogs import Dialogs
+from fancytools.os.PathStr import PathStr
+
+from fancywidgets import media
 
 var = 0
 f = ""
@@ -24,7 +26,8 @@ wwo = False
 tt = True
 tf = True
 ts = True
-iconfolder = PathStr(__file__).dirname().join("media","icons","foundation-icon-fonts-3")
+
+iconfolder = PathStr(media.__file__).dirname().join("icons","foundation-icon-fonts-3")
 #iconfolder = os.path.join(os.path.dirname(os.path.dirname(__file__)),"media","icons","foundation-icon-fonts-3")
 
 dialogs = Dialogs()

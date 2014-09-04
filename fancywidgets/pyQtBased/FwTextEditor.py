@@ -6,7 +6,6 @@ Created on 20 Jun 2014
 # -*- coding: utf-8 -*-
 
 #foreign
-import sys
 from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 #own
@@ -45,6 +44,7 @@ class FwTextEditor(QtGui.QMainWindow):
 
 
 if __name__ == "__main__":
+    import sys
     app = QtGui.QApplication(sys.argv)
     editor= FwTextEditor()
     editor.show()

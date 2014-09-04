@@ -1,4 +1,4 @@
-__all__ = ['FwImageView', 'FwMinimalTextEditor', 'FwTabWidget', 'FwTextEditor', '_dialogs', '_textEditorUtils', 'dock', 'dockArea', 'messageDock', 'table', 'ImageExporter', 'pgImageView', 'Qt', 'ToolBarFont', 'ToolBarFormat', 'ToolBarEdit', 'PathStr', 'getExistingDirectory', 'getOpenFileName', 'getSaveFileName', 'Date', 'Find', 'Dock', 'DockLabelMenu', 'pgDockDrop', 'pgDockLabel', 'DockArea', 'QWidget', 'l', 'pgDockArea', 'MessageDock', 'StreamSignal', 'Table', '_Header', '_HeaderMenu', '_TableMenu']
+#__all__ = []
 # Don't modify the line above, or this line!
 
 
@@ -31,12 +31,13 @@ __classifiers__ = [
 # This module is also imported for installing the package
 # Load only the second part of the init if this package is installed and
 # all depencies are fulfilled
-import sys
-if sys.modules['fancywidgets']:
-    try:
-        import autoxinit
-        autoxinit.autoxinit(__name__, __file__, globals())
-        del autoxinit
-        # Anything else you want can go after here, it won't get modified.
-    except ImportError:
-        pass
+#import sys
+#import os
+#if sys.modules.get('fancywidgets') or os.path:
+# try:
+#     from pyQtBased import *
+#     from qtRecBased import *
+#     from pyqtgraphBased import *
+# except ImportError, err:
+#     print "couldn't not import fancywidgets:", err
+

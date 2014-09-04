@@ -4,40 +4,43 @@
 import sys
 
 #own
-from fancywidgets.dock import Dock
+#from fancywidgets.dock import Dock
 from fancytools.utils import StreamSignal
 from PyQt4 import QtGui
 
+#class MessageDock(Dock):
 
 
-class MessageDock(Dock):
-	'''a simple Dock with one readonly QTextEdit with a limited number of lines
-	to display output generated with messages wich 
+class Console(QtGui.QTextEdit):
+	
+
+	'''a simple qWidget with one read-only QTextEdit with a limited number of lines
+	to display output generated with messages which 
 	print() in black and raise() in red color'''
 
 	def __init__(self, write_to_shell = False, *args, **kwargs):
-		NAME="Messages"
+		#NAME="Messages"
 		MAXLINES = 300
 		#size=sizeXY
 		#area=None
 		#widget=None
 		#hideTitle=False
 		#autoOrientation=False
-		Dock.__init__(self, NAME, *args, **kwargs)#, area, size, widget, hideTitle, autoOrientation)
+		QtGui.QTextEdit.__init__(self, *args, **kwargs)#, area, size, widget, hideTitle, autoOrientation)
 
 		self._red = QtGui.QColor(255,0,0)
 		self._black = QtGui.QColor(0,0,0)
 		
-		self._textEdit = QtGui.QTextEdit(self)
-		self._textEdit.setReadOnly(True)
+		#self._textEdit = QtGui.QTextEdit(self)
+		self.setReadOnly(True)
 		
-		self._cursor = self._textEdit.textCursor()
+		#self._cursor = self._textEdit.textCursor()
 		self._format = QtGui.QTextCharFormat()
 		
 		# limit text length:
-		self._textEdit.document().setMaximumBlockCount(MAXLINES)
+		self.document().setMaximumBlockCount(MAXLINES)
 		
-		self.addWidget(self._textEdit)
+		#self.addWidget(self._textEdit)
 		
 		self._use_appbase_app = False
 		try:
@@ -81,13 +84,10 @@ class MessageDock(Dock):
 	def addText(self, text):
 		'''append text in the chosen color'''
 		#move to the end of the doc
-		self._textEdit.moveCursor(QtGui.QTextCursor.End)
-		#set the textcolor
-		self._format.setForeground(self._currentColor)
-		#give the text-cursor the new format
-		self._cursor.setCharFormat( self._format )
+		self.moveCursor(QtGui.QTextCursor.End)
 		#insert the text
-		self._cursor.insertText(text)
+		self.setTextColor(self._currentColor)
+		self.textCursor().insertText(text)
 
 
 	def __del__(self):
@@ -102,18 +102,19 @@ class MessageDock(Dock):
 
 
 
-if __name__ == '__main__':
-	import sys
-	from fancywidgets import DockArea
-	app = QtGui.QApplication(sys.argv)
-	win = QtGui.QMainWindow()
-	area = DockArea()
-	win.setCentralWidget(area)
-	
-	d = MessageDock(write_to_shell=True)
 
-	area.addDock(d)
-	win.show()
+if __name__ == '__main__':	
+	import sys
+	#from fancywidgets import DockArea
+	app = QtGui.QApplication(sys.argv)
+	#win = QtGui.QMainWindow()
+	#area = DockArea()
+	#win.setCentralWidget(area)
+	
+	d = Console(write_to_shell=True)
+
+	#area.addDock(d)
+	d.show()
 	###############
 	print (1,2,3,'test')
 	def printError(evt):
@@ -122,7 +123,8 @@ if __name__ == '__main__':
 
 	a = QtGui.QPushButton('press for error')
 	a.clicked.connect(printError) 
-	d.addWidget(a)
+	#d.addWidget(a)
+	a.show()
 	
 	sys.exit(app.exec_())
 

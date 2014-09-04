@@ -2,9 +2,10 @@
 
 #own
 from QtRec import QtGui, QtCore
-from fancywidgets import Dialogs
+from fancywidgets.pyQtBased.Dialogs import Dialogs
 #foreign
 import csv
+
 
 class _TableMenu(QtGui.QWidget):
 	def __init__(self, table):
@@ -374,4 +375,4 @@ class Table(QtGui.QTableWidget):
 			item = QtGui.QTableWidgetItem()
 			self.setItem(row,col,item)
 		item.setText(text)
-		
+

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from pyqtgraph.dockarea import DockArea as pgDockArea
-
 from QtRec.QtGui import QWidget
 
 b = list(pgDockArea.__bases__)
@@ -21,3 +20,4 @@ class DockArea(pgDockArea):
 		for dock in self.docks:
 			dock.embedd()
 			self.moveDock(dock, dock.init_position)
+

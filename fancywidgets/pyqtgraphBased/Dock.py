@@ -14,68 +14,16 @@ class Dock(pgDock.Dock):
 	'''adding function: setWidget to normal Dock-class'''
 	def __init__(self, name, area=None, size=(1,1), 
 				widget=None, hideTitle=False, autoOrientation=False,
-				closable=True
+				closable=True, minimizable=True
 				):
 		super(Dock, self).__init__(name, area, size, widget, hideTitle, 
-								autoOrientation, closable)
+								autoOrientation, closable, minimizable)
 		self._pparent = None
-
 		self._saved_state = None
 		
 		self.label.menu = DockLabelMenu(self)
 		
-		#TODO: floating dock, when outside window 
-		#TODO: double click hides dock (except of label)
-		
-		
-		
-		
-		
-		#self.label.mouseMoveEvent = self.mouseMoveEvent
-		#self.label.mouseReleaseEvent = self.mouseReleaseEvent
-		#self.label.mouseDoubleClickEvent = self.mouseDoubleClickEvent
 
-
-		#self.label.menu.show()
-
-# 		self._float_dock = False
-# 
-# 	def mouseMoveEvent(self, ev):
-# 		if not self.label.startedDrag and (ev.pos() - self.label.pressPos).manhattanLength() > QtGui.QApplication.startDragDistance():
-# 			self._float_dock = False
-# 		else:
-# 			self._float_dock = True
-# 		print 55
-# 		self.startDrag()
-# 
-# 		ev.accept()
-# 			
-# 	def mouseReleaseEvent(self, ev):
-# 		if not self.startedDrag:
-# 			self.label.sigClicked.emit(self.label, ev)
-# 		if self._float_dock:
-# 			self.dock.float()
-# 			self._float_dock = False
-# 		print 44
-# 		ev.accept()
-# 		
-# 	def mouseDoubleClickEvent(self, ev):
-# 		print 77
-# 		if ev.button() == QtCore.Qt.LeftButton:
-# 			self.dock.float()
-
-
-
-	def toggleHide(self):
-		if self.widgetArea.isVisible():
-			#self.label.setParent(self.area)
-			#for w in self.widgets:
-			#	w.hide()
-			#self.setStretch(10,10)
-			self.widgetArea.hide()
-			#self.sigStretchChanged.emit()
-		else:
-			self.widgetArea.show()
 
 	def toggleFullscreen(self):
 		if self.isFullScreen():
@@ -147,13 +95,10 @@ class DockLabelMenu(QtGui.QMenu):
 
 		self.action_fullscreen = QtGui.QAction('Fullscreen', self, checkable=True)
 		self.addAction(self.action_fullscreen)
-		self.action_hide = QtGui.QAction('Hide', self, checkable=True)
-		self.addAction(self.action_hide)
 		self.action_name = self.addAction('Set Name')
 
 		#connect signals
 		self.action_fullscreen.triggered.connect(self.dock.toggleFullscreen)
-		self.action_hide.triggered.connect(self.dock.toggleHide)
 		self.action_name.triggered.connect(self.setLabelName)
 
 		#enable this menu on right click:
@@ -182,7 +127,6 @@ class DockLabelMenu(QtGui.QMenu):
 
 	def _showContextMenu(self, point):
 		self.exec_( self.dock.label.mapToGlobal(point) )
-
 
 
 

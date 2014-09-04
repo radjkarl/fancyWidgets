@@ -10,7 +10,8 @@ class ParameterTree(PTree):
 		self.setAnimated(animated)
 		if parameter:
 			self.setParameters(parameter, showTop)
-
+		self.itemExpanded.connect(lambda item: item.param.expand(True))
+		self.itemCollapsed.connect(lambda item: item.param.expand(False))
 
 
 	def returnParameterOnKlick(self, activate, executeMethod=None):
