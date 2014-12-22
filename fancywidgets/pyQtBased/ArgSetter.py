@@ -1,8 +1,4 @@
-'''
-Created on 28 Oct 2014
 
-@author: elkb4
-'''
 from PyQt4 import QtGui, QtCore
 
 
