@@ -12,6 +12,7 @@ class FwTabWidget(QtGui.QTabWidget):
     * tab removal
     * tab renaming
     '''
+
     sigTabAdded = QtCore.pyqtSignal(object)#tab
    
     def __init__(self, defaultTabWidget=QtGui.QWidget):
@@ -52,6 +53,7 @@ class FwTabWidget(QtGui.QTabWidget):
         if not text:
             self.tabBar().editTab(c)
         self.sigTabAdded.emit(tab)
+        return tab
        
         
     def _mkAddBtnVisible(self):
@@ -85,6 +87,7 @@ class FwTabWidget(QtGui.QTabWidget):
 
 
     def tabText(self,tab):
+        ''' allow index or tab widget instance'''
         if type(tab) != int:
             tab = self.indexOf(tab)
         return super(FwTabWidget, self).tabText(tab)
@@ -94,6 +97,9 @@ class FwTabWidget(QtGui.QTabWidget):
 
 
 class _TabBar(QtGui.QTabBar):
+    '''
+    allow change of tabTitle via double click
+    '''
     def __init__(self, parent=None):
         QtGui.QTabBar.__init__(self, parent)
         
@@ -140,38 +146,25 @@ class _TabBar(QtGui.QTabBar):
 
 
 
-
-
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QtGui.QApplication(sys.argv)
-#     w= FwTabWidget()
-#     t1 = QtGui.QLabel(FwTabWidget.__doc__)    
-#     t2 = QtGui.QWidget()
-#     w.addTab(t1,'one')
-#     w.addTab(t2,'two')
-#     w.show()
-#     sys.exit(app.exec_())
-
  
 if __name__ == '__main__':
     import sys
     app = QtGui.QApplication(sys.argv)
-    win = FwTabWidget()
+    w = FwTabWidget()
+    w.setWindowTitle(w.__class__.__name__)
+
     #switching on/off/on
-    win.setTabsAddable(True)
-    win.setTabsClosable(True)
-    win.setTabsRenamable(True)
+    w.setTabsAddable(True)
+    w.setTabsClosable(True)
+    w.setTabsRenamable(True)
 
-    win.setTabsAddable(False)
-    win.setTabsClosable(False)
-    win.setTabsRenamable(False)
-  #  win.addEmptyTab('one')
+    w.setTabsAddable(False)
+    w.setTabsClosable(False)
+    w.setTabsRenamable(False)
 
-    win.setTabsAddable(True)
-    win.setTabsClosable(True)
-    win.setTabsRenamable(True)
+    w.setTabsAddable(True)
+    w.setTabsClosable(True)
+    w.setTabsRenamable(True)
  
-    win.show()
-    sys.exit(app.exec_())
+    w.show()
+    app.exec_()

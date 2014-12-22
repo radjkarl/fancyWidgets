@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from pyqtgraph.parametertree.ParameterItem import ParameterItem as OldPI
+#from pyqtgraph.parametertree.parameterTypes import ActionParameter
+
 from pyqtgraph.Qt import QtGui, QtCore
 
 
 class ParameterItem(OldPI):
 	
 	def __init__(self, param, depth=0):
-		
-
+		#SLIDING
 		if param.opts.get('sliding', False):
 			self.controls = QtGui.QWidget()
 			btnlayout = QtGui.QVBoxLayout() 
@@ -25,29 +26,52 @@ class ParameterItem(OldPI):
 			slideBtnDown.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_ArrowDown))
 			slideBtnUp.clicked.connect(lambda: self.slideChild(-1))#param.slide(-1))
 			slideBtnDown.clicked.connect(lambda: self.slideChild(1))#param.slide(1))
-			#self.setText = self._setTextSliding
-		  #  layout.addLayout(btnlayout)
-
 
 		super(ParameterItem, self).__init__(param, depth)
 
-
+		#DUPLICABILITY
 		if param.opts.get('duplicatable', False):
 			self.contextMenu.addAction("Duplicate").triggered.connect(param.duplicate)
 		if param.opts.get('type')=='group' or param.opts.get('isGroup', False):
 			self.updateDepth(depth)
-
+		#ICON
 		iconpath = param.opts.get('icon', False)
 		if iconpath:
 			#iconpath = os.path.join(os.path.dirname(nIOp.__file__), icon)
 			i = QtGui.QIcon(iconpath)
 			self.setIcon(0, i)
-
-
+		#TOOLTIP
 		#TODO: test
 		tip = param.opts.get('tip', False)
 		if tip:
 			self.setToolTip(0, tip)
+		#KEYBOARD SHORTCUT
+		self.key = None
+		self.setShortcut( param.opts.get('key'), param.opts.get('keyParent'))
+
+
+	def setShortcut(self, key, parent):
+		if key:
+			#works for either Action or WidgetParameter
+# 			widget = getattr(self, 'button', None)
+# 			if not widget:
+# 				widget = self.widget
+
+			k = QtGui.QShortcut(parent)#QtGui.QApplication.instance())
+			if not isinstance(key, QtGui.QKeySequence):
+				key = QtGui.QKeySequence(key)
+			k.setKey(QtGui.QKeySequence(key))
+			#self.session.gui.shortcuts[key.toString()] = self
+			k.setContext(QtCore.Qt.ApplicationShortcut)
+			#print isinstance(self.param, ActionParameter), self.param.__class__.__name__
+			#if isinstance(self.param, ActionParameter):
+			try:
+				#for ActionParameter
+				k.activated.connect(self.param.activate)
+			except AttributeError:
+				#toggle
+				k.activated.connect(lambda:self.param.setValue(not self.param.value()))
+			self.key = k
 
 
 	def slideChild(self, nPos):

@@ -1,2 +1,1 @@
-v0.1, <date> -- Initial release.
-
+v0.1, <22/12/2014> -- Initial release.

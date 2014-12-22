@@ -1,7 +1,14 @@
 #!/usr/bin/env python
+
+"""
+code origin from ...
+
+analogclockplugin.py 
+An analog clock custom widget plugin for Qt Designer.
+"""
+
 from PyQt4 import QtGui, QtDesigner
-#from analogclock import FwTabWidget
-from fancywidgets import FwTabWidget
+from fancywidgets.pyQtBased.FwTabWidget import FwTabWidget
 
 class FwTabWidgetPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 

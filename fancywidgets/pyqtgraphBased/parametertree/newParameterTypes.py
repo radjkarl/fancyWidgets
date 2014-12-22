@@ -5,35 +5,14 @@ from pyqtgraph.Qt import QtCore, QtGui
 from pyqtgraph.python2_3 import asUnicode
 from .Parameter import Parameter, registerParameterType
 from .ParameterItem import ParameterItem
-#from .ParameterTypes import WidgetParameterItem
 ###########
 from .parameterTypes import *
-#from pyqtgraph.parametertree.parameterTypes  import *
 
 import numpy as np
 
-#from nIOp import _utils
-#from appBase.aBcollections import NestedOrderedDict
-#import nIOp #needed for nestedParam - limit finder
 import os
 import inspect
-#from nIOp.widgets.table import nIOpTableWidget
 
-
-
-# class EmptyWidget(QtGui.QWidget):
-# 	sigChanged = QtCore.Signal(object)
-# 	sigChanging = QtCore.Signal(object)
-# 	def value(self):
-# 		return ''
-# 
-# 
-# class EmptyParameterItem(WidgetParameterItem):
-# 	makeWidget = EmptyWidget
-# 	def __init__(self, *args, **kwargs):
-# 		self.
-# 		ParameterItem.__init__(self, *args, **kwargs)
-# 	def makeWidget(self):
 
 
 class EmptyParameter(Parameter):
@@ -43,221 +22,40 @@ class EmptyParameter(Parameter):
 registerParameterType('empty', EmptyParameter, override=True)
 
 
-# 
-# class NestedParameterItem(ParameterItem):
-# 	"""
-# 	Group parameters are used mainly as a generic parent item that holds (and groups!) a set
-# 	of child parameters. It also provides a simple mechanism for displaying a button or combo
-# 	that can be used to add new parameters to the group.
-# 	"""
-# 	def __init__(self, param, depth):
-# 		ParameterItem.__init__(self, param, depth)
-# 
-# 		self.updateDepth(depth)
-# 		self.addItem = None
-# 		#self._nested = OrderedDict()
-# 		#if isinstance(param.value(), str):
-# 		
-# 		addText = param.opts['addText']#.value()#param.opts['value']
-# 		#if 'limits' in param.opts: #or 'getLimits' in param.opts:
-# 		self.menu = QtGui.QMenuBar()
-# 		self.addWidget = QtGui.QMenu(addText)
-# 		self.menu.addMenu(self.addWidget)
-# 		#self.menu.show()
-# 		#self.menu.menuAction().connect(self.menu.show)
-# 		#self.addWidget.aboutToHide = self.ppp
-# 		self.updateLimits()
-# 		self.addWidgetBox = self.menu
-# 		self.addItem = QtGui.QTreeWidgetItem([])
-# 		self.addItem.setFlags(QtCore.Qt.ItemIsEnabled)
-# 		ParameterItem.addChild(self, self.addItem)
-# 		
-# 		#self.limitsChanged = self.updateLimits
-# 		self.param.sigLimitsChanged.connect(self.updateLimits)
-# 
-# 
-# 
-# 	def updateDepth(self, depth):
-# 		## Change item's appearance based on its depth in the tree
-# 		## This allows highest-level groups to be displayed more prominently.
-# 		if depth == 0:
-# 			for c in [0,1]:
-# 				self.setBackground(c, QtGui.QBrush(QtGui.QColor(100,100,100)))
-# 				self.setForeground(c, QtGui.QBrush(QtGui.QColor(220,220,255)))
-# 				font = self.font(c)
-# 				font.setBold(True)
-# 				font.setPointSize(font.pointSize()+1)
-# 				self.setFont(c, font)
-# 				self.setSizeHint(0, QtCore.QSize(0, 25))
-# 		else:
-# 			for c in [0,1]:
-# 				self.setBackground(c, QtGui.QBrush(QtGui.QColor(220,220,220)))
-# 				font = self.font(c)
-# 				font.setBold(True)
-# 				#font.setPointSize(font.pointSize()+1)
-# 				self.setFont(c, font)
-# 				self.setSizeHint(0, QtCore.QSize(0, 20))
-# 
-# 	#def addClicked(self):
-# 		#"""Called when "add new" button is clicked
-# 		#The parameter MUST have an 'addNew' method defined.
-# 		#"""
-# 		#self.param.sigValueChanged.emit(self, None)
-# 		##self.param.addNew()
-# 
-# 	#def addChanged(self):
-# 		#"""Called when "add new" combo is changed
-# 		#The parameter MUST have an 'addNew' method defined.
-# 		#"""
-# 		#if self.addWidget.currentIndex() == 0:
-# 			#return
-# 		#typ = asUnicode(self.addWidget.currentText())
-# 		##TODO: sinn von value ('add') bei nested
-# 		#self.param.opts['value'] = typ
-# 		#####
-# 		##self.param.sigValueChanged.emit(self, typ)
-# 
-# 		##self.param.addNew(typ)
-# 		#self.addWidget.setCurrentIndex(0)
-# 
-# 	def treeWidgetChanged(self):
-# 		ParameterItem.treeWidgetChanged(self)
-# 		self.treeWidget().setFirstItemColumnSpanned(self, True)
-# 		if self.addItem is not None:
-# 			self.treeWidget().setItemWidget(self.addItem, 0, self.addWidgetBox)
-# 			self.treeWidget().setFirstItemColumnSpanned(self.addItem, True)
-# 
-# 
-# 	def updateLimits(self):
-# 		self._entries = []
-# 		if self.param.opts.get('limits'):
-# 
-# 			self.addWidget.blockSignals(True)
-# 
-# 			self.addWidget.clear()
-# 			l = self.param.opts['limits']
-# 
-# 			if l:
-# 				self._buildRecursive(l, self.addWidget)
-# 
-# 		self.addWidget.blockSignals(False)
-# 
-# 	def _buildRecursive(self, limitView, menuView):
-# 		if limitView:
-# 			#get a sorted structure:
-# 			for name in sorted(limitView.keys()):
-# 				method = limitView[name]
-# 				iconpath = self.param._icon_dict.get(id(method),None)
-# 				if iconpath:
-# 					iconpath = '%s/%s' %(os.path.dirname(nIOp.__file__), iconpath)
-# 				##else:
-# 				#	iconpath = None
-# 	
-# 				if isinstance(method, NestedOrderedDict):
-# 					submenu = QtGui.QMenu(name)
-# 					if iconpath:
-# 						submenu = menuView.addMenu(QtGui.QIcon(iconpath), name)#submenu)
-# 					else:
-# 						submenu = menuView.addMenu(name)#submenu)
-# 					self._entries.append(submenu)
-# 					self._buildRecursive(method, submenu)
-# 				else:
-# 					entry = menuView.addAction(name)
-# 					if iconpath:
-# 						qIcon = QtGui.QIcon(iconpath)
-# 						entry.setIcon(qIcon)
-# 					entry.triggered.connect(method)
-# 
-# 
-# class NestedParameter(Parameter):
-# 	itemClass = NestedParameterItem
-# 	def __init__(self, *args, **kwargs):
-# 		Parameter.__init__(self, *args, **kwargs)
-# 		self._icon_dict = {}
-# 
-# 	def moduleStructureToLimits(self, mainModule, callMethod):
-# 		self._callMethod = callMethod
-# 		self.opts['setValue'] = self._setValue
-# 		l = self.opts['limits'] = NestedOrderedDict()
-# 		self._nameToFunc = {}
-# 		self._mainPath = mainModule.__package__
-# 		self._buildLimitsRecursive('', mainModule, l)
-# 		self.setLimits(self.opts['limits'])
-# 
-# 
-# 	def _buildLimitsRecursive(self,namePath, module, limitView):
-# 		#sys.exit()
-# 		for modName in dir(module):
-# 			try:
-# 				mod = eval('%s.%s' %(module.__name__, modName))
-# 				if modName[0] != '_':
-# 					if inspect.ismodule(mod):
-# 						p = self._mainPath
-# 						if namePath:
-# 							p+='.'+namePath.replace(', ','.')[:-1]
-# 						if mod.__name__.startswith(p):
-# 
-# 							#only create a submenu for folders:
-# 							if mod.__package__ == mod.__name__:
-# 								l = limitView[modName] = NestedOrderedDict()
-# 								#namePath += '%s, ' %modName
-# 							else:
-# 								#use same menu for all classes of alle files on one folder
-# 								l = limitView
-# 							self._buildLimitsRecursive(l.path, mod,l)
-# 					else:
-# 						if inspect.isclass(mod) and mod.__module__ == module.__name__:
-# 							#namePath += '%s, ' %modName
-# 							val = '%s, %s' %(limitView.path, modName)
-# 							lambdaFunc = self._createLambda(val)
-# 							limitView[modName] = lambdaFunc
-# 
-# 							try:
-# 								self._icon_dict[id(lambdaFunc)] = mod.icon
-# 							#	limitView[modName] = lambdaFunc, mod.icon
-# 							except AttributeError:
-# 								pass
-# 							self._nameToFunc[val] = mod
-# 							#namePath = ''
-# 			except:
-# 				pass
-# 
-# 
-# 	def _createLambda(self, arg):
-# 		#i dont know why, but if i call lambda in no extra function it wont work
-# 		return lambda: self.__call__(value=arg)
-# 
-# 
-# 
-# 
-# 	def _setValue(self, namePath):
-# 		cls = self._nameToFunc[namePath]
-# 		return self._callMethod(cls)
-# 		#return self._nameToFunc[namePath]
-# 
-# 
-# 
-# 	def appendLimits(self, pathStr, name, method=None):
-# 		l = self.opts['limits']
-# 		for member in pathStr.split(','):
-# 			l = l[member]
-# 		if not method:
-# 			#TODO: praent#ordered Dict
-# 			method = NestedOrderedDict()
-# 		l[name] = method
-# 		self.setLimits(self.opts['limits'])
-# 
-# 
-# 
-# #registerParameterType('structure', StructureParameter, override=True)
-# registerParameterType('nested', NestedParameter, override=True)
 
+class MenuParameterItem(WidgetParameterItem):
+	"""
+	Group parameters are used mainly as a generic parent item that holds (and groups!) a set
+	of child parameters. It also provides a simple mechanism for displaying a button or combo
+	that can be used to add new parameters to the group.
+	"""
+	def __init__(self, param, depth):
+
+		WidgetParameterItem.__init__(self, param, depth)
+		self.hideWidget = False
+
+
+	def makeWidget(self):
+		v = self.param.opts.get('value',self.param.opts.get('limits',[''])[0])
+		w = QtGui.QMenuBar()
+		menu=w.addMenu(v)
+		w.sigChanged = None
+		w.value = lambda: ''
+		menu.aboutToShow.connect(lambda menu=menu:self.param.aboutToShow.emit(menu))
+		return w
+
+
+class MenuParameter(Parameter):
+	itemClass = MenuParameterItem
+	aboutToShow = QtCore.Signal(object)  ## qmenu
+
+registerParameterType('menu', MenuParameter, override=True)
 
 
 
 class ResetListParameterItem(ListParameterItem):
 	"""
-	a listparameter that allways returning to the first item
+	a list-Parameter that always returning to the first item
 	"""
 	def __init__(self, param, depth):
 		super(ResetListParameterItem,self).__init__(param, depth)

@@ -1,8 +1,4 @@
-'''
-Created on 29 Jul 2014
 
-@author: elkb4
-'''
 from PyQt4 import QtGui,QtCore
 
 class CircleWidget(QtGui.QWidget):
@@ -46,6 +42,8 @@ class CircleWidget(QtGui.QWidget):
 if __name__ == '__main__':
     import sys
     app = QtGui.QApplication(sys.argv)
-    c= CircleWidget()
-    c.show()
-    sys.exit(app.exec_())
+    w= CircleWidget()
+    w.setWindowTitle(w.__class__.__name__)
+
+    w.show()
+    app.exec_()

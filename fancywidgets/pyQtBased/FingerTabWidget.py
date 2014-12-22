@@ -2,17 +2,16 @@
 A vertical tab widget - code origin from:
 https://gist.github.com/LegoStormtroopr/5075267
 '''
-
-# Updated so a PyQT4 Designer TabWidget can be promoted to a FingerTabWidget
  
 from PyQt4 import QtGui, QtCore
+
  
 class FingerTabBarWidget(QtGui.QTabBar):
     def __init__(self, parent=None, *args, **kwargs):   
         self.tabSize = QtCore.QSize(kwargs.pop('width',100), kwargs.pop('height',25)) 
         QtGui.QTabBar.__init__(self, parent, *args, **kwargs)
 
-                 
+               
     def paintEvent(self, event):
         painter = QtGui.QStylePainter(self)
         option = QtGui.QStyleOptionTab()
@@ -49,18 +48,22 @@ if __name__ == '__main__':
      
     app = QtGui.QApplication(sys.argv)
     #with default opts:
-    tabs = FingerTabWidget()
+    w = FingerTabWidget()
+    w.setWindowTitle(w.__class__.__name__)
+
     #with individual opts
-    tabs2 = FingerTabWidget(width=200,height=500, pos=QtGui.QTabWidget.East)
+    w2 = FingerTabWidget(width=200,height=500, pos=QtGui.QTabWidget.East)
+    w2.setWindowTitle(w.__class__.__name__)
+
     
     digits = ['Thumb','Pointer','Rude','Ring','Pinky']
     for i,d in enumerate(digits):
         widget =  QtGui.QLabel("Area #%s <br> %s Finger"% (i,d))
         widget2 = QtGui.QLabel("Area #%s <br> %s Finger"% (i,d))
-        tabs.addTab(widget, d)
-        tabs2.addTab(widget2, d)
+        w.addTab(widget, d)
+        w2.addTab(widget2, d)
 
-    tabs.show()
-    tabs2.show()
+    w.show()
+    w2.show()
     
-    sys.exit(app.exec_())
+    app.exec_()

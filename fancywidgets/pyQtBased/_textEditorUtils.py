@@ -1,11 +1,9 @@
 '''
-Created on 20 Jun 2014
-
-@author: elkb4
+text editor utils used by
+* FwMinimalTextEditor
+* FwTextEditor
 '''
 
-
-# -*- coding: utf-8 -*-
 
 #foreign
 import time
@@ -28,9 +26,8 @@ tf = True
 ts = True
 
 iconfolder = PathStr(media.__file__).dirname().join("icons","foundation-icon-fonts-3")
-#iconfolder = os.path.join(os.path.dirname(os.path.dirname(__file__)),"media","icons","foundation-icon-fonts-3")
-
 dialogs = Dialogs()
+
 
 
 class Find(QtGui.QDialog):
@@ -98,6 +95,7 @@ class Find(QtGui.QDialog):
     def Close(self):
         self.hide()
 
+
 class Date(QtGui.QDialog):
     def __init__(self,parent = None):
         QtGui.QDialog.__init__(self, parent)
@@ -130,12 +128,11 @@ class Date(QtGui.QDialog):
 
         self.setGeometry(300,300,280,70)
 
+
     def handleChoice(self,choice):
         global choiceStr
-
         choiceStr = choice
 
-    #    print(choiceStr)
 
     def Cancel(self):
         self.close()
@@ -230,9 +227,9 @@ class ToolBarEdit(QtGui.QToolBar):
         self.addSeparator()
 
 
-
     def New(self):
         self.text.clear()
+
 
     def Open(self):
         filename = dialogs.getOpenFileName()
@@ -268,10 +265,12 @@ class ToolBarEdit(QtGui.QToolBar):
         preview.paintRequested.connect(self.PaintPageView)
         preview.exec_()
 
+
     def Print(self):
         dialog = QtGui.QPrintDialog()
         if dialog.exec_() == QtGui.QDialog.Accepted:
             self.text.document().print_(dialog.printer())
+
 
     def PDF(self, name=None):
         printer = QtGui.QPrinter()
@@ -315,6 +314,7 @@ class ToolBarEdit(QtGui.QToolBar):
 
             self.text.find(f,flag)
 
+
         def handleReplace():
             f = find.te.toPlainText()
             r = find.rp.toPlainText()
@@ -333,17 +333,22 @@ class ToolBarEdit(QtGui.QToolBar):
     def Undo(self):
         self.text.undo()
 
+
     def Redo(self):
         self.text.redo()
+
 
     def Cut(self):
         self.text.cut()
 
+
     def Copy(self):
         self.text.copy()
 
+
     def Paste(self):
         self.text.paste()
+
 
     def DateTime(self):
         date = Date(self)
@@ -353,7 +358,6 @@ class ToolBarEdit(QtGui.QToolBar):
 
     def insertDate(self):
         global choiceStr
-    #    print(choiceStr)
         self.text.append(choiceStr)
 
 
@@ -389,23 +393,22 @@ class ToolBarFont(QtGui.QToolBar):
 
         space1 = QtGui.QLabel("  ",self)
         space2 = QtGui.QLabel(" ",self)
-        #space3 = QtGui.QLabel(" ",self)
-
 
         self.addWidget(self.fontFamily)
         self.addWidget(space1)
         self.addWidget(fontSize)
         self.addWidget(space2)
 
-    #    self.addSeparator()
 
     def FontFamily(self,font):
         font = QtGui.QFont(self.fontFamily.currentFont())
         self.text.setCurrentFont(font)
 
+
     def FontSize(self, fsize):
         size = (int(fsize))
         self.text.setFontPointSize(size)
+
 
 
 class ToolBarFormat(QtGui.QToolBar):
@@ -456,9 +459,6 @@ class ToolBarFormat(QtGui.QToolBar):
         numberedAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-list-number.svg")),"Insert Numbered List",self)
         numberedAction.triggered.connect(self.NumberedList)
 
-
-
-
         self.addAction(fontColor)
         self.addAction(backColor)
 
@@ -483,17 +483,15 @@ class ToolBarFormat(QtGui.QToolBar):
         self.addAction(numberedAction)
 
 
-
-
     def FontColor(self):
         c = QtGui.QColorDialog.getColor()
-
         self.text.setTextColor(c)
+
 
     def FontBackColor(self):
         c = QtGui.QColorDialog.getColor()
-
         self.text.setTextBackgroundColor(c)
+
 
     def Bold(self):
         w = self.text.fontWeight()
@@ -502,6 +500,7 @@ class ToolBarFormat(QtGui.QToolBar):
         elif w == 75:
             self.text.setFontWeight(QtGui.QFont.Normal)
 
+
     def Italic(self):
         i = self.text.fontItalic()
 
@@ -509,6 +508,7 @@ class ToolBarFormat(QtGui.QToolBar):
             self.text.setFontItalic(True)
         elif i == True:
             self.text.setFontItalic(False)
+
 
     def Underl(self):
         ul = self.text.fontUnderline()
@@ -525,17 +525,21 @@ class ToolBarFormat(QtGui.QToolBar):
     def alignLeft(self):
         self.text.setAlignment(Qt.AlignLeft)
 
+
     def alignRight(self):
         self.text.setAlignment(Qt.AlignRight)
+
 
     def alignCenter(self):
         self.text.setAlignment(Qt.AlignCenter)
 
+
     def alignJustify(self):
         self.text.setAlignment(Qt.AlignJustify)
 
+
     def Indent(self):
-        #TODO: don't work
+        #TODO: doesn't work
         tab = "\t"
         cursor = self.text.textCursor()
 
@@ -553,9 +557,6 @@ class ToolBarFormat(QtGui.QToolBar):
 
         while cursor.position() < end:
             global var
-
-        #    print(cursor.position(),end)
-
             cursor.movePosition(cursor.StartOfLine)
             cursor.insertText(tab)
             cursor.movePosition(cursor.Down)
@@ -570,7 +571,7 @@ class ToolBarFormat(QtGui.QToolBar):
 
 
     def Dedent(self):
-        #TODO: don't work
+        #TODO: doesn't work
 
         tab = "\t"
         cursor = self.text.textCursor()
@@ -585,7 +586,6 @@ class ToolBarFormat(QtGui.QToolBar):
         cursor.setPosition(start)
         cursor.movePosition(cursor.StartOfLine)
         start = cursor.position()
-
 
         while cursor.position() < end:
             global var
@@ -602,19 +602,13 @@ class ToolBarFormat(QtGui.QToolBar):
             if var == 2:
                 break'''
 
+
     def BulletList(self):
-        #print("bullet connects!")
         self.text.textCursor().insertList(QtGui.QTextListFormat.ListDisc)
 
-        #self.text.insertHtml("<ul><li> ...</li></ul>")
 
     def NumberedList(self):
-        #print("numbered connects!")
         self.text.textCursor().insertList(QtGui.QTextListFormat.ListDecimal)
-        #self.text.insertHtml("<ol><li> ...</li></ol>")
-
-
-
 
 
 

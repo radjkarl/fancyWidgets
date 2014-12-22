@@ -44,21 +44,21 @@ class Dialogs(object):
 
 
 
-    def getSaveFileName(self, **kwargs):
+    def getSaveFileName(self, *args, **kwargs):
         '''
         analog to QtGui.QFileDialog.getSaveFileNameAndFilter
         but returns the filename + chosen file ending even if not typed in gui
         '''
         kwargs = self._processKwargs(kwargs)
-        if kwargs and 'filter' in kwargs:
-            (fname,ffilter) = QtGui.QFileDialog.getSaveFileNameAndFilter(**kwargs)
-            return self._processOutput(fname, ffilter)
-        else:
-            fname = QtGui.QFileDialog.getSaveFileName(**kwargs)
-            p = PathStr(fname)
-            if p:
-                self.last_open_dir = p.dirname()
-                return p           
+#         if kwargs and 'filter' in kwargs and False:
+#             (fname,ffilter) = QtGui.QFileDialog.getSaveFileNameAndFilter(**kwargs)
+#             return self._processOutput(fname, ffilter)
+#         else:
+        fname = QtGui.QFileDialog.getSaveFileName(**kwargs)
+        p = PathStr(fname)
+        if p:
+            self.last_open_dir = p.dirname()
+            return p           
     
     
     def getOpenFileName(self, **kwargs):
@@ -75,7 +75,7 @@ class Dialogs(object):
         fnames = QtGui.QFileDialog.getOpenFileNames(**kwargs)
         for n,f in enumerate(fnames):
             fnames[n] = PathStr(f)
-        if f:
+        if fnames:
             self.last_open_dir = PathStr(f).dirname()
         return fnames
   

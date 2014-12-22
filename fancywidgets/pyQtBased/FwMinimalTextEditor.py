@@ -1,7 +1,7 @@
 #foreign
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
-#own
+#this pkg
 from _textEditorUtils import ToolBarFormat, ToolBarFont
 
 class FwMinimalTextEditor(QtGui.QMainWindow):
@@ -25,6 +25,8 @@ class FwMinimalTextEditor(QtGui.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
-    editor= FwMinimalTextEditor()
-    editor.show()
-    sys.exit(app.exec_())
+    w = FwMinimalTextEditor()
+    w.setWindowTitle(w.__class__.__name__)
+
+    w.show()
+    app.exec_()

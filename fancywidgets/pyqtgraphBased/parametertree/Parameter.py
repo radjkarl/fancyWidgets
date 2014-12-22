@@ -19,7 +19,8 @@ class Parameter(pgParameter):
 	add new options to pyQtGraphs 'Parameter'-Class to be fully interactive
 	and log all changes:
 		* 'duplicatable' (see ParameterItem)
-		* 'key' -> name or QKeySequence of the shortcut
+		* 'key' -> name or QKeySequence of the shortcut (see ParameterItem)
+		* 'keyParent' -> QWidget where the key is active
 		* 'isGroup' -> True/False (coded in ParameterItem)
 		* 'icon' -> 'path/to/icon' (see ParameterItem)
 	'''
@@ -34,34 +35,9 @@ class Parameter(pgParameter):
 
 
 
-	def __init__(self, **opts):
-		pgParameter.__init__(self, **opts)
-		self._key = None
-		self._setShortcut(self.opts.get('key'))
-# 		self.container = container
-# 		self.session = self.container.session
-# 		try:
-# 			if self.session.debug_mode:
-# 				self._execMethod = self._execMethodDebugMode
-# 			else:
-# 				self._execMethod = self._execMethodNormal
-	#	except:#parent not valid
-		#	self._execMethod = self._execMethodNormal
+# 	def __init__(self, **opts):
+# 		pgParameter.__init__(self, **opts)
 
-		#self._exist = False
-
-
-	def _setShortcut(self, key):
-		if key:
-			#setValue = self.opts.get('setValue',None)
-			k = QtGui.QShortcut(QtGui.QApplication.instance())
-			if not isinstance(key, QtGui.QKeySequence):
-				key = QtGui.QKeySequence(key)
-			k.setKey(QtGui.QKeySequence(key))
-			#self.session.gui.shortcuts[key.toString()] = self
-			k.setContext(QtCore.Qt.ApplicationShortcut)
-			k.activated.connect(self.setValue)
-			self._key = k
 
 
 
@@ -92,8 +68,12 @@ class Parameter(pgParameter):
 	def blockSignals(self, boolean):
 		'''add block/unblock of keyboard shortcut'''
 		pgParameter.blockSignals(self, boolean)
-		if self._key:
-			self._key.blockSignals(boolean)
+		try:
+			item = self.items[0]
+			if item.key:
+				item.key.blockSignals(boolean)
+		except:
+			pass
 
 
 	def hasVisibleChilds(self):#TODO: remove?
@@ -147,6 +127,14 @@ class Parameter(pgParameter):
 		#return p.insertChild(i, param)
 
 
+	def path(self):
+		c = p = self.parent()
+		l = self.name()
+		while p:
+			l = p.name() + ', ' + l
+			c = p
+			p = p.parent()
+		return c, l
 
 
 

@@ -184,13 +184,14 @@ class WidgetParameterItem(ParameterItem):
     def valueChanged(self, param, val, force=False):
         ## called when the parameter's value has changed
         ParameterItem.valueChanged(self, param, val)
-        self.widget.sigChanged.disconnect(self.widgetValueChanged)
-        try:
-            if force or val != self.widget.value():
-                self.widget.setValue(val)
-            self.updateDisplayLabel(val)  ## always make sure label is updated, even if values match!
-        finally:
-            self.widget.sigChanged.connect(self.widgetValueChanged)
+        if self.widget.sigChanged is not None:
+            self.widget.sigChanged.disconnect(self.widgetValueChanged)
+            try:
+                if force or val != self.widget.value():
+                    self.widget.setValue(val)
+                self.updateDisplayLabel(val)  ## always make sure label is updated, even if values match!
+            finally:
+                self.widget.sigChanged.connect(self.widgetValueChanged)
         self.updateDefaultBtn()
         
     def updateDefaultBtn(self):
