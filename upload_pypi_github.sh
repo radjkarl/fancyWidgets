@@ -20,7 +20,7 @@ git push origin master # Sends your commits in the "master" branch to GitHub
 #API on GitHub pages
 ####################
 
-sphinx-apidoc -A "Karl Bedrich" -f -E -M -d 4 -o doc fancywidgets
+sphinx-apidoc -A "Karl Bedrich" -f -M -o doc fancywidgets
 
 cd doc/_build
 
