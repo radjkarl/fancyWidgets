@@ -48,17 +48,23 @@ setup(
 	)
 
 
-if 'install' in sys.argv:
-	while True:
-		answer = raw_input('Do you want to a start menu entry for the QDesigner with included fancyWidgets plugins? [Y,N] ')
-		if answer.lower() in ('y', 'n', ''):
-			break
-		print("Please answer with 'Y' or 'N'")
-	if answer == 'Y':
 
-		from fancytools.os import PathStr, StartMenuEntry
-		
-		prog_path = PathStr(sys.executable).dirname().join('Scripts','fwdesigner.pyw')
-		print('create start menu entry for Fw_QtDesigner located in %s' %prog_path)
-		
-		StartMenuEntry('Fw_QtDesigner', prog_path).create()
+#LAUNCHER NEEDS SOME WORK - UNTIL THATS DONE: DONT RUN THE FOLLOWING
+INSTALL_QDESIGNER_STARTER = False
+	
+if INSTALL_QDESIGNER_STARTER:
+
+	if 'install' in sys.argv:
+		while True:
+			answer = raw_input('Do you want to a start menu entry for the QDesigner with included fancyWidgets plugins? [Y,N] ')
+			if answer.lower() in ('y', 'n', ''):
+				break
+			print("Please answer with 'Y' or 'N'")
+		if answer == 'Y':
+	
+			from fancytools.os import PathStr, StartMenuEntry
+			
+			prog_path = PathStr(sys.executable).dirname().join('Scripts','fwdesigner.pyw')
+			print('create start menu entry for Fw_QtDesigner located in %s' %prog_path)
+			
+			StartMenuEntry('Fw_QtDesigner', prog_path).create()
