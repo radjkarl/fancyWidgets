@@ -1,7 +1,7 @@
 '''
 Various QT-based widgets for every day usage.
 '''
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Karl Bedrich'
 __email__ = 'karl@bedrich.de'
 __url__ = 'http://pypi.python.org/pypi/fancyWidgets/'

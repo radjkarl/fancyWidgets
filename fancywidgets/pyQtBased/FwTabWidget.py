@@ -17,7 +17,8 @@ class FwTabWidget(QtGui.QTabWidget):
    
     def __init__(self, defaultTabWidget=QtGui.QWidget):
         QtGui.QTabWidget.__init__(self)
-        self.tabCloseRequested.connect(self.removeTab)
+        #use lambda to make later overwriting possible:
+        self.tabCloseRequested.connect(lambda index: self.removeTab(index))
         self.setTabBar(_TabBar())
         self._btn_add_height = None
         self.defaultTabWidget = defaultTabWidget

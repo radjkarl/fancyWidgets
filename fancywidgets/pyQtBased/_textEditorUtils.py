@@ -371,6 +371,44 @@ class ToolBarEdit(QtGui.QToolBar):
 
 
 
+class ToolBarInsert(QtGui.QToolBar):
+    
+    def __init__(self, textEdit):
+        QtGui.QToolBar.__init__(self, 'insert')
+        self.text = textEdit
+        imageAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-photo.svg")),"Add an image.", self)
+        imageAction.setShortcut("Ctrl+Shift+I")
+        imageAction.triggered.connect(self.insertImage)
+        self.addAction(imageAction)
+
+    
+    def insertImage(self):
+        filename = QtGui.QFileDialog.getOpenFileName(caption="Select an image",
+                                                    directory=".", 
+                                                    filter="Image Files (*.png *.jpg *.bmp)" )
+        image = QtGui.QImage(filename)
+        # Error if unloadable
+        if image.isNull():
+            popup = QtGui.QMessageBox(QtGui.QMessageBox.Critical,
+                                      "Image load error",
+                                      "Could not load image file!",
+                                      QtGui.QMessageBox.Ok,
+                                      self)
+            popup.show()
+        
+        else:
+            #encode to base64 to embed image directly in html:
+            ba = QtCore.QByteArray()
+            buffer = QtCore.QBuffer(ba)
+            buffer.open(QtCore.QIODevice.WriteOnly)
+            image.save(buffer, 'PNG')
+            encoded = ba.toBase64().data()
+            #insert to html:
+            cursor = self.text.textCursor()
+            #cursor.insertImage(image,filename)
+            cursor.insertHtml('''<img src="data:image/png;base64,%s", alt="beastie.png"''' %encoded)
+
+
 
 class ToolBarFont(QtGui.QToolBar):
     
