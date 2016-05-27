@@ -4,9 +4,13 @@ fancyWidgets - various QT based widgets for every day usage
 It uses `pyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_ and `pyqtgraph <http://www.pyqtgraph.org/>`_
 
 
-
 - Browse the `API Documentation <http://radjkarl.github.io/fancyWidgets>`_
 - Fork the code on `github <https://github.com/radjkarl/fancyWidgets>`_
+
+
+.. image:: https://raw.githubusercontent.com/radjkarl/fancyWidgets/master/fancyWidgets_showcase.png
+    :align: center
+    :alt: showcase
 
 
 Installation
