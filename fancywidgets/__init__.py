@@ -1,15 +1,15 @@
 '''
 Various QT-based widgets for every day usage.
 '''
-__version__ = '0.1.1'
+__version__ = '0.2'
 __author__ = 'Karl Bedrich'
 __email__ = 'karl@bedrich.de'
-__url__ = 'http://pypi.python.org/pypi/fancyWidgets/'
+__url__ = 'https://github.com/radjkarl/fancyWidgets'
 __license__ = 'GPLv3'
 __description__ = __doc__
 __depencies__= [
         "fancytools",
-        'pyqtgraph>=0.9.8',
+        #'pyqtgraph>=0.9.8', #optional
         #"PyQt4"
     ]
 __classifiers__ = [
