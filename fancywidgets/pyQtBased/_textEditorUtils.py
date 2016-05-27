@@ -7,7 +7,7 @@ text editor utils used by
 
 #foreign
 import time
-from PyQt4 import QtGui, QtCore, QtSvg # QtSvg has to be imported under windows to show svg icons
+from PyQt4 import QtGui, QtCore#, QtSvg # QtSvg has to be imported under windows to show svg icons
 from PyQt4.QtCore import Qt
 #own
 from fancywidgets.pyQtBased.Dialogs import Dialogs
@@ -27,6 +27,54 @@ ts = True
 
 iconfolder = PathStr(media.__file__).dirname().join("icons","foundation-icon-fonts-3")
 dialogs = Dialogs()
+
+
+class MainWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self,parent)
+        self.setWindowFlags(Qt.Widget) #allow to use mainwindow as widget
+
+        self.text = _TextEdit(self)   
+        self.text.setTabStopWidth(12) 
+        self.setCentralWidget(self.text)
+
+    def showToolbar(self, show):
+        self.text.showToolbarChecked = show
+        for t in  self.findChildren(QtGui.QToolBar):
+        #for t in self.toolbars:
+            if show:
+                t.show()
+            else:
+                t.hide()
+
+
+class _TextEdit(QtGui.QTextEdit):
+    '''
+    allow to show/hide the toolbar through context menu
+    '''
+    def __init__(self, editor):
+        self.editor = editor
+        QtGui.QTextEdit.__init__(self, editor)
+        self.showToolbarChecked = True
+        
+        
+    def contextMenuEvent(self, event):
+        menu = QtGui.QTextEdit.createStandardContextMenu(self)
+        menu.addSeparator()
+
+        a = QtGui.QAction('Show Toolbar', menu)
+        a.triggered.connect(self.editor.showToolbar)
+        a.triggered.connect(self._storeActionValueToolbarChecked)
+        a.setCheckable(True)
+        a.setChecked(self.showToolbarChecked)
+        menu.addAction(a)
+        
+        menu.exec_(event.globalPos())
+        
+        
+    def _storeActionValueToolbarChecked(self, checked):
+        self.showToolbarChecked = checked
+
 
 
 
@@ -75,6 +123,7 @@ class Find(QtGui.QDialog):
 
         self.setGeometry(300,300,360,250)
 
+
     def CS(self, state):
         global cs
 
@@ -82,6 +131,7 @@ class Find(QtGui.QDialog):
             cs = True
         else:
             cs = False
+
 
     def WWO(self, state):
         global wwo
@@ -92,8 +142,10 @@ class Find(QtGui.QDialog):
         else:
             wwo = False
 
+
     def Close(self):
         self.hide()
+
 
 
 class Date(QtGui.QDialog):
@@ -101,6 +153,7 @@ class Date(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
 
         self.initUI()
+
 
     def initUI(self):
 
@@ -399,8 +452,8 @@ class ToolBarInsert(QtGui.QToolBar):
         else:
             #encode to base64 to embed image directly in html:
             ba = QtCore.QByteArray()
-            buffer = QtCore.QBuffer(ba)
-            buffer.open(QtCore.QIODevice.WriteOnly)
+            buf = QtCore.QBuffer(ba)
+            buf.open(QtCore.QIODevice.WriteOnly)
             image.save(buffer, 'PNG')
             encoded = ba.toBase64().data()
             #insert to html:
@@ -648,8 +701,3 @@ class ToolBarFormat(QtGui.QToolBar):
     def NumberedList(self):
         self.text.textCursor().insertList(QtGui.QTextListFormat.ListDecimal)
 
-
-
-
-if __name__ == '__main__':
-    pass

@@ -2,16 +2,15 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 #this pkg
-from _textEditorUtils import ToolBarFormat, ToolBarFont, ToolBarInsert
+from _textEditorUtils import ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
-class FwMinimalTextEditor(QtGui.QMainWindow):
-    
+
+class FwMinimalTextEditor(MainWindow):
+
 
     def __init__(self, parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
-        self.setWindowFlags(Qt.Widget) #allow to use mainwindow as widget
+        MainWindow.__init__(self,parent)
 
-        self.text = QtGui.QTextEdit(self)
         self.text.setTabStopWidth(12)
         self.setCentralWidget(self.text)
         self.addToolBar(ToolBarFont(self.text))

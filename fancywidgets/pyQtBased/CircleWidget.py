@@ -1,6 +1,7 @@
 
 from PyQt4 import QtGui,QtCore
 
+
 class CircleWidget(QtGui.QWidget):
     '''a simple circle - useful as indicator'''
     
@@ -32,10 +33,9 @@ class CircleWidget(QtGui.QWidget):
                                   , self.pen_size) )
 
         painter.drawEllipse(QtCore.QRect(-self.circle_size / 2,
-                            -self.circle_size / 2, 
-                            self.circle_size, 
+                            -self.circle_size / 2,
+                            self.circle_size,
                             self.circle_size))
-
 
 
 

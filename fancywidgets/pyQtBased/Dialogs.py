@@ -9,39 +9,28 @@ from PyQt4 import QtGui
 class Dialogs(object):
     '''
     * saves the last path to save and open a file/directory
-    
     '''
-    
-    def __init__(self):
-        self.last_save_dir = None
-        self.last_open_dir = None
+    def __init__(self, dirname=None):
+        self.opts = {'save': dirname, 'open': dirname}
 
 
-    def _processKwargs(self, kwargs):
-        if 'caption' not in kwargs:
-            kwargs['caption'] = 'Save File'
-            
-        if not kwargs.get('directory') and self.last_save_dir:
-            kwargs['directory'] = self.last_save_dir
-        return kwargs
+    def saveState(self):
+        '''
+        save options to file 'dialogs.conf'
+        '''
+#         p = PathStr(path).join('dialogs.conf')
+#         with open(p, 'w') as f:
+#             f.write(str(self.opts))
+        return self.opts
 
 
-    def _processOutput(self, fname, ffilter):
-        fname = unicode(fname)
-        ffilter = unicode(ffilter)
-        if  '.' not in fname:
-            i = ffilter.index('*')+1
-            for o,z in enumerate(ffilter[i:]):
-                if z in (' ', ')'):
-                    break
-            ffilter = ffilter[i:o+i]
-            fname = fname + ffilter
-        
-        p = PathStr(fname)
-        if p:
-            self.last_open_dir = p.dirname()  
-        return p
-
+    def restoreState(self, state):
+        '''
+        restore options from file 'dialogs.conf'
+        '''
+#         p = PathStr(path).join('dialogs.conf')
+#         with open(p, 'r') as f:
+        self.opts.update(state)
 
 
     def getSaveFileName(self, *args, **kwargs):
@@ -49,48 +38,50 @@ class Dialogs(object):
         analog to QtGui.QFileDialog.getSaveFileNameAndFilter
         but returns the filename + chosen file ending even if not typed in gui
         '''
-        kwargs = self._processKwargs(kwargs)
-#         if kwargs and 'filter' in kwargs and False:
-#             (fname,ffilter) = QtGui.QFileDialog.getSaveFileNameAndFilter(**kwargs)
-#             return self._processOutput(fname, ffilter)
-#         else:
+        if not 'directory' in kwargs:
+            if self.opts['save']:
+                if self.opts['save']:
+                    kwargs['directory'] = self.opts['save']
+            
         fname = QtGui.QFileDialog.getSaveFileName(**kwargs)
-        p = PathStr(fname)
-        if p:
-            self.last_open_dir = p.dirname()
+        if fname:
+            p = PathStr(fname)
+            self.opts['save'] = p.dirname()
+            if self.opts['open'] is None:
+                self.opts['open'] = self.opts['save']
             return p           
     
     
+    def _processOpenKwargs(self, kwargs):
+        if not kwargs.get('directory'):
+            if self.opts['open']:
+                kwargs['directory'] = self.opts['open']    
+        return kwargs
+
+
     def getOpenFileName(self, **kwargs):
-        kwargs = self._processKwargs(kwargs)
+        kwargs = self._processOpenKwargs(kwargs)
         fname = QtGui.QFileDialog.getOpenFileName(**kwargs)
-        p = PathStr(fname)
-        if p:
-            self.last_open_dir = p.dirname()
-        return p
+        if fname:
+            p = PathStr(fname)
+            self.opts['open'] = p.dirname()
+            return p
 
 
     def getOpenFileNames(self, **kwargs):
-        kwargs = self._processKwargs(kwargs)
-        fnames = QtGui.QFileDialog.getOpenFileNames(**kwargs)
+        kwargs = self._processOpenKwargs(kwargs)
+        fnames = list(QtGui.QFileDialog.getOpenFileNames(**kwargs))
         for n,f in enumerate(fnames):
             fnames[n] = PathStr(f)
         if fnames:
-            self.last_open_dir = PathStr(f).dirname()
+            self.opts['open'] = PathStr(f).dirname()
         return fnames
   
     
     def getExistingDirectory(self, **kwargs):
-        if not kwargs.get('directory') and self.last_open_dir:
-            kwargs['directory'] = self.last_open_dir
-        #kwargs = _checkDir(kwargs)
-        if 'caption' not in kwargs:
-            kwargs['caption'] = 'Open Folder'
+        kwargs = self._processOpenKwargs(kwargs)
         fname = QtGui.QFileDialog.getExistingDirectory(**kwargs)
-        #this [f***ing] bug occurs only on windows
-        #if type(fname) == tuple:
-        #    fname = fname[0]
-        p = PathStr(fname)
-        if p:
-            self.last_open_dir = p.dirname()
-        return p
+        if fname:
+            p = PathStr(fname)
+            self.opts['open'] = p.dirname()
+            return p

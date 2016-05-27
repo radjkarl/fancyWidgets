@@ -10,6 +10,8 @@ An analog clock custom widget plugin for Qt Designer.
 from PyQt4 import QtGui, QtDesigner
 from fancywidgets.pyQtBased.FwMinimalTextEditor import FwMinimalTextEditor
 
+
+
 class FwMinimalTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
     """FwMinimalTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin)

@@ -32,6 +32,7 @@ class Parameter(pgParameter):
 
 
 	sigDuplicated = QtCore.Signal()
+	sigRemoved = QtCore.Signal()
 
 
 
@@ -41,7 +42,7 @@ class Parameter(pgParameter):
 
 
 
-	def duplicate(self):#, linked=False, readonly=False, recursive=False):
+	def duplicate(self, recursive=True):#, linked=False, readonly=False, recursive=False):
  
 # 		def recursiveReadOnly(param):
 # 			param.setReadonly(True)
@@ -54,7 +55,7 @@ class Parameter(pgParameter):
 # 				recursiveLinked(ch, mCh)
  				
 		p = Parameter.create(type=self.opts['type'], name='', value='')
-		p.restoreState(self.saveState(), recursive=True)
+		p.restoreState(self.saveState(), recursive=recursive)
 #  		
 # 		if readonly: recursiveReadOnly(p)
 # 		if linked: recursiveLinked(p, self)
@@ -63,6 +64,9 @@ class Parameter(pgParameter):
 		return p
 
 
+	def remove(self):
+		pgParameter.remove(self)
+		self.sigRemoved.emit()
 
 
 	def blockSignals(self, boolean):

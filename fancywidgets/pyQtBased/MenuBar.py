@@ -1,12 +1,14 @@
 from PyQt4 import QtGui
 
+
+
 class MenuBar(QtGui.QMenuBar):
     '''
     QMenuBar with easier insertMenu methods
     methods are used from:
     http://scribus.info/svn/Scribus/trunk/Scribus/scribus/plugins/scripter/python/scripter_hooks.py
     '''
-    
+
     def __init__(self):
         super(MenuBar, self).__init__()
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from PyQt4 import QtGui, QtCore
 
+
+
 class FwTabWidget(QtGui.QTabWidget):
     '''
     * allow to iterate over all tabs using for tab in TabWidget...
@@ -14,7 +16,7 @@ class FwTabWidget(QtGui.QTabWidget):
     '''
 
     sigTabAdded = QtCore.pyqtSignal(object)#tab
-   
+
     def __init__(self, defaultTabWidget=QtGui.QWidget):
         QtGui.QTabWidget.__init__(self)
         #use lambda to make later overwriting possible:
@@ -78,6 +80,12 @@ class FwTabWidget(QtGui.QTabWidget):
         if self._i == self.count():
             raise StopIteration()
         return self.widget(self._i)
+    
+    
+    def widgetByName(self, name):
+        for i in range(self.count()):
+            if self.tabText(i)==name:
+                return self.widet(i)
         
         
     def removeTab(self, tab):

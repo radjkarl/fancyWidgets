@@ -90,7 +90,7 @@ class ParameterItem(OldPI):
 		if self.param.opts.get('sliding', False):
 			t = self.treeWidget()
 			i = t.itemWidget(self,0)
-			if i == None:
+			if i is None:
 				t.setItemWidget(self, 0, self.controls)
 				#move the name a bit
 				#if self.text(0)

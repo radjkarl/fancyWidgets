@@ -4,49 +4,16 @@
 from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 #this pkg
-from _textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert
-
-
-class _TextEdit(QtGui.QTextEdit):
-    '''
-    allow to show/hide the toolbar through context menu
-    '''
-    def __init__(self, editor):
-        self.editor = editor
-        QtGui.QTextEdit.__init__(self, editor)
-        self._showToolbarChecked = True
-        
-        
-    def contextMenuEvent(self, event):
-        menu = QtGui.QTextEdit.createStandardContextMenu(self)
-        menu.addSeparator()
-
-        a = QtGui.QAction('Show Toolbar', menu)
-        a.triggered.connect(self.editor.showToolbar)
-        a.triggered.connect(self._storeActionValueToolbarChecked)
-        a.setCheckable(True)
-        a.setChecked(self._showToolbarChecked)
-        menu.addAction(a)
-        
-        menu.exec_(event.globalPos())
-        
-        
-    def _storeActionValueToolbarChecked(self, checked):
-        self._showToolbarChecked = checked
+from _textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
 
 
 
-class FwTextEditor(QtGui.QMainWindow):
+class FwTextEditor(MainWindow):
 
     def __init__(self, parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
-        self.setWindowFlags(Qt.Widget) #allow to use mainwindow as widget
+        MainWindow.__init__(self,parent)
 
-        self.text = _TextEdit(self)
-
-        self.text.setTabStopWidth(12)
-        self.setCentralWidget(self.text)
         self.toolbar_edit = ToolBarEdit(self.text)
         self.addToolBar(self.toolbar_edit)
         t_insert = ToolBarInsert(self.text)
@@ -58,19 +25,16 @@ class FwTextEditor(QtGui.QMainWindow):
         t_format = ToolBarFormat(self.text)
         self.addToolBar(t_format)
 
-        
-        self.toolbars = [self.toolbar_edit, t_font, t_format, t_insert]
+        #self.toolbars = [self.toolbar_edit, t_font, t_format, t_insert]
 
         self.setGeometry(100,100,700,700)
 
 
-    def showToolbar(self, show):
-        for t in self.toolbars:
-            if show:
-                t.show()
-            else:
-                t.hide()
+
                 
+
+
+
 
 
 if __name__ == "__main__":

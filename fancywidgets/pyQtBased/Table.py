@@ -7,84 +7,6 @@ from fancywidgets.pyQtBased.Dialogs import Dialogs
 import csv
 
 
-class _TableMenu(QtGui.QWidget):
-    def __init__(self, table):
-        QtGui.QWidget.__init__(self)
-        self._table = table
-        self._menu=QtGui.QMenu(self)
-
-        a = self._menu.addAction('Clean')
-        a.triggered.connect(self._table.cleanTable)
-        
-        self._menu.addSeparator()
-        
-        a = self._menu.addAction('Copy')
-        a.triggered.connect(self._table.copy)
-        a.setShortcuts(QtGui.QKeySequence.Copy)
-
-        a  = self._menu.addAction('Paste')
-        a.triggered.connect(self._table.paste)
-        a.setShortcuts(QtGui.QKeySequence.Paste)
-
-        a  = self._menu.addAction('Cut')
-        a.triggered.connect(self._table.cut)
-        a.setShortcuts(QtGui.QKeySequence.Cut)
-        
-        self._menu.addSeparator()
-
-        a  = self._menu.addAction('Insert row/column')
-        a.triggered.connect(self._table.insertBlankCells)
-        a.setShortcuts(QtGui.QKeySequence.ZoomIn)
-        
-        a  = self._menu.addAction('Remove row/column')
-        a.triggered.connect(self._table.removeBlankCells)
-        a.setShortcuts(QtGui.QKeySequence.ZoomOut)
-        
-        self._menu.addSeparator()
-
-        self._menu.addAction('Open').triggered.connect(self._table.open)
-        self._menu.addAction('Save').triggered.connect(self._table.save)
-        self._menu.addAction('Save As').triggered.connect(self._table.saveAs)
-
-
-    def show(self, evt):
-        self._menu.popup(evt.globalPos())
-
-
-
-# class _HeaderMenu(QtGui.QWidget):
-#     '''an individual header menu for QTableWidgets
-#      - not used at the moment'''
-#     def __init__(self, header):
-#         QtGui.QWidget.__init__(self)
-#         self._header = header
-# 
-#     def show(self, evt):
-#         menu=QtGui.QMenu(self)
-#         menu.addAction('test')#.triggered.connect(self._table.addRow)
-#         menu.popup(evt.globalPos())#evt.globalPos())
-# 
-# 
-# class _Header(QtGui.QHeaderView):
-#     '''an individual header for QTableWidgets enables a 
-#     context menu on right click 
-#     - not used at the moment'''
-# 
-#     def __init__(self, orientation, parent=None):
-#         QtGui.QHeaderView.__init__(self, orientation, parent)
-#         self._menu = _HeaderMenu(self)
-#         self.setResizeMode(QtGui.QHeaderView.Fixed)
-# 
-# 
-#     def mousePressEvent(self, evt):
-#         mouseBtn = evt.button()
-#         if mouseBtn == QtCore.Qt.RightButton:
-#             #print 55
-#             self._menu.show(evt)
-#         super(_Header, self).mousePressEvent(evt)
-
-
-
 
 class Table(QtGui.QTableWidget):
     '''
@@ -165,8 +87,6 @@ class Table(QtGui.QTableWidget):
                 for row in table:
                     writer.writerow(row)
 
-            
-        
 
     def _ifAtBorderAddRow(self,row, column, lastRow, lastColumn):
         if row == self.rowCount()-1:
@@ -338,9 +258,20 @@ class Table(QtGui.QTableWidget):
                 else:
                     table.pop(n)
                     n -= 1
-                n += 1    
+                n += 1   
         return table    
 
+    
+    @staticmethod
+    def fromText(text):
+        t = Table()
+        table = t._textToTable(text)
+        if table:
+            t.importTable(table)
+        else:
+            raise Exception('text is no table')
+        return t
+        
 
     def paste(self):
         #get the text from the clipboard
@@ -352,7 +283,7 @@ class Table(QtGui.QTableWidget):
 
     def importTable(self, table, startRow=None, startCol=None):
         if table != None and len(table):
-            if startRow == None or startCol == None:
+            if startRow is None or startCol is None:
                 try:
                     #try to get array to paste in from selection
                     r = self.selectedRanges()[0]
@@ -381,6 +312,85 @@ class Table(QtGui.QTableWidget):
             item = QtGui.QTableWidgetItem()
             self.setItem(row,col,item)
         item.setText(text)
+
+
+
+
+class _TableMenu(QtGui.QWidget):
+    def __init__(self, table):
+        QtGui.QWidget.__init__(self)
+        self._table = table
+        self._menu=QtGui.QMenu(self)
+
+        a = self._menu.addAction('Clean')
+        a.triggered.connect(self._table.cleanTable)
+        
+        self._menu.addSeparator()
+        
+        a = self._menu.addAction('Copy')
+        a.triggered.connect(self._table.copy)
+        a.setShortcuts(QtGui.QKeySequence.Copy)
+
+        a  = self._menu.addAction('Paste')
+        a.triggered.connect(self._table.paste)
+        a.setShortcuts(QtGui.QKeySequence.Paste)
+
+        a  = self._menu.addAction('Cut')
+        a.triggered.connect(self._table.cut)
+        a.setShortcuts(QtGui.QKeySequence.Cut)
+        
+        self._menu.addSeparator()
+
+        a  = self._menu.addAction('Insert row/column')
+        a.triggered.connect(self._table.insertBlankCells)
+        a.setShortcuts(QtGui.QKeySequence.ZoomIn)
+        
+        a  = self._menu.addAction('Remove row/column')
+        a.triggered.connect(self._table.removeBlankCells)
+        a.setShortcuts(QtGui.QKeySequence.ZoomOut)
+        
+        self._menu.addSeparator()
+
+        self._menu.addAction('Open').triggered.connect(self._table.open)
+        self._menu.addAction('Save').triggered.connect(self._table.save)
+        self._menu.addAction('Save As').triggered.connect(self._table.saveAs)
+
+
+    def show(self, evt):
+        self._menu.popup(evt.globalPos())
+
+
+
+# class _HeaderMenu(QtGui.QWidget):
+#     '''an individual header menu for QTableWidgets
+#      - not used at the moment'''
+#     def __init__(self, header):
+#         QtGui.QWidget.__init__(self)
+#         self._header = header
+# 
+#     def show(self, evt):
+#         menu=QtGui.QMenu(self)
+#         menu.addAction('test')#.triggered.connect(self._table.addRow)
+#         menu.popup(evt.globalPos())#evt.globalPos())
+# 
+# 
+# class _Header(QtGui.QHeaderView):
+#     '''an individual header for QTableWidgets enables a 
+#     context menu on right click 
+#     - not used at the moment'''
+# 
+#     def __init__(self, orientation, parent=None):
+#         QtGui.QHeaderView.__init__(self, orientation, parent)
+#         self._menu = _HeaderMenu(self)
+#         self.setResizeMode(QtGui.QHeaderView.Fixed)
+# 
+# 
+#     def mousePressEvent(self, evt):
+#         mouseBtn = evt.button()
+#         if mouseBtn == QtCore.Qt.RightButton:
+#             #print 55
+#             self._menu.show(evt)
+#         super(_Header, self).mousePressEvent(evt)
 
 
 

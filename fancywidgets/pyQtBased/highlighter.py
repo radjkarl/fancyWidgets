@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
-import re
-from PyQt4 import QtCore, QtGui
+#import re
+from PyQt4 import QtGui#QtCore
 from pygments import highlight
 
 

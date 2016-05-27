@@ -514,7 +514,7 @@ class ListParameterItem(WidgetParameterItem):
         try:
             self.widget.blockSignals(True)
             val = self.targetValue  #asUnicode(self.widget.currentText())
-            if val != None:
+            if val is not None:
                 # because self.setValue wont be executed every time
                 # self.targetValue can sometimes be wrong
                 val = param.value()
@@ -602,7 +602,13 @@ class ActionParameterItem(ParameterItem):
         self.button.clicked.connect(self.buttonClicked)
         param.sigNameChanged.connect(self.paramRenamed)
         self.setText(0, '')
-        
+
+    def nameChanged(self, name):
+        '''
+        Pass method, otherwise name is additionally set in tableView
+        '''
+        pass
+
     def treeWidgetChanged(self):
         ParameterItem.treeWidgetChanged(self)
         tree = self.treeWidget()
