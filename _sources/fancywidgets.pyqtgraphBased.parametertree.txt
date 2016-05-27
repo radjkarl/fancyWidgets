@@ -1,0 +1,52 @@
+fancywidgets.pyqtgraphBased.parametertree package
+=================================================
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+fancywidgets.pyqtgraphBased.parametertree.Parameter module
+----------------------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree.Parameter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyqtgraphBased.parametertree.ParameterItem module
+--------------------------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree.ParameterItem
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyqtgraphBased.parametertree.ParameterTree module
+--------------------------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree.ParameterTree
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyqtgraphBased.parametertree.newParameterTypes module
+------------------------------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree.newParameterTypes
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyqtgraphBased.parametertree.parameterTypes module
+---------------------------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.parametertree.parameterTypes
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+

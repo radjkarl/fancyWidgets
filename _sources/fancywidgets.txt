@@ -1,0 +1,29 @@
+fancywidgets package
+====================
+
+.. automodule:: fancywidgets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    fancywidgets.media
+    fancywidgets.pyQtBased
+    fancywidgets.pyqtgraphBased
+
+Submodules
+----------
+
+fancywidgets.tests module
+-------------------------
+
+.. automodule:: fancywidgets.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+

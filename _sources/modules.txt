@@ -1,0 +1,7 @@
+fancywidgets
+============
+
+.. toctree::
+   :maxdepth: 4
+
+   fancywidgets

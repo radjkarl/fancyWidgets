@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased package &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="index.html"/>
+        <link rel="up" title="fancywidgets package" href="fancywidgets.html"/>
+        <link rel="next" title="fancywidgets.pyqtgraphBased package" href="fancywidgets.pyqtgraphBased.html"/>
+        <link rel="prev" title="fancywidgets.media package" href="fancywidgets.media.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="fancywidgets.html">fancywidgets package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="fancywidgets.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="fancywidgets.media.html">fancywidgets.media package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fancywidgets.pyQtBased package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.ArgSetter">fancywidgets.pyQtBased.ArgSetter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.CircleWidget">fancywidgets.pyQtBased.CircleWidget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.CodeEditor">fancywidgets.pyQtBased.CodeEditor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.Console">fancywidgets.pyQtBased.Console module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.Dialogs">fancywidgets.pyQtBased.Dialogs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.FingerTabWidget">fancywidgets.pyQtBased.FingerTabWidget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.FwMinimalTextEditor">fancywidgets.pyQtBased.FwMinimalTextEditor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.FwTabWidget">fancywidgets.pyQtBased.FwTabWidget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.FwTextEditor">fancywidgets.pyQtBased.FwTextEditor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.MenuBar">fancywidgets.pyQtBased.MenuBar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.Table">fancywidgets.pyQtBased.Table module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fancywidgets.pyQtBased.highlighter">fancywidgets.pyQtBased.highlighter module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fancywidgets.pyqtgraphBased.html">fancywidgets.pyqtgraphBased package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fancywidgets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fancywidgets.html#module-fancywidgets.tests">fancywidgets.tests module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="fancywidgets.html">fancywidgets package</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/fancywidgets.pyQtBased.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-fancywidgets.pyQtBased">
+<span id="fancywidgets-pyqtbased-package"></span><h1>fancywidgets.pyQtBased package<a class="headerlink" href="#module-fancywidgets.pyQtBased" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.ArgSetter">
+<span id="fancywidgets-pyqtbased-argsetter-module"></span><h2>fancywidgets.pyQtBased.ArgSetter module<a class="headerlink" href="#module-fancywidgets.pyQtBased.ArgSetter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.ArgSetter.</code><code class="descname">ArgSetter</code><span class="sig-paren">(</span><em>title</em>, <em>argdict</em>, <em>stayOpen=False</em>, <em>saveLoadButton=False</em>, <em>savePath='config.txt'</em>, <em>loadPath='config.txt'</em>, <em>introduction=None</em>, <em>unpackDict=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QDialog</span></code></p>
+<p>Create an window to setup attributes graphically</p>
+<p>useful as quick configurator for other functions/classes that need
+keyword arguments that must be passed graphically
+e.g. for py2exe/pyinstaller apps</p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.check">
+<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>check whether all attributes are setted and have the right dtype</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.closeEvent">
+<code class="descname">closeEvent</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.done">
+<code class="descname">done</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.done" title="Permalink to this definition">¶</a></dt>
+<dd><p>save the geometry before dialog is close to restore it later</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>processClass</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.show">
+<code class="descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>if the dialog is showed again or is not started with <a href="#id1"><span class="problematic" id="id2">exec_</span></a>
+naming the done button to &#8216;update&#8217; make more sense
+because now the dialog doesn&#8217;t block (anymore)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.stayOpen">
+<code class="descname">stayOpen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/ArgSetter.html#ArgSetter.stayOpen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.stayOpen" title="Permalink to this definition">¶</a></dt>
+<dd><p>optional dialog restore</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="fancywidgets.pyQtBased.ArgSetter.ArgSetter.validators">
+<code class="descname">validators</code><em class="property"> = {&lt;type 'int'&gt;: &lt;class 'PyQt4.QtGui.QIntValidator'&gt;, &lt;type 'float'&gt;: &lt;class 'PyQt4.QtGui.QDoubleValidator'&gt;}</em><a class="headerlink" href="#fancywidgets.pyQtBased.ArgSetter.ArgSetter.validators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.CircleWidget">
+<span id="fancywidgets-pyqtbased-circlewidget-module"></span><h2>fancywidgets.pyQtBased.CircleWidget module<a class="headerlink" href="#module-fancywidgets.pyQtBased.CircleWidget" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.CircleWidget.CircleWidget">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.CircleWidget.</code><code class="descname">CircleWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>circle_size=6</em>, <em>pen_size=2</em>, <em>circle_color=7</em>, <em>pen_color=13</em>, <em>antialiased=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/CircleWidget.html#CircleWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.CircleWidget.CircleWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QWidget</span></code></p>
+<p>a simple circle - useful as indicator</p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.CircleWidget.CircleWidget.paintEvent">
+<code class="descname">paintEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/CircleWidget.html#CircleWidget.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.CircleWidget.CircleWidget.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.CodeEditor">
+<span id="fancywidgets-pyqtbased-codeeditor-module"></span><h2>fancywidgets.pyQtBased.CodeEditor module<a class="headerlink" href="#module-fancywidgets.pyQtBased.CodeEditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.CodeEditor.CodeEditor">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.CodeEditor.</code><code class="descname">CodeEditor</code><span class="sig-paren">(</span><em>dialog=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/CodeEditor.html#CodeEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.CodeEditor.CodeEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QWidget</span></code></p>
+<p>A simple code editor with a QPlainTextEdit and line numbers of the left side</p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.CodeEditor.CodeEditor.addGlobals">
+<code class="descname">addGlobals</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/CodeEditor.html#CodeEditor.addGlobals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.CodeEditor.CodeEditor.addGlobals" title="Permalink to this definition">¶</a></dt>
+<dd><p>g ==&gt; {name:description,...}</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.Console">
+<span id="fancywidgets-pyqtbased-console-module"></span><h2>fancywidgets.pyQtBased.Console module<a class="headerlink" href="#module-fancywidgets.pyQtBased.Console" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.Console.Console">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.Console.</code><code class="descname">Console</code><span class="sig-paren">(</span><em>outputSignal=None</em>, <em>errorSignal=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QTextEdit</span></code></p>
+<p>A simple qWidget with one read-only QTextEdit with a limited number of lines
+to display output generated with messages which
+print() in black and raise() in red color</p>
+<dl class="attribute">
+<dt id="fancywidgets.pyQtBased.Console.Console.MAXLINES">
+<code class="descname">MAXLINES</code><em class="property"> = 300</em><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.MAXLINES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.addText">
+<code class="descname">addText</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.addText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.addText" title="Permalink to this definition">¶</a></dt>
+<dd><p>append text in the chosen color</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.addTextErr">
+<code class="descname">addTextErr</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.addTextErr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.addTextErr" title="Permalink to this definition">¶</a></dt>
+<dd><p>add red text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.addTextOut">
+<code class="descname">addTextOut</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.addTextOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.addTextOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>add black text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.contextMenuEvent">
+<code class="descname">contextMenuEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add menu action:
+* &#8216;Show line numbers&#8217;
+* &#8216;Save to file&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.setActive">
+<code class="descname">setActive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.setActive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.setActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Console.Console.setInactive">
+<code class="descname">setInactive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Console.html#Console.setInactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Console.Console.setInactive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.Dialogs">
+<span id="fancywidgets-pyqtbased-dialogs-module"></span><h2>fancywidgets.pyQtBased.Dialogs module<a class="headerlink" href="#module-fancywidgets.pyQtBased.Dialogs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.Dialogs.</code><code class="descname">Dialogs</code><span class="sig-paren">(</span><em>dirname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<ul class="simple">
+<li>saves the last path to save and open a file/directory</li>
+</ul>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.getExistingDirectory">
+<code class="descname">getExistingDirectory</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.getExistingDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.getExistingDirectory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.getOpenFileName">
+<code class="descname">getOpenFileName</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.getOpenFileName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.getOpenFileName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.getOpenFileNames">
+<code class="descname">getOpenFileNames</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.getOpenFileNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.getOpenFileNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.getSaveFileName">
+<code class="descname">getSaveFileName</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.getSaveFileName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.getSaveFileName" title="Permalink to this definition">¶</a></dt>
+<dd><p>analog to QtGui.QFileDialog.getSaveFileNameAndFilter
+but returns the filename + chosen file ending even if not typed in gui</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.restoreState">
+<code class="descname">restoreState</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.restoreState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.restoreState" title="Permalink to this definition">¶</a></dt>
+<dd><p>restore options from file &#8216;dialogs.conf&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Dialogs.Dialogs.saveState">
+<code class="descname">saveState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Dialogs.html#Dialogs.saveState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Dialogs.Dialogs.saveState" title="Permalink to this definition">¶</a></dt>
+<dd><p>save options to file &#8216;dialogs.conf&#8217;</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.FingerTabWidget">
+<span id="fancywidgets-pyqtbased-fingertabwidget-module"></span><h2>fancywidgets.pyQtBased.FingerTabWidget module<a class="headerlink" href="#module-fancywidgets.pyQtBased.FingerTabWidget" title="Permalink to this headline">¶</a></h2>
+<p>A vertical tab widget - code origin from:
+<a class="reference external" href="https://gist.github.com/LegoStormtroopr/5075267">https://gist.github.com/LegoStormtroopr/5075267</a></p>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FingerTabWidget.</code><code class="descname">AutoResizeFingerTabWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#AutoResizeFingerTabWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget" title="fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget"><code class="xref py py-class docutils literal"><span class="pre">fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget</span></code></a></p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget.forceResize">
+<code class="descname">forceResize</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#AutoResizeFingerTabWidget.forceResize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget.forceResize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FingerTabWidget.</code><code class="descname">FingerTabBarWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#FingerTabBarWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QTabBar</span></code></p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.paintEvent">
+<code class="descname">paintEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#FingerTabBarWidget.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.tabSizeHint">
+<code class="descname">tabSizeHint</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#FingerTabBarWidget.tabSizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.tabSizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FingerTabWidget.</code><code class="descname">FingerTabWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FingerTabWidget.html#FingerTabWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QTabWidget</span></code></p>
+<p>A QTabWidget equivalent which uses our FingerTabBarWidget</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.FwMinimalTextEditor">
+<span id="fancywidgets-pyqtbased-fwminimaltexteditor-module"></span><h2>fancywidgets.pyQtBased.FwMinimalTextEditor module<a class="headerlink" href="#module-fancywidgets.pyQtBased.FwMinimalTextEditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FwMinimalTextEditor.FwMinimalTextEditor">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FwMinimalTextEditor.</code><code class="descname">FwMinimalTextEditor</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwMinimalTextEditor.html#FwMinimalTextEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwMinimalTextEditor.FwMinimalTextEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">fancywidgets.pyQtBased._textEditorUtils.MainWindow</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.FwTabWidget">
+<span id="fancywidgets-pyqtbased-fwtabwidget-module"></span><h2>fancywidgets.pyQtBased.FwTabWidget module<a class="headerlink" href="#module-fancywidgets.pyQtBased.FwTabWidget" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FwTabWidget.</code><code class="descname">FwTabWidget</code><span class="sig-paren">(</span><em>defaultTabWidget=&lt;class 'PyQt4.QtGui.QWidget'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QTabWidget</span></code></p>
+<ul>
+<li><p class="first">allow to iterate over all tabs using for tab in TabWidget...</p>
+</li>
+<li><dl class="first docutils">
+<dt>allow to give tabs (and not indexes) to:</dt>
+<dd><ul class="first last simple">
+<li>removeTab</li>
+<li>tabText</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>also: interactive...
+* adding of new tabs,
+* tab removal
+* tab renaming</p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.addEmptyTab">
+<code class="descname">addEmptyTab</code><span class="sig-paren">(</span><em>text=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.addEmptyTab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.addEmptyTab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new DEFAULT_TAB_WIDGET, open editor to set text if no text is given</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.next">
+<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.removeTab">
+<code class="descname">removeTab</code><span class="sig-paren">(</span><em>tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.removeTab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.removeTab" title="Permalink to this definition">¶</a></dt>
+<dd><p>allows to remove a tab directly -not only by giving its index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsAddable">
+<code class="descname">setTabsAddable</code><span class="sig-paren">(</span><em>addable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.setTabsAddable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsAddable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsRenamable">
+<code class="descname">setTabsRenamable</code><span class="sig-paren">(</span><em>renamable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.setTabsRenamable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsRenamable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.sigTabAdded">
+<code class="descname">sigTabAdded</code><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.sigTabAdded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.tabText">
+<code class="descname">tabText</code><span class="sig-paren">(</span><em>tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.tabText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.tabText" title="Permalink to this definition">¶</a></dt>
+<dd><p>allow index or tab widget instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.widgetByName">
+<code class="descname">widgetByName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTabWidget.html#FwTabWidget.widgetByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.widgetByName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.FwTextEditor">
+<span id="fancywidgets-pyqtbased-fwtexteditor-module"></span><h2>fancywidgets.pyQtBased.FwTextEditor module<a class="headerlink" href="#module-fancywidgets.pyQtBased.FwTextEditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.FwTextEditor.FwTextEditor">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.FwTextEditor.</code><code class="descname">FwTextEditor</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/FwTextEditor.html#FwTextEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.FwTextEditor.FwTextEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">fancywidgets.pyQtBased._textEditorUtils.MainWindow</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.MenuBar">
+<span id="fancywidgets-pyqtbased-menubar-module"></span><h2>fancywidgets.pyQtBased.MenuBar module<a class="headerlink" href="#module-fancywidgets.pyQtBased.MenuBar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.MenuBar.</code><code class="descname">MenuBar</code><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QMenuBar</span></code></p>
+<p>QMenuBar with easier insertMenu methods
+methods are used from:
+<a class="reference external" href="http://scribus.info/svn/Scribus/trunk/Scribus/scribus/plugins/scripter/python/scripter_hooks.py">http://scribus.info/svn/Scribus/trunk/Scribus/scribus/plugins/scripter/python/scripter_hooks.py</a></p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar.actionForMenu">
+<code class="descname">actionForMenu</code><span class="sig-paren">(</span><em>menu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar.actionForMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar.actionForMenu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar.findMenu">
+<code class="descname">findMenu</code><span class="sig-paren">(</span><em>title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar.findMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar.findMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>find a menu with a given title</p>
+<p>&#64;type  title: string
+&#64;param title: English title of the menu
+&#64;rtype:       QMenu
+&#64;return:      None if no menu was found, else the menu with title</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar.insertMenuBefore">
+<code class="descname">insertMenuBefore</code><span class="sig-paren">(</span><em>before_menu</em>, <em>new_menu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar.insertMenuBefore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar.insertMenuBefore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a menu after another menu in the menubar</p>
+<p>&#64;type: before_menu QMenu instance or title string of menu
+&#64;param before_menu: menu which should be after the newly inserted menu
+&#64;rtype: QAction instance
+&#64;return: action for inserted menu</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar.iter_inner_menus">
+<code class="descname">iter_inner_menus</code><span class="sig-paren">(</span><em>menu</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar.iter_inner_menus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar.iter_inner_menus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.MenuBar.MenuBar.iter_menus">
+<code class="descname">iter_menus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/MenuBar.html#MenuBar.iter_menus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.MenuBar.MenuBar.iter_menus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.Table">
+<span id="fancywidgets-pyqtbased-table-module"></span><h2>fancywidgets.pyQtBased.Table module<a class="headerlink" href="#module-fancywidgets.pyQtBased.Table" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.Table.Table">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.Table.</code><code class="descname">Table</code><span class="sig-paren">(</span><em>rows=3</em>, <em>cols=3</em>, <em>colFiled=False</em>, <em>rowFixed=False</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QTableWidget</span></code></p>
+<p>A QTableWidget with:
+* Shortcuts: copy, paste, cut, insert/delete row/column
+* Context Menu
+* Cell range operations (copy, paste on multiple cells)
+* Save/open
+* import from clipboard
+* dynamic add of new rows and cells when needed</p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.cleanTable">
+<code class="descname">cleanTable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.cleanTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.cleanTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.cut">
+<code class="descname">cut</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.cut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="fancywidgets.pyQtBased.Table.Table.fromText">
+<em class="property">static </em><code class="descname">fromText</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.fromText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.fromText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.importTable">
+<code class="descname">importTable</code><span class="sig-paren">(</span><em>table</em>, <em>startRow=None</em>, <em>startCol=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.importTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.importTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.insertBlankCells">
+<code class="descname">insertBlankCells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.insertBlankCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.insertBlankCells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.mousePressEvent">
+<code class="descname">mousePressEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.paste">
+<code class="descname">paste</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.paste"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.paste" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.removeBlankCells">
+<code class="descname">removeBlankCells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.removeBlankCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.removeBlankCells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.restore">
+<code class="descname">restore</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.restore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.restore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>save to file - override last saved file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.saveAs">
+<code class="descname">saveAs</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.saveAs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.saveAs" title="Permalink to this definition">¶</a></dt>
+<dd><p>save to file under given name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.setColumnsFixed">
+<code class="descname">setColumnsFixed</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.setColumnsFixed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.setColumnsFixed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.setItemText">
+<code class="descname">setItemText</code><span class="sig-paren">(</span><em>row</em>, <em>col</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.setItemText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.setItemText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="fancywidgets.pyQtBased.Table.Table.sigPathChanged">
+<code class="descname">sigPathChanged</code><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.sigPathChanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.Table.Table.table">
+<code class="descname">table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/Table.html#Table.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.Table.Table.table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-fancywidgets.pyQtBased.highlighter">
+<span id="fancywidgets-pyqtbased-highlighter-module"></span><h2>fancywidgets.pyQtBased.highlighter module<a class="headerlink" href="#module-fancywidgets.pyQtBased.highlighter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.highlighter.Highlighter">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.highlighter.</code><code class="descname">Highlighter</code><span class="sig-paren">(</span><em>parent</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/highlighter.html#Highlighter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.highlighter.Highlighter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QSyntaxHighlighter</span></code></p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.highlighter.Highlighter.highlightBlock">
+<code class="descname">highlightBlock</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/highlighter.html#Highlighter.highlightBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.highlighter.Highlighter.highlightBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a block, applies format to the document.
+according to what&#8217;s in it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="fancywidgets.pyQtBased.highlighter.QFormatter">
+<em class="property">class </em><code class="descclassname">fancywidgets.pyQtBased.highlighter.</code><code class="descname">QFormatter</code><a class="reference internal" href="_modules/fancywidgets/pyQtBased/highlighter.html#QFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.highlighter.QFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pygments.formatter.Formatter</span></code></p>
+<dl class="method">
+<dt id="fancywidgets.pyQtBased.highlighter.QFormatter.format">
+<code class="descname">format</code><span class="sig-paren">(</span><em>tokensource</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/highlighter.html#QFormatter.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.highlighter.QFormatter.format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="fancywidgets.pyQtBased.highlighter.hex2QColor">
+<code class="descclassname">fancywidgets.pyQtBased.highlighter.</code><code class="descname">hex2QColor</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fancywidgets/pyQtBased/highlighter.html#hex2QColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fancywidgets.pyQtBased.highlighter.hex2QColor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fancywidgets.pyqtgraphBased.html" class="btn btn-neutral float-right" title="fancywidgets.pyqtgraphBased package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fancywidgets.media.html" class="btn btn-neutral" title="fancywidgets.media package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

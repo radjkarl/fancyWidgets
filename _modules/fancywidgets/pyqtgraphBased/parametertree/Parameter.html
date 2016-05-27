@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyqtgraphBased.parametertree.Parameter &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyqtgraphBased.parametertree.Parameter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyqtgraphBased.parametertree.Parameter</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+
+
+<span class="kn">from</span> <span class="nn">pyqtgraph.parametertree.Parameter</span> <span class="kn">import</span> <span class="n">Parameter</span> <span class="k">as</span> <span class="n">pgParameter</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph.parametertree.Parameter</span> <span class="kn">import</span> <span class="n">registerParameterType</span>
+
+<span class="kn">from</span> <span class="nn">pyqtgraph.parametertree.Parameter</span> <span class="kn">import</span> <span class="n">PARAM_TYPES</span><span class="p">,</span> <span class="n">PARAM_NAMES</span>
+
+
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">asUnicode</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph.Qt</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+
+<div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">pgParameter</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	add new options to pyQtGraphs &#39;Parameter&#39;-Class to be fully interactive</span>
+<span class="sd">	and log all changes:</span>
+<span class="sd">		* &#39;duplicatable&#39; (see ParameterItem)</span>
+<span class="sd">		* &#39;key&#39; -&gt; name or QKeySequence of the shortcut (see ParameterItem)</span>
+<span class="sd">		* &#39;keyParent&#39; -&gt; QWidget where the key is active</span>
+<span class="sd">		* &#39;isGroup&#39; -&gt; True/False (coded in ParameterItem)</span>
+<span class="sd">		* &#39;icon&#39; -&gt; &#39;path/to/icon&#39; (see ParameterItem)</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+<span class="c">#signals to log:</span>
+<span class="c">#tree.itemExpanded(item)</span>
+<span class="c">#tree.itemCollapsed(item)</span>
+
+
+
+	<span class="n">sigDuplicated</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">()</span>
+	<span class="n">sigRemoved</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">()</span>
+
+
+
+<span class="c"># 	def __init__(self, **opts):</span>
+<span class="c"># 		pgParameter.__init__(self, **opts)</span>
+
+
+
+
+<div class="viewcode-block" id="Parameter.duplicate"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.duplicate">[docs]</a>	<span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span><span class="c">#, linked=False, readonly=False, recursive=False):</span>
+ 
+<span class="c"># 		def recursiveReadOnly(param):</span>
+<span class="c"># 			param.setReadonly(True)</span>
+<span class="c"># 			for ch in param.children():</span>
+<span class="c"># 				recursiveReadOnly(ch)</span>
+<span class="c">#  				</span>
+<span class="c"># 		def recursiveLinked(param, master):</span>
+<span class="c"># 			master.sigOptionsChanged.connect(param.setOpts)</span>
+<span class="c"># 			for ch, mCh in zip(param.children(), master.children()):</span>
+<span class="c"># 				recursiveLinked(ch, mCh)</span>
+ 				
+		<span class="n">p</span> <span class="o">=</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">p</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveState</span><span class="p">(),</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">)</span>
+<span class="c">#  		</span>
+<span class="c"># 		if readonly: recursiveReadOnly(p)</span>
+<span class="c"># 		if linked: recursiveLinked(p, self)</span>
+ 				
+		<span class="bp">self</span><span class="o">.</span><span class="n">sigDuplicated</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">p</span></div>
+
+
+<div class="viewcode-block" id="Parameter.remove"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.remove">[docs]</a>	<span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">pgParameter</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">sigRemoved</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Parameter.blockSignals"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.blockSignals">[docs]</a>	<span class="k">def</span> <span class="nf">blockSignals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolean</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;add block/unblock of keyboard shortcut&#39;&#39;&#39;</span>
+		<span class="n">pgParameter</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boolean</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
+				<span class="n">item</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="n">boolean</span><span class="p">)</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Parameter.hasVisibleChilds"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.hasVisibleChilds">[docs]</a>	<span class="k">def</span> <span class="nf">hasVisibleChilds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span class="c">#TODO: remove?</span>
+		<span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s">&#39;visible&#39;</span><span class="p">]:</span>
+				<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">return</span> <span class="bp">False</span></div>
+
+
+
+
+<span class="c">#	def duplicate(self, log=True):</span>
+		<span class="c">#if log:</span>
+		<span class="c">#	self.container.logMethod(self.duplicate)</span>
+<span class="c"># 		self.sigDuplicated.emit()</span>
+
+
+<div class="viewcode-block" id="Parameter.isVisible"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.isVisible">[docs]</a>	<span class="k">def</span> <span class="nf">isVisible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s">&#39;visible&#39;</span><span class="p">]:</span>
+			<span class="n">p</span> <span class="o">=</span> <span class="bp">self</span>
+			<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+				<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="p">:</span>
+					<span class="k">return</span> <span class="bp">True</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s">&#39;visible&#39;</span><span class="p">]:</span>
+					<span class="k">break</span>
+		<span class="k">return</span> <span class="bp">False</span></div>
+
+	<span class="c">#TODO: raus!!! restoreState ist besser</span>
+<span class="c"># 	def setValues(self, masterParam, includeChilds=True):</span>
+<span class="c"># 		&#39;&#39;&#39;duplicate values, names and limits from one analog parameter recursively&#39;&#39;&#39;</span>
+<span class="c"># 		self.setValue(masterParam.value())</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			self.setLimits(masterParam.opts[&#39;limits&#39;])</span>
+<span class="c"># 		except KeyError:</span>
+<span class="c"># 			pass</span>
+<span class="c"># 		self.setName(masterParam.name(), log=False)</span>
+<span class="c"># 		if includeChilds:</span>
+<span class="c"># 			for myChild,masterChild in zip(self.children(),masterParam.children()):</span>
+<span class="c"># 				myChild.setValues(masterChild, includeChilds)</span>
+
+
+<div class="viewcode-block" id="Parameter.replaceWith"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.replaceWith">[docs]</a>	<span class="k">def</span> <span class="nf">replaceWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;replace this parameter with another&#39;&#39;&#39;</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">children</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="c">#TODO: transfer the children:</span>
+		<span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">p</span><span class="o">.</span><span class="n">insertChild</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+		<span class="bp">self</span> <span class="o">=</span> <span class="n">param</span></div>
+		<span class="c">#return p.insertChild(i, param)</span>
+
+
+<div class="viewcode-block" id="Parameter.path"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.Parameter.Parameter.path">[docs]</a>	<span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">c</span> <span class="o">=</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+		<span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+		<span class="k">while</span> <span class="n">p</span><span class="p">:</span>
+			<span class="n">l</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span> <span class="n">l</span>
+			<span class="n">c</span> <span class="o">=</span> <span class="n">p</span>
+			<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">l</span></div></div>
+
+
+
+<span class="c">#  </span>
+<span class="c"># 	def init(self):</span>
+<span class="c"># 		self.setValue(value=self.value, blockSignal=self.sigValueChanged)</span>
+<span class="c"># 		return self</span>
+
+
+
+<span class="c"># 	@staticmethod</span>
+<span class="c"># 	def create(container, **opts):</span>
+<span class="c"># 		#NEW#</span>
+<span class="c"># 		typ = opts.get(&#39;type&#39;, None)</span>
+<span class="c"># 		if typ is None:</span>
+<span class="c"># 			raise Exception(&quot;needed key &#39;type&#39; not in given %s&quot; %opts)</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			opts[&#39;name&#39;] = opts[&#39;getName&#39;]()</span>
+<span class="c"># 		except:</span>
+<span class="c"># 			pass</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			l = opts[&#39;getLimits&#39;] ()</span>
+<span class="c"># 			if isinstance(l,list):</span>
+<span class="c"># 				opts[&#39;limits&#39;] = l</span>
+<span class="c"># 		except KeyError:</span>
+<span class="c"># 			pass</span>
+<span class="c"># </span>
+<span class="c"># 		if &#39;value&#39; not in opts:</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				opts[&#39;value&#39;] = opts[&#39;getValue&#39;] (opts[&#39;index&#39;])</span>
+<span class="c"># 				#print 333</span>
+<span class="c"># 			except (KeyError, TypeError):</span>
+<span class="c"># 				#index not in list or getMethod doesnt take index</span>
+<span class="c"># 				#print 66, opts[&#39;name&#39;], opts.get(&#39;index&#39;)</span>
+<span class="c"># 				try:</span>
+<span class="c"># 					opts[&#39;value&#39;] = opts[&#39;getValue&#39;] ()</span>
+<span class="c"># 				except KeyError:</span>
+<span class="c"># 					pass</span>
+<span class="c"># </span>
+<span class="c"># 		cls = PARAM_TYPES[opts[&#39;type&#39;]]</span>
+<span class="c"># 		return cls(container, **opts)</span>
+
+
+
+<span class="c"># 	def unblock(self):</span>
+<span class="c"># 		&#39;&#39;&#39;unblock changing and keyboard shortcut&#39;&#39;&#39;</span>
+<span class="c"># 		self.blockSignals(False)</span>
+<span class="c"># 		if self._key:</span>
+<span class="c"># 			self._key.blockSignals(False)</span>
+
+
+<span class="c"># 	def show(self, s=True):</span>
+<span class="c"># 		if s:</span>
+<span class="c"># 			self.update(force=True)</span>
+<span class="c"># 		pgParameter.show(self,s)</span>
+
+
+<span class="c"># 	def remove(self, log=True, **kwargs):</span>
+<span class="c"># 		if log:</span>
+<span class="c"># 			self.container.logMethod(self, self.remove, **kwargs)</span>
+<span class="c"># 		self._remove()</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># 	def _remove(self):</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			m = self.opts[&#39;setRemove&#39;]</span>
+<span class="c"># 			index = self.opts.get(&#39;index&#39;, None)</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				m(index, self)</span>
+<span class="c"># 			except TypeError:</span>
+<span class="c"># 				try:</span>
+<span class="c"># 					m(self)</span>
+<span class="c"># 				except TypeError:</span>
+<span class="c"># 					m () #remove-method doesn&#39;t take anything</span>
+<span class="c"># 		except KeyError:</span>
+<span class="c"># 			pass</span>
+<span class="c"># 		self.forAllParamRecursive(self,self._checkForBatch)</span>
+<span class="c"># 		self.forAllParamRecursive(self,self._setRemoved)</span>
+<span class="c"># 		super(Parameter, self).remove()</span>
+<span class="c"># 		self.session.container.sigParamChanged.emit()</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># 	def _setRemoved(self):</span>
+<span class="c"># 		self.removed = True</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># 	def forAllParamRecursive(self,param, method):</span>
+<span class="c"># 		for ch in param.children():</span>
+<span class="c"># 			self.forAllParamRecursive(ch, method)</span>
+<span class="c"># 		method(param)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># 	def _checkForBatch(self,param):</span>
+<span class="c"># 		if param._inBatch:</span>
+<span class="c"># 			nIOp.getBatch().removeParam(param.pathToMaster)</span>
+
+
+<span class="c"># 	def _logValue(self):</span>
+<span class="c"># 		#TODO: kick self.value() != &quot;-&quot; ??</span>
+<span class="c"># 	#	print self.name()</span>
+<span class="c"># 		value = self.value()</span>
+<span class="c"># 		if value != &quot;-&quot; and not self._blocked_setValue:</span>
+<span class="c"># 			if self.opts.get(&#39;log&#39;) != False:</span>
+<span class="c"># 				self.container.logMethod(self.setValue, value)</span>
+<span class="c"># 			self.setValue(value)</span>
+
+
+<span class="c"># 	@property</span>
+<span class="c"># 	def limits(self):</span>
+<span class="c"># 		return self.opts[&#39;limits&#39;]</span>
+<span class="c"># </span>
+<span class="c"># 	@limits.setter</span>
+<span class="c"># 	def _setLimits(self, l):</span>
+<span class="c"># 		self.setOpts(limits=l)</span>
+
+
+<span class="c"># 	def setName(self,name, log=True):</span>
+<span class="c"># 		name =  super(Parameter,self).setName(asUnicode(name))</span>
+<span class="c"># 		if self._exist and self._is_child:</span>
+<span class="c"># 			if self.opts[&#39;renamable&#39;] and log:</span>
+<span class="c"># 				self.container.logMethod(self.setName,name)</span>
+<span class="c"># 		return name</span>
+
+
+<span class="c"># 	def path(self):</span>
+<span class="c"># 		p = self.parent()</span>
+<span class="c"># 		l = [self.name()]</span>
+<span class="c"># 		while p:</span>
+<span class="c"># 			l.insert(0,p.name())</span>
+<span class="c"># 			c = p</span>
+<span class="c"># 			p = p.parent()</span>
+<span class="c"># 		return c.opts[&#39;master&#39;], l</span>
+
+
+
+<span class="c"># </span>
+<span class="c"># 	def _execMethodDebugMode(self, value, pmethod):</span>
+<span class="c"># 		index = self.opts.get(&#39;index&#39;, None)</span>
+<span class="c"># 		if index != None:</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				return pmethod(value, index)</span>
+<span class="c"># 			except TypeError:</span>
+<span class="c"># 				print traceback.print_exc()</span>
+<span class="c"># 				return None</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			return pmethod(value)</span>
+<span class="c"># 		except TypeError:</span>
+<span class="c"># 			print traceback.print_exc()</span>
+<span class="c"># 			return pmethod()</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># 	def _execMethodNormal(self, value, pmethod):</span>
+<span class="c"># 		print value, pmethod</span>
+<span class="c"># 		index = self.opts.get(&#39;index&#39;, None)</span>
+<span class="c"># 		if index != None:</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				return pmethod(value, index)</span>
+<span class="c"># 			except TypeError:</span>
+<span class="c"># 				return None</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			return pmethod(value)</span>
+<span class="c"># 		except TypeError:</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				return pmethod()</span>
+<span class="c"># 			except TypeError:</span>
+<span class="c"># 				print traceback.print_exc()</span>
+
+<span class="c">#	@property</span>
+<span class="c">#	def value(self):</span>
+<span class="c">#		return super(Parameter, self).value()</span>
+<span class="c">#TODO: warum klappt dasnicht???</span>
+
+<span class="c"># #	@value.setter</span>
+<span class="c"># 	def setValue(self, value, blockSignal=None):</span>
+<span class="c"># 		if type(value) == str:</span>
+<span class="c"># 			value = asUnicode(value)</span>
+<span class="c"># 		pmethod = self.opts.get(&#39;setValue&#39;, None)</span>
+<span class="c"># 		if pmethod:</span>
+<span class="c"># 			self._execMethod(value, pmethod)</span>
+<span class="c"># 		return super(Parameter, self).setValue(value, blockSignal)</span>
+
+
+	<span class="c">#def logMethod(self, value, method=None):</span>
+		<span class="c">#if not method:</span>
+			<span class="c">#method = self._master.setParam</span>
+		<span class="c">#self.container.logMethod(method, value)</span>
+
+
+<span class="c"># 	def addToBatch(self, **kwargs):</span>
+<span class="c"># 		self._inBatch = True</span>
+<span class="c"># 		self.container.logMethod(self.addToBatch, **kwargs)</span>
+<span class="c"># 		#self.container.logMethod(self._master.addParamToBatch, **kwargs)</span>
+<span class="c"># 		self.session.batch.addParam(self, **kwargs)</span>
+
+
+	<span class="c">#def _removeListEntry(self, entry):</span>
+		<span class="c">#try:</span>
+			<span class="c">#l = self.opts[&#39;limits&#39;]</span>
+			<span class="c">#i = l.index(entry)</span>
+			<span class="c">#l.pop(i)</span>
+			<span class="c">#self.sigLimitsChanged.emit(self, l)</span>
+		<span class="c">#except (KeyError, ValueError):</span>
+			<span class="c">#pass</span>
+
+
+
+
+
+<span class="c"># 	def update(self, force=False):</span>
+<span class="c"># 		if not force and not self.isVisible():</span>
+<span class="c"># 			return</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			self.setName(self.opts[&#39;getName&#39;](), log=False)</span>
+<span class="c"># 		except KeyError:</span>
+<span class="c"># 			pass</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			l = self.opts[&#39;getLimits&#39;] ()</span>
+<span class="c"># 			if isinstance(l,list):#if is valid</span>
+<span class="c"># 				self.setLimits( l )</span>
+<span class="c"># 		except KeyError:</span>
+<span class="c"># 			pass</span>
+<span class="c"># 		try:</span>
+<span class="c"># 			self.setValue(self.opts[&#39;getValue&#39;] (self.opts[&#39;index&#39;]))</span>
+<span class="c"># 		except (KeyError, TypeError):</span>
+<span class="c"># 			#index not in list or getMethod doesnt take index</span>
+<span class="c"># 			try:</span>
+<span class="c"># 				self.setValue( self.opts[&#39;getValue&#39;]())</span>
+<span class="c"># 			except KeyError:</span>
+<span class="c"># 				pass</span>
+
+<span class="c"># </span>
+<span class="c"># 	def insertChild(self,pos, child):</span>
+<span class="c"># 		&quot;&quot;&quot;</span>
+<span class="c"># 		Insert a new child at pos.</span>
+<span class="c"># 		If pos is a Parameter, then insert at the position of that Parameter.</span>
+<span class="c"># 		If child is a dict, then a parameter is constructed using</span>
+<span class="c"># 		:func:`Parameter.create &lt;pyqtgraph.parametertree.Parameter.create&gt;`.</span>
+<span class="c"># 		&quot;&quot;&quot;</span>
+<span class="c"># 		if isinstance(child, dict):</span>
+<span class="c"># 			child = Parameter.create(self.container, **child)</span>
+<span class="c"># 		</span>
+<span class="c"># 		name = child.name()</span>
+<span class="c"># 		if name in self.names and child is not self.names[name]:</span>
+<span class="c"># 			#changed##</span>
+<span class="c"># 			#if child.opts.get(&#39;autoIncrementName&#39;, False):</span>
+<span class="c"># 			name = self.incrementName(name)</span>
+<span class="c"># 			child.setName(name, log=False)</span>
+<span class="c"># 			#else:</span>
+<span class="c"># 			#	raise Exception(&quot;Already have child named %s&quot; % str(name))</span>
+<span class="c"># 		####new#####</span>
+<span class="c"># 		if pos &lt; 0:</span>
+<span class="c"># 			pos = len(self.childs)-1+pos</span>
+<span class="c"># 		#####old#####</span>
+<span class="c"># 		if isinstance(pos, Parameter):</span>
+<span class="c"># 			pos = self.childs.index(pos)</span>
+<span class="c"># 			</span>
+<span class="c"># 		with self.treeChangeBlocker():</span>
+<span class="c"># 			if child.parent() is not None:</span>
+<span class="c"># 				child.remove()</span>
+<span class="c"># 				</span>
+<span class="c"># 			self.names[name] = child</span>
+<span class="c"># 			self.childs.insert(pos, child)</span>
+<span class="c"># 			child.parentChanged(self)</span>
+<span class="c"># 			self.sigChildAdded.emit(self, child, pos)</span>
+<span class="c"># 			child.sigTreeStateChanged.connect(self.treeStateChanged)</span>
+<span class="c"># 			####new####</span>
+<span class="c"># 			x = child.sigValueChanged</span>
+<span class="c"># 			if child.isType(&#39;action&#39;):</span>
+<span class="c"># 				x = child.sigActivated</span>
+<span class="c"># </span>
+<span class="c"># 			x.connect(child._logValue)</span>
+<span class="c"># 			if not child.opts.get(&#39;static&#39;, False):</span>
+<span class="c"># 				x.connect(self.container.sigParamChanged.emit)</span>
+<span class="c"># 				#also update when name change:</span>
+<span class="c"># 				child.sigNameChanged.connect(self.container.sigParamChanged.emit)</span>
+<span class="c"># </span>
+<span class="c"># 			#child.findMaster()</span>
+<span class="c"># </span>
+<span class="c"># 			activeWith = [&#39;getValue&#39;, &#39;getLimits&#39;, &#39;getName&#39;]</span>
+<span class="c"># 			isActive = bool([i for i in activeWith if child.opts.get(i)])</span>
+<span class="c"># 			</span>
+<span class="c"># 			if isActive:</span>
+<span class="c"># 				self.container.sigParamChanged.connect(child)</span>
+<span class="c"># 		child._is_child = True</span>
+<span class="c"># 		return child</span>
+
+
+
+
+
+	<span class="c">#to enable easy manipulation of the parameter:</span>
+	<span class="c">#attr = property(pgParameter.value,_setValueViaCode,_remove)</span>
+
+
+
+
+
+	<span class="c">##TODO: brauchich den wirklich?</span>
+	<span class="c">#def makeProperty(self, inst):</span>
+		<span class="c">## set a property for the given instance dynamically with access to</span>
+		<span class="c">## the get, set and del-method of this class</span>
+		<span class="c">#name = utils.legalizeFilename(self.name())</span>
+		<span class="c">#inst.__setattr__(&#39;_get_&#39;+name,self.value)</span>
+		<span class="c">#inst.__setattr__(&#39;_set_&#39;+name,self._setValueViaCode)</span>
+		<span class="c">#inst.__setattr__(&#39;_del_&#39;+name,self._remove)</span>
+		<span class="c">#return property(</span>
+			<span class="c">#lambda self: self.__getattribute__(&#39;_get_&#39;+name)(),</span>
+			<span class="c">#lambda self,val: self.__getattribute__(&#39;_set_&#39;+name)(val),</span>
+			<span class="c">#lambda self: self.__getattribute__(&#39;_del_&#39;+name)() )</span>
+<span class="c">##TODO: evtl. is folgendes schneller für priority</span>
+<span class="c">#class HackedProperty(object):</span>
+    <span class="c">#def __init__(self, f):</span>
+        <span class="c">#self.f = f</span>
+    <span class="c">#def __get__(self, inst, owner):</span>
+        <span class="c">#return getattr(inst, self.f.__name__)()</span>
+
+<span class="c">#class Foo(object):</span>
+    <span class="c">#def _get_age(self):</span>
+        <span class="c">#return 11</span>
+    <span class="c">#age = HackedProperty(_get_age)</span>
+
+<span class="c">#class Bar(Foo):</span>
+    <span class="c">#def _get_age(self):</span>
+        <span class="c">#return 44</span>
+
+<span class="c">#print Bar().age</span>
+<span class="c">#print Foo().age</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

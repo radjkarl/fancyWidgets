@@ -1,0 +1,108 @@
+fancywidgets.pyQtBased package
+==============================
+
+.. automodule:: fancywidgets.pyQtBased
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+fancywidgets.pyQtBased.ArgSetter module
+---------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.ArgSetter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.CircleWidget module
+------------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.CircleWidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.CodeEditor module
+----------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.CodeEditor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.Console module
+-------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.Console
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.Dialogs module
+-------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.Dialogs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.FingerTabWidget module
+---------------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.FingerTabWidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.FwMinimalTextEditor module
+-------------------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.FwMinimalTextEditor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.FwTabWidget module
+-----------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.FwTabWidget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.FwTextEditor module
+------------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.FwTextEditor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.MenuBar module
+-------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.MenuBar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.Table module
+-----------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.Table
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyQtBased.highlighter module
+-----------------------------------------
+
+.. automodule:: fancywidgets.pyQtBased.highlighter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+

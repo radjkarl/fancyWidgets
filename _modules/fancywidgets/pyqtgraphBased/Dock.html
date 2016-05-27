@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyqtgraphBased.Dock &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyqtgraphBased.Dock</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyqtgraphBased.Dock</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">pyqtgraph.dockarea</span> <span class="kn">as</span> <span class="nn">pgDock</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph.Qt</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+
+
+
+<div class="viewcode-block" id="Dock"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock">[docs]</a><span class="k">class</span> <span class="nc">Dock</span><span class="p">(</span><span class="n">pgDock</span><span class="o">.</span><span class="n">Dock</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    added function: </span>
+<span class="sd">    </span>
+<span class="sd">    * setWidget</span>
+<span class="sd">    * fullscreen in right click menu of label</span>
+<span class="sd">    * rename in right click menu of label</span>
+<span class="sd">    * embedd/release to (temporary) free the Dock from its parent DockArea</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> 
+                <span class="n">widget</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">hideTitle</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">autoOrientation</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                <span class="n">closable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">minimizable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">maximizable</span><span class="o">=</span><span class="bp">True</span>
+                <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Dock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">hideTitle</span><span class="p">,</span> 
+                                <span class="n">autoOrientation</span><span class="p">,</span> <span class="n">closable</span><span class="p">,</span> <span class="n">minimizable</span><span class="p">,</span> <span class="n">maximizable</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pparent</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_saved_state</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">DockLabelMenu</span><span class="p">(</span><span class="n">weakref</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="c">#full screen on double click rather than floating dock:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mouseDoubleClickEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">evt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setFullscreen</span><span class="p">()</span><span class="c">#)evt.ignore()</span>
+ 
+
+<div class="viewcode-block" id="Dock.close"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isFullScreen</span><span class="p">()</span> 
+        <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c">#otherwise wont be close from fullscreen</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">embedd</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showNormal</span><span class="p">()</span>
+        <span class="n">pgDock</span><span class="o">.</span><span class="n">Dock</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Dock.closeEvent"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="c">#ignore ALT+F4 if in full screen</span>
+        <span class="n">evt</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+
+  
+<div class="viewcode-block" id="Dock.setFullscreen"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.setFullscreen">[docs]</a>    <span class="k">def</span> <span class="nf">setFullscreen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isFullScreen</span><span class="p">():</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">desktop</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">screenNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="c">#go to current screen:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">screenGeometry</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>  
+            <span class="bp">self</span><span class="o">.</span><span class="n">showFullScreen</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hideTitleBar</span><span class="p">()</span>
+            <span class="c">#have to add to self in order not to be removed by garbage collector:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fc_msg</span>  <span class="o">=</span> <span class="n">FullscreenMsg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Dock.keyPressEvent"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Escape</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isFullScreen</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">embedd</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showNormal</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showTitleBar</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fc_msg</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+                
+
+
+<div class="viewcode-block" id="Dock.setWidget"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.setWidget">[docs]</a>    <span class="k">def</span> <span class="nf">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">colspan</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add new widget inside dock, remove old one if existent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c">#add new widget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="c">#change existing widget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rowspan</span><span class="p">,</span> <span class="n">colspan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raiseOverlay</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Dock.setName"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.setName">[docs]</a>    <span class="k">def</span> <span class="nf">setName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Dock.release"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.release">[docs]</a>    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_saved_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">saveState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parentWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">showControls</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Dock.embedd"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.Dock.embedd">[docs]</a>    <span class="k">def</span> <span class="nf">embedd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pparent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pparent</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pparent</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saved_state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">addDock</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">restoreState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_saved_state</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_saved_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">showControls</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkShowControls</span><span class="p">()</span></div></div>
+
+
+
+<div class="viewcode-block" id="FullscreenMsg"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.FullscreenMsg">[docs]</a><span class="k">class</span> <span class="nc">FullscreenMsg</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Simple message on top of this window</span>
+<span class="sd">    hides itself after few seconds</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Press &lt;ESC&gt; to exit full screen&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="c">#make frameles:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowStaysOnTopHint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s">&quot;QLabel { background-color : black; color : white; }&quot;</span><span class="p">)</span>
+
+        <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">30</span> <span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="DockLabelMenu"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.DockLabelMenu">[docs]</a><span class="k">class</span> <span class="nc">DockLabelMenu</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dock</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">dock</span> <span class="o">=</span> <span class="n">dock</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_popout</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="s">&#39;Pop out&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_popout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_fullscreen</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="s">&#39;Fullscreen (double click)&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="c">#, checkable=True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action_fullscreen</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Set Name&#39;</span><span class="p">)</span>
+
+        <span class="c">#connect signals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_fullscreen</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fullscreen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_popout</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_popout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_name</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setLabelName</span><span class="p">)</span>
+
+        <span class="c">#enable this menu on right click:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="p">,</span><span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&#39;customContextMenuRequested(QPoint)&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_showContextMenu</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="bp">None</span> <span class="c">#set-name-editor</span>
+
+
+    <span class="k">def</span> <span class="nf">_fullscreen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_popout</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">isFullScreen</span><span class="p">())</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">setFullscreen</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_popout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">checked</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dock</span>
+        <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowStaysOnTopHint</span><span class="p">)</span>
+            <span class="c">#BACKUP:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseMoveEvent</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mouseMoveEvent</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseReleaseEvent</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mouseReleaseEvent</span>
+            <span class="c">#MAKE DOCK DRAGABLE:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mouseMoveEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouseMoveEvent</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouseReleaseEvent</span>
+    
+            <span class="n">d</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">label</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">embedd</span><span class="p">()</span>
+            <span class="c">#RESTORE:</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">mouseMoveEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseMoveEvent</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseReleaseEvent</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseMoveEvent</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_mouseReleaseEvent</span>
+
+
+    <span class="k">def</span> <span class="nf">_mouseMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dock</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">globalPos</span><span class="p">()</span><span class="o">-</span><span class="n">d</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">pressPos</span><span class="p">)</span>
+
+             
+    <span class="k">def</span> <span class="nf">_mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+
+<div class="viewcode-block" id="DockLabelMenu.setLabelName"><a class="viewcode-back" href="../../../fancywidgets.pyqtgraphBased.html#fancywidgets.pyqtgraphBased.Dock.DockLabelMenu.setLabelName">[docs]</a>    <span class="k">def</span> <span class="nf">setLabelName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="c">#set smaller size to fit text in label:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>    
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+            <span class="c">#transfer text to dockLabel when finished:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_setLabelNameFinished</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">45</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_setLabelNameFinished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">dock</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">fancywidgets.pyqtgraphBased.DockArea</span> <span class="kn">import</span> <span class="n">DockArea</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QMainWindow</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&#39;Dock&#39;</span><span class="p">)</span>
+
+    <span class="n">area</span> <span class="o">=</span> <span class="n">DockArea</span><span class="p">()</span>
+
+    <span class="n">win</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Dock</span><span class="p">(</span><span class="s">&#39;one&#39;</span><span class="p">)</span>
+    <span class="n">area</span><span class="o">.</span><span class="n">addDock</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.CodeEditor &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.CodeEditor</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.CodeEditor</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+<span class="kn">import</span> <span class="nn">__builtin__</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">pkginfo</span> <span class="kn">import</span> <span class="n">Installed</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="c"># OWN</span>
+<span class="kn">from</span> <span class="nn">fancywidgets.pyQtBased.highlighter</span> <span class="kn">import</span> <span class="n">Highlighter</span>
+<span class="kn">from</span> <span class="nn">fancytools.fcollections.naturalSorting</span> <span class="kn">import</span> <span class="n">naturalSorting</span>
+
+<span class="c"># FIXME</span>
+<span class="c"># in order to also have in in a frozen environment</span>
+<span class="c"># see _getInstalledModules</span>
+<span class="kn">import</span> <span class="nn">_installed_modules</span>
+
+
+<div class="viewcode-block" id="CodeEditor"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.CodeEditor.CodeEditor">[docs]</a><span class="k">class</span> <span class="nc">CodeEditor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A simple code editor with a QPlainTextEdit and line numbers of the left side</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialog</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dialog</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">dialog</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span> <span class="o">=</span> <span class="n">dialog</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">_CodeTextEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineNumbers</span> <span class="o">=</span> <span class="n">_LineNumberArea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+
+        <span class="n">l</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lineNumbers</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CodeEditor.addGlobals"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.CodeEditor.CodeEditor.addGlobals">[docs]</a>    <span class="k">def</span> <span class="nf">addGlobals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        g ==&gt; {name:description,...}</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">_globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="k">pass</span></div></div>
+
+
+
+<span class="k">class</span> <span class="nc">_CodeTextEdit</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    a text editor with ... </span>
+<span class="sd">    * monospace font, </span>
+<span class="sd">    * tab2spaces, </span>
+<span class="sd">    * python syntax highlighter</span>
+<span class="sd">    * &#39;save to file&#39; in context menu </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">codeEditor</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_globals</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codeEditor</span> <span class="o">=</span> <span class="n">codeEditor</span>
+        <span class="c"># FONT: set monospace</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFamily</span><span class="p">(</span><span class="s">&quot;Courier&quot;</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setStyleHint</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Monospace</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFixedPitch</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="c"># TAB to spaces</span>
+        <span class="n">tabStop</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c"># 4 characters</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFontMetrics</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTabStopWidth</span><span class="p">(</span><span class="n">tabStop</span> <span class="o">*</span> <span class="n">metrics</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+        <span class="c"># SCROLL BAR - horizontal:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLineWrapMode</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">NoWrap</span><span class="p">)</span>
+        <span class="c"># SYNTAX highlighter:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlighter</span> <span class="o">=</span> <span class="n">Highlighter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">(),</span> <span class="s">&quot;python&quot;</span><span class="p">)</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_nameFromModName</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="c">#mod name is given as &#39;mon (v0.1)&#39;</span>
+        <span class="c">#return &#39;mod&#39;</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">[:</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)]</span>
+
+
+    <span class="k">def</span> <span class="nf">_addImportModule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c">#insert &#39;import &lt;mod&gt;&#39; at the begin</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nameFromModName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">setPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTextCursor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertPlainText</span><span class="p">(</span><span class="s">&#39;import </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">setPosition</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTextCursor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Down</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_addObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">cc</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cc</span><span class="o">.</span><span class="n">WordUnderCursor</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">selectedText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">txt</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">movePosition</span><span class="p">(</span><span class="n">cc</span><span class="o">.</span><span class="n">EndOfWord</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setTextCursor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">hasSelection</span><span class="p">():</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">removeSelectedText</span><span class="p">()</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span> <span class="o">+</span> <span class="s">&#39; &#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s">&#39; &#39;</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">clearSelection</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">name</span><span class="p">)):</span>
+                <span class="n">txt</span> <span class="o">+=</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#39;()&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">txt</span> <span class="o">+=</span> <span class="n">name</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">NameError</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+            <span class="n">txt</span> <span class="o">+=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertPlainText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_addMenuEntries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu</span><span class="p">,</span> <span class="n">entries</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="c">#limit number of entries to be shown in a menu</span>
+        <span class="c">#create sub menus (e.g. &#39;A-F&#39;) </span>
+
+        <span class="n">entries</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">getLetter</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">entries</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">mx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">entries</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">mx</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">mx</span><span class="p">:</span>
+            <span class="n">sub</span> <span class="o">=</span> <span class="n">menu</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">letter</span> <span class="o">=</span> <span class="n">getLetter</span><span class="p">()</span>
+            <span class="n">sub</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span>
+                               <span class="o">%</span> <span class="p">(</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span><span class="n">letter</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="n">sub</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">checked</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">e</span><span class="p">:</span> <span class="n">fn</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+            <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">mx</span><span class="p">:</span>
+                <span class="n">new_letter</span> <span class="o">=</span> <span class="n">getLetter</span><span class="p">()</span>
+                <span class="n">sub</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="n">letter</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="n">new_letter</span><span class="p">)</span>
+                <span class="n">letter</span> <span class="o">=</span> <span class="n">new_letter</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+    <span class="k">def</span> <span class="nf">_buildGlobalsMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">mg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span>
+        <span class="n">mg</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buildGlobalsMenu</span><span class="p">)</span>
+
+        <span class="c"># GIVEN GLOBALS:</span>
+        <span class="k">for</span> <span class="n">gi</span> <span class="ow">in</span> <span class="n">naturalSorting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_globals</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">mg</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">gi</span><span class="p">)</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">checked</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">gi</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addObject</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_globals</span><span class="p">:</span>
+            <span class="n">mg</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="c"># BUILT-INs</span>
+        <span class="n">mb</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s">&#39;Built-in Objects&#39;</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">__builtin__</span><span class="p">)]</span>
+        <span class="c"># exclude warnings and errors:</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">war</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;Error&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;Exception&#39;</span><span class="p">):</span>
+                <span class="n">err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;Warning&#39;</span><span class="p">):</span>
+                <span class="n">war</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addMenuEntries</span><span class="p">(</span><span class="n">mb</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addObject</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">mb</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s">&#39;Errors&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addMenuEntries</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addObject</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">mb</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s">&#39;Warnings&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addMenuEntries</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">war</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_addObject</span><span class="p">)</span>
+        <span class="c"># MODULES</span>
+        <span class="n">mm</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s">&#39;Installed modules&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_addMenuEntries</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getInstalledModules</span><span class="p">(),</span> 
+                             <span class="bp">self</span><span class="o">.</span><span class="n">_addImportModule</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_getInstalledModules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pip</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s">&#39;pip&#39;</span><span class="p">)</span><span class="c">#save some startup time</span>
+
+
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="p">[</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">version</span><span class="p">)</span> 
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pip</span><span class="o">.</span><span class="n">get_installed_distributions</span><span class="p">()]</span>
+                   <span class="p">)</span>
+        <span class="c">#FIXME: with pip v8.1.1. l will be []</span>
+        <span class="c">#if executed in a frozen environment</span>
+        <span class="c">#for this case load infos from file:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">_installed_modules</span><span class="o">.</span><span class="n">l</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#update file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">_installed_modules</span><span class="o">.</span><span class="n">__file__</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;&#39;&#39;#this file is auto generated by </span>
+<span class="s">#CodeEditor.py - do not delete it</span>
+<span class="s">l=&#39;&#39;&#39;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">l</span>
+            
+            
+    <span class="k">def</span> <span class="nf">_globalMenuHovered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="c">#show a functions/modules __doc__ as tooltip</span>
+        <span class="n">mg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">__doc__</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="ne">NameError</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+            <span class="c">#action text is not a global</span>
+            <span class="c">#maybe because its just menu text</span>
+            <span class="c">#or if will be become global, when code txt is compiled: </span>
+            
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_globals</span><span class="p">:</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_globals</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+            <span class="c">#in case a module is hovered:</span>
+            <span class="k">elif</span> <span class="s">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                
+                <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nameFromModName</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                    <span class="c">#ignore-&gt; UserWarning: No PKG-INFO found for package: ...</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">)</span>
+                    <span class="c">#FIXME: txt will be empty if executed in frozen environment:</span>
+                    <span class="n">txt</span> <span class="o">=</span> <span class="n">Installed</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">description</span>
+        
+        <span class="k">if</span> <span class="n">txt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1000</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span>
+            <span class="n">txt</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">...&#39;</span>
+            
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QToolTip</span><span class="o">.</span><span class="n">showText</span><span class="p">(</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QCursor</span><span class="o">.</span><span class="n">pos</span><span class="p">(),</span> <span class="n">txt</span><span class="p">,</span>
+            <span class="n">mg</span><span class="p">,</span> <span class="n">mg</span><span class="o">.</span><span class="n">actionGeometry</span><span class="p">(</span><span class="n">action</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">getGlobalsMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span>
+        
+        <span class="c">#add globals to menu:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mg</span> <span class="o">=</span> <span class="n">mg</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="s">&#39;Globals&#39;</span><span class="p">)</span>
+        <span class="c">#to show tooltips of its containing actions:</span>
+        <span class="n">mg</span><span class="o">.</span><span class="n">hovered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_globalMenuHovered</span><span class="p">)</span>
+        <span class="c">#make font bold:</span>
+        <span class="n">mga</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">menuAction</span><span class="p">()</span> 
+        <span class="n">f</span> <span class="o">=</span> <span class="n">mga</span><span class="o">.</span><span class="n">font</span><span class="p">()</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">setBold</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>    
+        <span class="n">mga</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="c">#only build, when needed:</span>
+        <span class="n">mg</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buildGlobalsMenu</span><span class="p">)</span>
+        <span class="c"># mg.aboutToHide.connect(mg.clear) #this doesnt free memory,so leave it </span>
+        <span class="k">return</span> <span class="n">mg</span>
+          
+
+    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add menu action:</span>
+<span class="sd">        * &#39;Show line numbers&#39;</span>
+<span class="sd">        * &#39;Save to file&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">mg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGlobalsMenu</span><span class="p">()</span>
+        
+        <span class="n">a0</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">actions</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">insertMenu</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">mg</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">insertSeparator</span><span class="p">(</span><span class="n">a0</span><span class="p">)</span>
+
+        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="s">&#39;Show line numbers&#39;</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeEditor</span><span class="o">.</span><span class="n">lineNumbers</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">isVisible</span><span class="p">())</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">checked</span><span class="p">:</span> <span class="n">l</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="k">if</span> <span class="n">checked</span> <span class="k">else</span> <span class="n">l</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="s">&#39;Save to file&#39;</span><span class="p">,</span> <span class="n">menu</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveToFile</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+
+
+    <span class="k">def</span> <span class="nf">saveToFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Save the current text to file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">codeEditor</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">and</span> <span class="n">filename</span> <span class="o">!=</span> <span class="s">&#39;.&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;saved script under </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span><span class="n">filename</span><span class="p">)</span> 
+
+
+    <span class="k">def</span> <span class="nf">toPlainText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        replace [tab] with 4 spaces </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;    &#39;</span><span class="p">)</span>
+
+
+
+<span class="k">class</span>  <span class="nc">_LineNumberArea</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Left area to show line numbers of the code editor</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">font</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedWidth</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFrameStyle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">appendPlainText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">editor</span><span class="o">.</span><span class="n">blockCountChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_updateNumbers</span><span class="p">)</span>  
+        <span class="n">editor</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span><span class="o">.</span><span class="n">sliderMoved</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_syncHScrollBar</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_syncHScrollBar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Synchronize the view with the code editor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_updateNumbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linenumers</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        add/remove line numbers</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockCount</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">linenumers</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># remove lines numbers</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+                <span class="c"># remove last line:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+                <span class="n">storeCursorPos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">End</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">MoveAnchor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">StartOfLine</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">MoveAnchor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">End</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">KeepAnchor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">removeSelectedText</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">deletePreviousChar</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setTextCursor</span><span class="p">(</span><span class="n">storeCursorPos</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># add line numbers</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">appendPlainText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">CodeEditor</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="s">&#39;#python highlighting</span><span class="se">\n</span><span class="s">i = int(5)</span><span class="se">\n</span><span class="s">def fn(a,i):</span><span class="se">\n\t</span><span class="s">print a,i&#39;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

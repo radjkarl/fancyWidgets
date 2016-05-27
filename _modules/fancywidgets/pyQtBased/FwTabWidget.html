@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.FwTabWidget &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.FwTabWidget</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.FwTabWidget</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+
+
+<div class="viewcode-block" id="FwTabWidget"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget">[docs]</a><span class="k">class</span> <span class="nc">FwTabWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    * allow to iterate over all tabs using for tab in TabWidget...</span>
+<span class="sd">    * allow to give tabs (and not indexes) to:</span>
+<span class="sd">        * removeTab</span>
+<span class="sd">        * tabText</span>
+<span class="sd">    also: interactive...</span>
+<span class="sd">    * adding of new tabs,</span>
+<span class="sd">    * tab removal</span>
+<span class="sd">    * tab renaming</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">sigTabAdded</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span><span class="c">#tab</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaultTabWidget</span><span class="o">=</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c">#use lambda to make later overwriting possible:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabCloseRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">index</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="n">_TabBar</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_btn_add_height</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultTabWidget</span> <span class="o">=</span> <span class="n">defaultTabWidget</span>
+        
+
+<div class="viewcode-block" id="FwTabWidget.setTabsRenamable"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsRenamable">[docs]</a>    <span class="k">def</span> <span class="nf">setTabsRenamable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renamable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">tabsRenamable</span> <span class="o">=</span> <span class="n">renamable</span></div>
+
+
+<div class="viewcode-block" id="FwTabWidget.setTabsAddable"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.setTabsAddable">[docs]</a>    <span class="k">def</span> <span class="nf">setTabsAddable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addable</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">addable</span><span class="p">:</span>
+            <span class="n">btn</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">checked</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">addEmptyTab</span><span class="p">())</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_FileDialogNewFolder</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCornerWidget</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabCloseRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mkAddBtnVisible</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mkAddBtnVisible</span><span class="p">()</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">btn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cornerWidget</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">btn</span><span class="p">:</span>
+                <span class="n">btn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tabCloseRequested</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mkAddBtnVisible</span><span class="p">)</span> </div>
+
+    
+<div class="viewcode-block" id="FwTabWidget.addEmptyTab"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.addEmptyTab">[docs]</a>    <span class="k">def</span> <span class="nf">addEmptyTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a new DEFAULT_TAB_WIDGET, open editor to set text if no text is given </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultTabWidget</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentIndex</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">editTab</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigTabAdded</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tab</span></div>
+       
+        
+    <span class="k">def</span> <span class="nf">_mkAddBtnVisible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Ensure that the Add button is visible also when there are no tabs</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_btn_add_height</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_btn_add_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cornerWidget</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cornerWidget</span><span class="p">()</span><span class="o">.</span><span class="n">setMinimumHeight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btn_add_height</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumHeight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btn_add_height</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    
+<div class="viewcode-block" id="FwTabWidget.next"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="FwTabWidget.widgetByName"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.widgetByName">[docs]</a>    <span class="k">def</span> <span class="nf">widgetByName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">==</span><span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widet</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+        
+        
+<div class="viewcode-block" id="FwTabWidget.removeTab"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.removeTab">[docs]</a>    <span class="k">def</span> <span class="nf">removeTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tab</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;allows to remove a tab directly -not only by giving its index&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">FwTabWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FwTabWidget.tabText"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FwTabWidget.FwTabWidget.tabText">[docs]</a>    <span class="k">def</span> <span class="nf">tabText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tab</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; allow index or tab widget instance&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">FwTabWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span></div></div>
+
+
+
+
+
+<span class="k">class</span> <span class="nc">_TabBar</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabBar</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    allow change of tabTitle via double click</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QTabBar</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabsRenamable</span> <span class="o">=</span> <span class="bp">False</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Popup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">setFocusProxy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handleEditingFinished</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">MouseButtonPress</span> <span class="ow">and</span>
+             <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">()))</span> <span class="ow">or</span>
+            <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QEvent</span><span class="o">.</span><span class="n">KeyPress</span> <span class="ow">and</span>
+             <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Escape</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTabBar</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabsRenamable</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabAt</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">editTab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">editTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabRect</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">topLeft</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">handleEditingFinished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+
+
+ 
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">FwTabWidget</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+    <span class="c">#switching on/off/on</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsAddable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsClosable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsRenamable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsAddable</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsClosable</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsRenamable</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsAddable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsClosable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setTabsRenamable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+ 
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

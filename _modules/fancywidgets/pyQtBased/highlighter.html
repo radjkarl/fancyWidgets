@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.highlighter &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.highlighter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.highlighter</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c">#import re</span>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="c">#QtCore</span>
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
+
+
+<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+<span class="kn">from</span> <span class="nn">pygments.formatter</span> <span class="kn">import</span> <span class="n">Formatter</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c"># Copyright (C) 2008 Christophe Kibleur &lt;kib2@free.fr&gt;</span>
+<span class="c">#</span>
+<span class="c"># This file is part of WikiParser (http://thewikiblog.appspot.com/).</span>
+<span class="c">#</span>
+
+<div class="viewcode-block" id="hex2QColor"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.highlighter.hex2QColor">[docs]</a><span class="k">def</span> <span class="nf">hex2QColor</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">r</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span><span class="mi">16</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">)</span></div>
+    
+
+
+<div class="viewcode-block" id="QFormatter"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.highlighter.QFormatter">[docs]</a><span class="k">class</span> <span class="nc">QFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Formatter</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+        
+        <span class="c"># Create a dictionary of text styles, indexed</span>
+        <span class="c"># by pygments token names, containing QTextCharFormat</span>
+        <span class="c"># instances according to pygments&#39; description</span>
+        <span class="c"># of each style</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">style</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">:</span>
+            <span class="n">qtf</span><span class="o">=</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextCharFormat</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">style</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]:</span>
+                <span class="n">qtf</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">hex2QColor</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">]))</span> 
+            <span class="k">if</span> <span class="n">style</span><span class="p">[</span><span class="s">&#39;bgcolor&#39;</span><span class="p">]:</span>
+                <span class="n">qtf</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">hex2QColor</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="s">&#39;bgcolor&#39;</span><span class="p">]))</span> 
+            <span class="k">if</span> <span class="n">style</span><span class="p">[</span><span class="s">&#39;bold&#39;</span><span class="p">]:</span>
+                <span class="n">qtf</span><span class="o">.</span><span class="n">setFontWeight</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">style</span><span class="p">[</span><span class="s">&#39;italic&#39;</span><span class="p">]:</span>
+                <span class="n">qtf</span><span class="o">.</span><span class="n">setFontItalic</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">style</span><span class="p">[</span><span class="s">&#39;underline&#39;</span><span class="p">]:</span>
+                <span class="n">qtf</span><span class="o">.</span><span class="n">setFontUnderline</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)]</span><span class="o">=</span><span class="n">qtf</span>
+    
+<div class="viewcode-block" id="QFormatter.format"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.highlighter.QFormatter.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokensource</span><span class="p">,</span> <span class="n">outfile</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">styles</span>
+        <span class="c"># We ignore outfile, keep output in a buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+        
+        <span class="c"># Just store a list of styles, one for each character</span>
+        <span class="c"># in the input. Obviously a smarter thing with</span>
+        <span class="c"># offsets and lengths is a good idea!</span>
+        
+        <span class="k">for</span> <span class="n">ttype</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tokensource</span><span class="p">:</span>
+            <span class="n">l</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ttype</span><span class="p">)</span>                
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="n">t</span><span class="p">],]</span><span class="o">*</span><span class="n">l</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Highlighter"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.highlighter.Highlighter">[docs]</a><span class="k">class</span> <span class="nc">Highlighter</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QSyntaxHighlighter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QSyntaxHighlighter</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tstamp</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
+        <span class="c"># Keep the formatter and lexer, initializing them </span>
+        <span class="c"># may be costly.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">=</span><span class="n">QFormatter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="o">=</span><span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="Highlighter.highlightBlock"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.highlighter.Highlighter.highlightBlock">[docs]</a>    <span class="k">def</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Takes a block, applies format to the document. </span>
+<span class="sd">        according to what&#39;s in it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c"># I need to know where in the document we are,</span>
+        <span class="c"># because our formatting info is global to</span>
+        <span class="c"># the document</span>
+        <span class="n">cb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="n">position</span><span class="p">()</span>
+
+        <span class="c"># The \n is not really needed, but sometimes  </span>
+        <span class="c"># you are in an empty last block, so your position is</span>
+        <span class="c"># **after** the end of the document.</span>
+        <span class="n">text</span><span class="o">=</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+        
+        <span class="c"># Yes, re-highlight the whole document.</span>
+        <span class="c"># There **must** be some optimizacion possibilities</span>
+        <span class="c"># but it seems fast enough.</span>
+        <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="p">)</span>
+        
+        <span class="c"># Just apply the formatting to this block.</span>
+        <span class="c"># For titles, it may be necessary to backtrack</span>
+        <span class="c"># and format a couple of blocks **earlier**.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">text</span><span class="p">))):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setFormat</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">p</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        
+        <span class="c"># I may need to do something about this being called</span>
+        <span class="c"># too quickly.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tstamp</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> </div></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    
+    <span class="n">rst</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">()</span>
+    <span class="n">rst</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&#39;reSt&#39;</span><span class="p">)</span>
+    <span class="n">hl</span><span class="o">=</span><span class="n">Highlighter</span><span class="p">(</span><span class="n">rst</span><span class="o">.</span><span class="n">document</span><span class="p">(),</span><span class="s">&quot;rest&quot;</span><span class="p">)</span>
+    <span class="n">rst</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">python</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">()</span>
+    <span class="n">python</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&#39;python&#39;</span><span class="p">)</span>
+    <span class="n">hl</span><span class="o">=</span><span class="n">Highlighter</span><span class="p">(</span><span class="n">python</span><span class="o">.</span><span class="n">document</span><span class="p">(),</span><span class="s">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">python</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

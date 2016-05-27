@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.FingerTabWidget &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.FingerTabWidget</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.FingerTabWidget</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;A vertical tab widget - code origin from:</span>
+<span class="sd">https://gist.github.com/LegoStormtroopr/5075267</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+
+<div class="viewcode-block" id="FingerTabBarWidget"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget">[docs]</a><span class="k">class</span> <span class="nc">FingerTabBarWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabBar</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabSize</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;width&#39;</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;height&#39;</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span> 
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QTabBar</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FingerTabBarWidget.paintEvent"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">painter</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QStylePainter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">option</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QStyleOptionTab</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initStyleOption</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+            <span class="n">tabRect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabRect</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">tabRect</span><span class="o">.</span><span class="n">moveLeft</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">drawControl</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">CE_TabBarTabShape</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">tabRect</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span> <span class="o">|</span>\
+                             <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">TextDontClip</span><span class="p">,</span> \
+                             <span class="bp">self</span><span class="o">.</span><span class="n">tabText</span><span class="p">(</span><span class="n">index</span><span class="p">));</span>
+        <span class="n">painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
+<div class="viewcode-block" id="FingerTabBarWidget.tabSizeHint"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.FingerTabBarWidget.tabSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">tabSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabSize</span></div></div>
+
+
+<span class="c"># Shamelessly stolen from this thread:</span>
+<span class="c">#   http://www.riverbankcomputing.com/pipermail/pyqt/2005-December/011724.html</span>
+<div class="viewcode-block" id="FingerTabWidget"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.FingerTabWidget">[docs]</a><span class="k">class</span> <span class="nc">FingerTabWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A QTabWidget equivalent which uses our FingerTabBarWidget</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;pos&#39;</span><span class="p">,</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">West</span><span class="p">)</span> 
+
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="n">FingerTabBarWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTabPosition</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AutoResizeFingerTabWidget"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget">[docs]</a><span class="k">class</span> <span class="nc">AutoResizeFingerTabWidget</span><span class="p">(</span><span class="n">FingerTabWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">FingerTabWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">resizeEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forceResize</span>
+
+       
+<div class="viewcode-block" id="AutoResizeFingerTabWidget.forceResize"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.FingerTabWidget.AutoResizeFingerTabWidget.forceResize">[docs]</a>    <span class="k">def</span> <span class="nf">forceResize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">size</span><span class="p">())</span></div></div>
+        
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+     
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="c">#with default opts:</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">FingerTabWidget</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+    <span class="c">#with individual opts</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">FingerTabWidget</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">East</span><span class="p">)</span>
+    <span class="n">w2</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+    <span class="n">digits</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Thumb&#39;</span><span class="p">,</span><span class="s">&#39;Pointer&#39;</span><span class="p">,</span><span class="s">&#39;Rude&#39;</span><span class="p">,</span><span class="s">&#39;Ring&#39;</span><span class="p">,</span><span class="s">&#39;Pinky&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">digits</span><span class="p">):</span>
+        <span class="n">widget</span> <span class="o">=</span>  <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s">&quot;Area #</span><span class="si">%s</span><span class="s"> &lt;br&gt; </span><span class="si">%s</span><span class="s"> Finger&quot;</span><span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
+        <span class="n">widget2</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s">&quot;Area #</span><span class="si">%s</span><span class="s"> &lt;br&gt; </span><span class="si">%s</span><span class="s"> Finger&quot;</span><span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">w2</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">widget2</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">w2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

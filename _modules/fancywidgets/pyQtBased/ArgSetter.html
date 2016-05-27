@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.ArgSetter &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.ArgSetter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.ArgSetter</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+
+
+
+<div class="viewcode-block" id="ArgSetter"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter">[docs]</a><span class="k">class</span> <span class="nc">ArgSetter</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Create an window to setup attributes graphically</span>
+
+<span class="sd">    useful as quick configurator for other functions/classes that need </span>
+<span class="sd">    keyword arguments that must be passed graphically </span>
+<span class="sd">    e.g. for py2exe/pyinstaller apps</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">validators</span> <span class="o">=</span> <span class="p">{</span><span class="nb">float</span><span class="p">:</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QDoubleValidator</span><span class="p">,</span> 
+                  <span class="nb">int</span><span class="p">:</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QIntValidator</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">argdict</span><span class="p">,</span> <span class="n">stayOpen</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">saveLoadButton</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">savePath</span><span class="o">=</span><span class="s">&#39;config.txt&#39;</span><span class="p">,</span> <span class="n">loadPath</span><span class="o">=</span><span class="s">&#39;config.txt&#39;</span><span class="p">,</span> 
+                 <span class="n">introduction</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">unpackDict</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        ====================   =========================================================</span>
+<span class="sd">        Argument               Comment</span>
+<span class="sd">        ====================   =========================================================</span>
+<span class="sd">        title                  title of the window</span>
+<span class="sd">        argdict                a dict of all arguments to set up:</span>
+<span class="sd">                               e.g. {&#39;arg1: {&#39;value&#39;:1, &#39;limits&#39;:range(0,10)}, ...}</span>
+<span class="sd">                               valid keywords are:</span>
+<span class="sd">                                   &#39;value&#39; -&gt; the value of the argument</span>
+<span class="sd">                                   &#39;limits&#39; -&gt; [list, tuple] if only specific values are valid</span>
+<span class="sd">                                   &#39;unit&#39; -&gt; show a unit after the value</span>
+<span class="sd">                                   &#39;tip&#39; -&gt; show a tool-tip</span>
+<span class="sd">                                   &#39;dtype&#39; -&gt; the data-type of the value</span>
+<span class="sd">                                              * int, str, float, bool</span>
+<span class="sd">                                              * file, dir  -&gt; for selecting a file or folder</span>
+<span class="sd">                                              * line  -&gt; to add a horizontal separation line</span>
+<span class="sd">                               for ordered entries use OrderedDict</span>
+<span class="sd">        stayOpen                   True -&gt; dialog stays open after it is finished</span>
+<span class="sd">                               useful if values should still be changeable</span>
+<span class="sd">        saveLoadButton         True -&gt; add 2 buttons to save and load these preferences</span>
+<span class="sd">        savePath               Default save path</span>
+<span class="sd">        loadPath               Default load path</span>
+<span class="sd">        unpackDict             True, False | True: </span>
+<span class="sd">        ====================   =========================================================</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wantToClose</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unpackDict</span> <span class="o">=</span> <span class="n">unpackDict</span>
+
+        <span class="k">if</span> <span class="n">stayOpen</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stayOpen</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">introduction</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">argdict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()):</span>
+            <span class="n">limits</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;limits&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;unit&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;dtype&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">tip</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tip&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+            <span class="c"># NAME</span>
+            <span class="n">nameLabel</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">nameLabel</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="c"># LINE</span>
+            <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s">&#39;line&#39;</span><span class="p">:</span>
+                <span class="n">nameLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;&lt;b&gt;</span><span class="si">%s</span><span class="s">&lt;/b&gt;&#39;</span> <span class="o">%</span><span class="n">nameLabel</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFrame</span><span class="p">()</span>
+                <span class="n">line</span><span class="o">.</span><span class="n">setFrameStyle</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFrame</span><span class="o">.</span><span class="n">HLine</span> <span class="o">|</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Raised</span><span class="p">)</span>
+                <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                <span class="c"># FILE/DIRECTORY</span>
+            <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+                <span class="n">wl</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+                <span class="n">q</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">btn</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">file</span><span class="p">:</span>
+                    <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getFile</span>
+                    <span class="n">btn</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_FileIcon</span><span class="p">))</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getFolder</span>
+                    <span class="n">btn</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DirIcon</span><span class="p">))</span>
+
+                <span class="n">btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">checked</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span> <span class="n">lineEdit</span><span class="o">=</span><span class="n">q</span><span class="p">:</span> <span class="n">fn</span><span class="p">(</span><span class="n">lineEdit</span><span class="p">))</span>
+
+                <span class="n">wl</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="n">wl</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+                <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span>
+                <span class="c"># STR/INT,BOOL, FLOAT</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">limits</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="c"># create a QCombobox if LIMITS are given</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QComboBox</span><span class="p">()</span>
+                    <span class="n">q</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">currentText</span>
+                    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">limits</span><span class="p">):</span>
+                        <span class="n">limits</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">limits</span><span class="p">:</span>
+                            <span class="n">limits</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="n">limits</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">q</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">limits</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># if NO LIMITS given: create a lieEdit </span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">and</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="p">:</span>
+                        <span class="n">q</span><span class="o">.</span><span class="n">setValidator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="p">[</span><span class="n">dtype</span><span class="p">]())</span>
+                <span class="k">if</span> <span class="n">tip</span><span class="p">:</span>
+                    <span class="n">q</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tip</span><span class="p">)</span>
+                <span class="c"># VALUE</span>
+                <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c"># UNIT</span>
+                <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
+                    <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">unit</span><span class="p">)),</span> <span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dtype</span><span class="p">))</span>
+
+        <span class="c"># SAVE/LOAD BUTTON</span>
+        <span class="k">if</span> <span class="n">saveLoadButton</span><span class="p">:</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGroupBox</span><span class="p">(</span><span class="s">&#39;Preferences&#39;</span><span class="p">)</span>
+            <span class="n">bLayout</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">()</span>
+            <span class="n">box</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">bLayout</span><span class="p">)</span>
+
+            <span class="n">btn_load</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s">&#39;Load&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_load</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">loadPath</span><span class="p">)</span>
+            <span class="n">btn_change_load</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">()</span>
+            <span class="n">btn_change_load</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DirIcon</span><span class="p">))</span>
+            <span class="n">btn_change_load</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_setLoadPath</span><span class="p">)</span>
+            <span class="n">btn_load</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loadPreferences</span><span class="p">)</span>
+
+            <span class="n">btn_save</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s">&#39;Save&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_save</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">savePath</span><span class="p">)</span>
+            <span class="n">btn_change_save</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">()</span>
+            <span class="n">btn_change_save</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DirIcon</span><span class="p">))</span>
+            <span class="n">btn_change_save</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_setSavePath</span><span class="p">)</span>
+            <span class="n">btn_save</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_savePreferences</span><span class="p">)</span>
+
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_load</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_change_load</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_save</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">bLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_change_save</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c"># DONE BUTTON</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s">&#39;done&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="p">,</span> <span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_getFile</span><span class="p">(</span><span class="n">lineEdit</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="n">lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_getFolder</span><span class="p">(</span><span class="n">lineEdit</span><span class="p">):</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">folder</span><span class="p">:</span>
+            <span class="n">lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">folder</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">_setSavePath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s">&#39;*.txt&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> 
+
+
+    <span class="k">def</span> <span class="nf">_setLoadPath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s">&#39;*.txt&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> 
+
+
+    <span class="k">def</span> <span class="nf">_savePreferences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;[NOT SAVED]&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setSavePath</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;[NOT SAVED]&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_save</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span><span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">_loadPreferences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;[NOT LOADED]&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setLoadPath</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;[NOT LOADED]&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_load</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QComboBox</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                        <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">itemText</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+                            <span class="n">widget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">widget</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="ArgSetter.show"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        if the dialog is showed again or is not started with exec_</span>
+<span class="sd">        naming the done button to &#39;update&#39; make more sense</span>
+<span class="sd">        because now the dialog doesn&#39;t block (anymore)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">))</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArgSetter.run"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processClass</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processClass</span> <span class="o">=</span> <span class="n">processClass</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_startProcess</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_startProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_startProcess</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unpackDict</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processClass</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processClass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_done</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;update&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ArgSetter.check"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;check whether all attributes are setted and have the right dtype&#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">valItem</span><span class="p">,</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">valItem</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dtype</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">msgBox</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+                    <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;attribute </span><span class="si">%s</span><span class="s"> has not the right dtype(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)))</span>
+                    <span class="n">msgBox</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ArgSetter.closeEvent"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wantToClose</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="o">.</span><span class="n">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArgSetter.done"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;save the geometry before dialog is close to restore it later&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QDialog</span><span class="o">.</span><span class="n">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArgSetter.stayOpen"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.ArgSetter.ArgSetter.stayOpen">[docs]</a>    <span class="k">def</span> <span class="nf">stayOpen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;optional dialog restore&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wantToClose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="p">)</span></div></div>
+
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;&quot;TEST 1:</span>
+<span class="s">* ArgSetter will block until the button &#39;done&#39; is pressed. </span>
+<span class="s">* If the dialog is not cancelled the arguments are printed&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">ArgSetter</span><span class="p">(</span><span class="s">&#39;CloseAfterDone&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;show_output_after_start&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> 
+                            <span class="s">&#39;limits&#39;</span><span class="p">:[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">],</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">bool</span><span class="p">,</span>
+                            <span class="s">&#39;tip&#39;</span><span class="p">:</span><span class="s">&#39;foo bar&#39;</span><span class="p">},</span>
+            <span class="s">&#39;webcam_index&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="s">&#39;limits&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">},</span>
+            <span class="s">&#39;output_file_name&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;output.csv&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span>
+            <span class="s">&#39;camera_calibration_File&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span>
+            <span class="s">&#39;nAverageSteps&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> 
+                            <span class="s">&#39;limits&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">},</span>
+            <span class="s">&#39;refreshRate&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> 
+                            <span class="s">&#39;unit&#39;</span><span class="p">:</span><span class="s">&#39;ms&#39;</span><span class="p">}</span>
+            <span class="p">})</span>
+
+    <span class="n">a</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">result</span><span class="p">():</span>
+        <span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">args</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;setup cancelled&#39;</span>
+
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;&quot;TEST 2:</span>
+<span class="s">* ArgSetter won&#39;t block but update its agument every time &#39;update&#39; is pressed. &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">ArgSetter</span><span class="p">(</span><span class="s">&#39;StayOpen&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&#39;one&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> 
+                            <span class="s">&#39;limits&#39;</span><span class="p">:[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">],</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">bool</span><span class="p">,</span>
+                            <span class="s">&#39;tip&#39;</span><span class="p">:</span><span class="s">&#39;foo bar&#39;</span><span class="p">},</span>
+            <span class="s">&#39;two&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+                            <span class="s">&#39;limits&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">},</span>
+            <span class="s">&#39;three&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;output.csv&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span>
+            <span class="s">&#39;four&#39;</span><span class="p">:{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span>
+            <span class="s">&#39;fife&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> 
+                            <span class="s">&#39;limits&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">},</span>
+            <span class="s">&#39;six&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span> 
+                            <span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> 
+                            <span class="s">&#39;unit&#39;</span><span class="p">:</span><span class="s">&#39;ms&#39;</span><span class="p">}</span>
+            <span class="p">},</span> <span class="n">stayOpen</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">saveLoadButton</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+    <span class="k">class</span> <span class="nc">MyProcedure</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTextEdit</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        a procedure taking the argument from ArgSetter</span>
+<span class="sd">        as self.opts</span>
+
+<span class="sd">        This shows the feature to interactively update argument using a</span>
+<span class="sd">        graphical interface</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts</span><span class="p">):</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opts</span> <span class="o">=</span> <span class="n">opts</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QTimer</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">MyProcedure</span><span class="p">)</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

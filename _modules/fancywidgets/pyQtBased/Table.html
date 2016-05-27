@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyQtBased.Table &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyQtBased.Table</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyQtBased.Table</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="c">#own</span>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">fancywidgets.pyQtBased.Dialogs</span> <span class="kn">import</span> <span class="n">Dialogs</span>
+<span class="c">#foreign</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+
+
+<div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A QTableWidget with:</span>
+<span class="sd">    * Shortcuts: copy, paste, cut, insert/delete row/column</span>
+<span class="sd">    * Context Menu</span>
+<span class="sd">    * Cell range operations (copy, paste on multiple cells)</span>
+<span class="sd">    * Save/open</span>
+<span class="sd">    * import from clipboard</span>
+<span class="sd">    * dynamic add of new rows and cells when needed</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sigPathChanged</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span> <span class="c"># file path</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">colFiled</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">rowFixed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span> <span class="o">=</span> <span class="n">_TableMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colFixed</span> <span class="o">=</span> <span class="n">colFiled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rowFixed</span> <span class="o">=</span> <span class="n">rowFixed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dialogs</span> <span class="o">=</span> <span class="n">Dialogs</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c">#    self.setHorizontalHeader(_Header(QtCore.Qt.Horizontal, self))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentCell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentCellChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ifAtBorderAddRow</span><span class="p">)</span><span class="c">#)</span>
+
+<div class="viewcode-block" id="Table.restore"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.restore">[docs]</a>    <span class="k">def</span> <span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearContents</span><span class="p">()</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_textToTable</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">importTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>        </div>
+
+<div class="viewcode-block" id="Table.open"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dialogs</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s">&#39;*.csv&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_setPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigPathChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Table.save"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        save to file - override last saved file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveAs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Table.table"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()):</span>
+            <span class="n">rowdata</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">rowdata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="nb">unicode</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rowdata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>    
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rowdata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+
+<div class="viewcode-block" id="Table.saveAs"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.saveAs">[docs]</a>    <span class="k">def</span> <span class="nf">saveAs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        save to file under given name</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dialogs</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="s">&#39;*.csv&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">),</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_ifAtBorderAddRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">lastRow</span><span class="p">,</span> <span class="n">lastColumn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rowFixed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colFixed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="n">column</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Table.mousePressEvent"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">mouseBtn</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mouseBtn</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">RightButton</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Table.keyPressEvent"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Copy</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Cut</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">ZoomIn</span><span class="p">):</span><span class="c">#Ctrl+Plus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insertBlankCells</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">ZoomOut</span><span class="p">):</span><span class="c">#Ctrl+Minus</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removeBlankCells</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Delete</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Paste</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paste</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Table.insertBlankCells"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.insertBlankCells">[docs]</a>    <span class="k">def</span> <span class="nf">insertBlankCells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#TODO: insert only cells for selected range</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRanges</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Cannot insert cells on multiple selections&#39;</span>
+            <span class="k">return</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">()</span> <span class="o">==</span> <span class="n">r</span><span class="o">.</span><span class="n">rightColumn</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insertColumn</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">leftRow</span><span class="p">()</span> <span class="o">==</span> <span class="n">r</span><span class="o">.</span><span class="n">rightRow</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">leftRow</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Need one line of rows or columns to insert blank cells&#39;</span></div>
+            
+            
+<div class="viewcode-block" id="Table.removeBlankCells"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.removeBlankCells">[docs]</a>    <span class="k">def</span> <span class="nf">removeBlankCells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#TODO: remove only cells for selected range</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRanges</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Cannot remove cells on multiple selections&#39;</span>
+            <span class="k">return</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">()</span> <span class="o">==</span> <span class="n">r</span><span class="o">.</span><span class="n">rightColumn</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removeColumn</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">leftRow</span><span class="p">()</span> <span class="o">==</span> <span class="n">r</span><span class="o">.</span><span class="n">rightRow</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removeRow</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">leftRow</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Need one line of rows or columns to insert blank cells&#39;</span></div>
+
+
+<div class="viewcode-block" id="Table.delete"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">():</span>
+            <span class="n">r</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">row</span><span class="p">(),</span> <span class="n">item</span><span class="o">.</span><span class="n">column</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanTable</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Table.cleanTable"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.cleanTable">[docs]</a>    <span class="k">def</span> <span class="nf">cleanTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span>
+        <span class="c">#try to remove empty rows:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rowFixed</span><span class="p">:</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+                    <span class="n">isempty</span><span class="o">=</span><span class="bp">True</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">col</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">item</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">():</span>
+                        <span class="n">isempty</span><span class="o">=</span><span class="bp">False</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">isempty</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c">#min table resolution:2x2</span>
+                        <span class="k">break</span>
+                    <span class="n">r</span><span class="o">-=</span><span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="c">#try to remove empty columns:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colFixed</span><span class="p">:</span>
+            <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                    <span class="n">isempty</span><span class="o">=</span><span class="bp">True</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">item</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">():</span>
+                        <span class="n">isempty</span><span class="o">=</span><span class="bp">False</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">isempty</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c">#min table resolution:2x2</span>
+                        <span class="k">break</span>
+                    <span class="n">c</span><span class="o">-=</span><span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span></div>
+
+
+
+<div class="viewcode-block" id="Table.setColumnsFixed"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.setColumnsFixed">[docs]</a>    <span class="k">def</span> <span class="nf">setColumnsFixed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colFixed</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Table.cut"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Table.copy"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">firstRange</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRanges</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c">#deselect all other ranges, to show shat only the first one will copied</span>
+        <span class="k">for</span> <span class="n">otherRange</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRanges</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRangeSelected</span><span class="p">(</span><span class="n">otherRange</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">nCols</span> <span class="o">=</span> <span class="n">firstRange</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span>
+        <span class="n">nRows</span> <span class="o">=</span> <span class="n">firstRange</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">nCols</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">nRows</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">lastRow</span> <span class="o">=</span> <span class="n">nRows</span><span class="o">+</span><span class="n">firstRange</span><span class="o">.</span><span class="n">topRow</span><span class="p">()</span>
+        <span class="n">lastCol</span> <span class="o">=</span> <span class="n">nCols</span><span class="o">+</span><span class="n">firstRange</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">firstRange</span><span class="o">.</span><span class="n">topRow</span><span class="p">(),</span> <span class="n">lastRow</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">firstRange</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">(),</span> <span class="n">lastCol</span><span class="p">):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">lastCol</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_textToTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        format csv, [[...]], ((..)) strings to a 2d table  </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;[[&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;((&#39;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+            <span class="c">#maybe it&#39;s already formated as a list e.g. &quot;[[&#39;1&#39;,&#39;2&#39;],[...]]&quot;</span>
+            <span class="c">#check it:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="c">#has to be a 2d-list:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nb">list</span><span class="p">):</span>
+                    <span class="n">table</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
+                <span class="c">#not a valid list</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">table</span><span class="p">:</span>
+            <span class="c">#create the list from the clipboard-text</span>
+            <span class="c">#therefore the text has to be formated like this:</span>
+                <span class="c"># &quot;1\t2\3\n4\t5\6\n&quot;</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+                <span class="n">sline</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sline</span> <span class="o">!=</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]:</span>
+                    <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">sline</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                    <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>   
+        <span class="k">return</span> <span class="n">table</span>    
+
+    
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Table.fromText"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.fromText">[docs]</a>    <span class="k">def</span> <span class="nf">fromText</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">_textToTable</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">table</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">importTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;text is no table&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+        
+
+<div class="viewcode-block" id="Table.paste"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.paste">[docs]</a>    <span class="k">def</span> <span class="nf">paste</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#get the text from the clipboard</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_textToTable</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">importTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Table.importTable"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.importTable">[docs]</a>    <span class="k">def</span> <span class="nf">importTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">startRow</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">startCol</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="o">!=</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">startRow</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">startCol</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c">#try to get array to paste in from selection</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRanges</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">startRow</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">topRow</span><span class="p">()</span>
+                    <span class="n">startCol</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">leftColumn</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="n">startRow</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">startCol</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">lastRow</span> <span class="o">=</span> <span class="n">startRow</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">lastCol</span> <span class="o">=</span> <span class="n">startCol</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rowFixed</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">lastRow</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">lastRow</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colFixed</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">lastCol</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="n">lastCol</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">r</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">row</span><span class="o">+</span><span class="n">startRow</span><span class="p">,</span><span class="n">col</span><span class="o">+</span><span class="n">startCol</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setItemText</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">c</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Table.setItemText"><a class="viewcode-back" href="../../../fancywidgets.pyQtBased.html#fancywidgets.pyQtBased.Table.Table.setItemText">[docs]</a>    <span class="k">def</span> <span class="nf">setItemText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
+
+
+
+
+<span class="k">class</span> <span class="nc">_TableMenu</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">=</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Clean&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">cleanTable</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Copy&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Copy</span><span class="p">)</span>
+
+        <span class="n">a</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Paste&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">paste</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Paste</span><span class="p">)</span>
+
+        <span class="n">a</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Cut&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">cut</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">Cut</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="n">a</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Insert row/column&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">insertBlankCells</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">ZoomIn</span><span class="p">)</span>
+        
+        <span class="n">a</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Remove row/column&#39;</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">removeBlankCells</span><span class="p">)</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">setShortcuts</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">ZoomOut</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Open&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">open</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Save&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s">&#39;Save As&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">saveAs</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_menu</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+
+
+
+<span class="c"># class _HeaderMenu(QtGui.QWidget):</span>
+<span class="c">#     &#39;&#39;&#39;an individual header menu for QTableWidgets</span>
+<span class="c">#      - not used at the moment&#39;&#39;&#39;</span>
+<span class="c">#     def __init__(self, header):</span>
+<span class="c">#         QtGui.QWidget.__init__(self)</span>
+<span class="c">#         self._header = header</span>
+<span class="c"># </span>
+<span class="c">#     def show(self, evt):</span>
+<span class="c">#         menu=QtGui.QMenu(self)</span>
+<span class="c">#         menu.addAction(&#39;test&#39;)#.triggered.connect(self._table.addRow)</span>
+<span class="c">#         menu.popup(evt.globalPos())#evt.globalPos())</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># class _Header(QtGui.QHeaderView):</span>
+<span class="c">#     &#39;&#39;&#39;an individual header for QTableWidgets enables a </span>
+<span class="c">#     context menu on right click </span>
+<span class="c">#     - not used at the moment&#39;&#39;&#39;</span>
+<span class="c"># </span>
+<span class="c">#     def __init__(self, orientation, parent=None):</span>
+<span class="c">#         QtGui.QHeaderView.__init__(self, orientation, parent)</span>
+<span class="c">#         self._menu = _HeaderMenu(self)</span>
+<span class="c">#         self.setResizeMode(QtGui.QHeaderView.Fixed)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def mousePressEvent(self, evt):</span>
+<span class="c">#         mouseBtn = evt.button()</span>
+<span class="c">#         if mouseBtn == QtCore.Qt.RightButton:</span>
+<span class="c">#             #print 55</span>
+<span class="c">#             self._menu.show(evt)</span>
+<span class="c">#         super(_Header, self).mousePressEvent(evt)</span>
+
+
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>    
+    <span class="kn">import</span> <span class="nn">sys</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">cols</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+   
+    <span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

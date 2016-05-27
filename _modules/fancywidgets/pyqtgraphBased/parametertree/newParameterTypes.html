@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>fancywidgets.pyqtgraphBased.parametertree.newParameterTypes &mdash; fancywidgets 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="fancywidgets 0.2 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> fancywidgets
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../fancywidgets.html">fancywidgets package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">fancywidgets</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>fancywidgets.pyqtgraphBased.parametertree.newParameterTypes</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for fancywidgets.pyqtgraphBased.parametertree.newParameterTypes</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 *-*</span>
+
+
+<span class="c"># from pyqtgraph.Qt import QtCore, QtGui</span>
+<span class="c"># from pyqtgraph.python2_3 import asUnicode</span>
+<span class="kn">from</span> <span class="nn">.Parameter</span> <span class="kn">import</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">registerParameterType</span>
+<span class="kn">from</span> <span class="nn">.ParameterItem</span> <span class="kn">import</span> <span class="n">ParameterItem</span>
+<span class="c">###########</span>
+<span class="kn">from</span> <span class="nn">.parameterTypes</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># import numpy as np</span>
+<span class="c"># </span>
+<span class="c"># import os</span>
+<span class="c"># import inspect</span>
+
+
+
+<div class="viewcode-block" id="EmptyParameter"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.EmptyParameter">[docs]</a><span class="k">class</span> <span class="nc">EmptyParameter</span><span class="p">(</span><span class="n">Parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">itemClass</span> <span class="o">=</span> <span class="n">ParameterItem</span></div>
+<span class="n">registerParameterType</span><span class="p">(</span><span class="s">&#39;empty&#39;</span><span class="p">,</span> <span class="n">EmptyParameter</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="MenuParameterItem"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.MenuParameterItem">[docs]</a><span class="k">class</span> <span class="nc">MenuParameterItem</span><span class="p">(</span><span class="n">WidgetParameterItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Group parameters are used mainly as a generic parent item that holds (and groups!) a set</span>
+<span class="sd">    of child parameters. It also provides a simple mechanism for displaying a button or combo</span>
+<span class="sd">    that can be used to add new parameters to the group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+
+        <span class="n">WidgetParameterItem</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hideWidget</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+<div class="viewcode-block" id="MenuParameterItem.makeWidget"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.MenuParameterItem.makeWidget">[docs]</a>    <span class="k">def</span> <span class="nf">makeWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;limits&#39;</span><span class="p">,[</span><span class="s">&#39;&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QMenuBar</span><span class="p">()</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">menu</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">sigChanged</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="s">&#39;&#39;</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">menu</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">menu</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">aboutToShow</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">menu</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">w</span></div></div>
+
+
+<div class="viewcode-block" id="MenuParameter"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.MenuParameter">[docs]</a><span class="k">class</span> <span class="nc">MenuParameter</span><span class="p">(</span><span class="n">Parameter</span><span class="p">):</span>
+    <span class="n">itemClass</span> <span class="o">=</span> <span class="n">MenuParameterItem</span>
+    <span class="n">aboutToShow</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>  <span class="c">## qmenu</span>
+
+<div class="viewcode-block" id="MenuParameter.value"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.MenuParameter.value">[docs]</a>    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">keyrefs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]()</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> </div></div>
+    <span class="c">#TODO: doesnt work</span>
+<span class="c">#     def setValue(self, val):</span>
+<span class="c">#         self.items[xxx].widget.setTitle(val)</span>
+
+<span class="n">registerParameterType</span><span class="p">(</span><span class="s">&#39;menu&#39;</span><span class="p">,</span> <span class="n">MenuParameter</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="ResetListParameterItem"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.ResetListParameterItem">[docs]</a><span class="k">class</span> <span class="nc">ResetListParameterItem</span><span class="p">(</span><span class="n">ListParameterItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    a list-Parameter that always returning to the first item</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResetListParameterItem</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="c">#the resetList will reset automatically - there is no need for a default button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultBtn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ResetListParameterItem.valueChanged"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.ResetListParameterItem.valueChanged">[docs]</a>    <span class="k">def</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">itemText</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="c">#.currentText()</span></div>
+
+
+<div class="viewcode-block" id="ResetListParameterItem.limitsChanged"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.ResetListParameterItem.limitsChanged">[docs]</a>    <span class="k">def</span> <span class="nf">limitsChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">limits</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResetListParameterItem</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">limitsChanged</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">limits</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ResetListParameter"><a class="viewcode-back" href="../../../../fancywidgets.pyqtgraphBased.parametertree.html#fancywidgets.pyqtgraphBased.parametertree.newParameterTypes.ResetListParameter">[docs]</a><span class="k">class</span> <span class="nc">ResetListParameter</span><span class="p">(</span><span class="n">ListParameter</span><span class="p">):</span>
+    <span class="n">itemClass</span> <span class="o">=</span> <span class="n">ResetListParameterItem</span></div>
+<span class="n">registerParameterType</span><span class="p">(</span><span class="s">&#39;resetList&#39;</span><span class="p">,</span> <span class="n">ResetListParameter</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+
+
+
+
+
+
+
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># class _SubItem(QtGui.QTreeWidgetItem):</span>
+<span class="c"># #    def __init__(self, *opts):</span>
+<span class="c"># #        super(_TableSubItem, self).__init__(*opts)</span>
+<span class="c">#     def selected(self, value):</span>
+<span class="c">#         #this dummymethod prevent the following error:</span>
+<span class="c">#             #Traceback (most recent call last):</span>
+<span class="c">#             #File &quot;/usr/lib/pymodules/python2.7/pyqtgraph/parametertree/ParameterTree.py&quot;, line 107, in selectionChanged</span>
+<span class="c">#             #self.lastSel.selected(False)</span>
+<span class="c">#             #AttributeError: &#39;QTreeWidgetItem&#39; object has no attribute &#39;selected&#39;</span>
+<span class="c">#         pass</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># class TableParameterItem(WidgetParameterItem):</span>
+<span class="c">#     &#39;&#39;&#39;doesnt work at the moment...&#39;&#39;&#39;</span>
+<span class="c">#     def __init__(self, param, depth):</span>
+<span class="c"># </span>
+<span class="c">#         initTable = param.opts.get(&#39;value&#39;)</span>
+<span class="c">#         if initTable:</span>
+<span class="c">#             self._y = len(initTable[0])</span>
+<span class="c">#             self._x = len(initTable)</span>
+<span class="c">#         else:</span>
+<span class="c">#             self._x = 3</span>
+<span class="c">#             self._y = 3</span>
+<span class="c"># </span>
+<span class="c">#         WidgetParameterItem.__init__(self, param, depth)</span>
+<span class="c">#         #debug:</span>
+<span class="c">#         self.subItem = _SubItem()</span>
+<span class="c">#         self.addChild(self.subItem)</span>
+<span class="c"># </span>
+<span class="c">#         self.param.sigHeaderChanged.connect(self.headerChanged)</span>
+<span class="c"># </span>
+<span class="c">#         if initTable:</span>
+<span class="c">#             self.tableBox.importTable(initTable)</span>
+<span class="c">#         header = self.param.opts.get(&#39;header&#39;)</span>
+<span class="c">#         if header:</span>
+<span class="c">#             self.headerChanged(header)</span>
+<span class="c"># </span>
+<span class="c">#         colFixed = self.param.opts.get(&#39;columnsFixed&#39;, False)</span>
+<span class="c">#         #if colFixed:</span>
+<span class="c">#         self.tableBox.setColumnsFixed(colFixed)</span>
+<span class="c"># #        if not param.opts.get(&#39;visible&#39;,True):</span>
+<span class="c"># #            self.tableBox.hide()</span>
+<span class="c"># </span>
+<span class="c">#     #def show(show=True):</span>
+<span class="c">#         </span>
+<span class="c">#         #visible = self.param.opts.get(&#39;visible&#39;, None)</span>
+<span class="c">#         #if visible != None:</span>
+<span class="c">#         #    print 11111,visible</span>
+<span class="c">#     #    self.param.show()</span>
+<span class="c">#     #    self.param.hide()#visible)</span>
+<span class="c">#         #self.setHidden(True)</span>
+<span class="c"># </span>
+<span class="c"># #    def setColumnsFixed(self, value):</span>
+<span class="c">#     #    self.tableBox.setColumnsFixed(value)</span>
+<span class="c"># </span>
+<span class="c">#     def limitsChanged(self, param, limits):</span>
+<span class="c">#         #self._updateSize(limits)#[0],limits[1])</span>
+<span class="c">#         self.tableBox.setRowCount(limits[1])</span>
+<span class="c">#         self.tableBox.setColumnCount(limits[0])</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def headerChanged(self, header):</span>
+<span class="c">#         #print header,88888</span>
+<span class="c">#         for n,h in enumerate(header):</span>
+<span class="c">#             item = QtGui.QTableWidgetItem()</span>
+<span class="c">#             #item.setText(str(h))#QtCore.QString(val))</span>
+<span class="c">#             item.setText(h)#QtCore.QString(val))</span>
+<span class="c"># </span>
+<span class="c">#             #print n,h,self.tableBox.horizontalHeaderItem(n)</span>
+<span class="c">#             self.tableBox.setHorizontalHeaderItem(n,item)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def treeWidgetChanged(self):</span>
+<span class="c">#         self.treeWidget().setFirstItemColumnSpanned(self.subItem, True)</span>
+<span class="c">#         self.treeWidget().setItemWidget(self.subItem, 0, self.tableBox)</span>
+<span class="c">#         self.setExpanded(True)</span>
+<span class="c">#         </span>
+<span class="c">#     def makeWidget(self):</span>
+<span class="c">#         #init shape</span>
+<span class="c">#         self.layoutWidget = QtGui.QWidget()</span>
+<span class="c">#         self.tableBox = nIOpTableWidget(self._x,self._y,self.layoutWidget)</span>
+<span class="c"># #        self.tableBox.setSizePolicy(QtGui.QSizePolicy.MinimumExpanding,QtGui.QSizePolicy.MinimumExpanding)</span>
+<span class="c">#         self.tableBox.horizontalHeader().setStretchLastSection(True)</span>
+<span class="c">#         for col in range(self.tableBox.columnCount()-1):</span>
+<span class="c">#             self.tableBox.setColumnWidth(col,50)</span>
+<span class="c"># </span>
+<span class="c">#         #self.tableBox.setDragEnabled(True)</span>
+<span class="c">#         self.tableBox.setAcceptDrops(True)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#         #self.textBox = QtGui.QTextEdit()</span>
+<span class="c">#         #self.textBox.setMaximumHeight(100)</span>
+<span class="c">#         #self.textBox.value = lambda: str(self.textBox.toPlainText())</span>
+<span class="c">#         #self.textBox.setValue = self.textBox.setPlainText</span>
+<span class="c">#         #self.tableBox.sigChanged = self.tableBox.cellChanged</span>
+<span class="c">#         self.layoutWidget.sigChanged = self.tableBox.cellChanged</span>
+<span class="c">#     #    self.tableBox.setItem(0,0, self.tableBox.item(0,0))</span>
+<span class="c">#     #    print self.tableBox.currentItem(),445</span>
+<span class="c">#         #self.setHidden = self.tableBox.hide</span>
+<span class="c"># </span>
+<span class="c">#         #self.layoutWidget.hide()</span>
+<span class="c">#         #self.tableBox.hide()</span>
+<span class="c">#         self.layoutWidget.value = self._getTable#lambda: self.__call__(value=arg)</span>
+<span class="c">#         #self.layoutWidget.value = self.tableBox.currentItem.text#lambda:</span>
+<span class="c">#         self.layoutWidget.setValue = self.tableBox.importTable#self.tableBox.currentItem.text#lambda:</span>
+<span class="c"># </span>
+<span class="c">#         return self.layoutWidget#self.tableBox#.table</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def _getTable(self):</span>
+<span class="c">#         l = []#rowCount()</span>
+<span class="c">#         for row in range(self.tableBox.rowCount()):</span>
+<span class="c">#             l.append([])</span>
+<span class="c">#             for col in range(self.tableBox.columnCount()):</span>
+<span class="c">#                 item = self.tableBox.item(row,col)</span>
+<span class="c">#                 if item == None:</span>
+<span class="c">#                     text = &#39;&#39;</span>
+<span class="c">#                 else:</span>
+<span class="c">#                     #text = str(item.text())</span>
+<span class="c">#                     text = asUnicode(item.text())</span>
+<span class="c">#             #    print self.tableBox, self.tableBox.item(row,col), row, col</span>
+<span class="c">#                 l[-1].append(text)</span>
+<span class="c">#         return l</span>
+<span class="c">#                     #self._notepadItem.setItem(row,col, item)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     </span>
+<span class="c">#         </span>
+<span class="c"># class TableParameter(Parameter):</span>
+<span class="c">#     &quot;&quot;&quot;Editable string; displayed as large text box in the tree.&quot;&quot;&quot;</span>
+<span class="c">#     itemClass = TableParameterItem</span>
+<span class="c">#     sigHeaderChanged = QtCore.Signal(object,object)  ## self, {opt:val, ...}</span>
+<span class="c">#     #sigColumnsFixedChanged = QtCore.Signal(object,object)  ## self, {opt:val, ...}</span>
+<span class="c"># </span>
+<span class="c">#     def setHeader(self, header):</span>
+<span class="c">#         #print header,55555</span>
+<span class="c">#         self.sigHeaderChanged.emit(self, header)</span>
+<span class="c"># </span>
+<span class="c">#     #def setColumnsFixed(self, value):</span>
+<span class="c">#     #    self.sigColumnsChanged.emit(self, value)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def toArray(self, checkAscending=False):</span>
+<span class="c">#         table =  self.value()</span>
+<span class="c">#         lenCol = len(table[0])</span>
+<span class="c">#         for x in range(len(table)-1,-1,-1):</span>
+<span class="c">#             for y in range(lenCol):</span>
+<span class="c">#                 try:</span>
+<span class="c">#                     table[x][y] = float(table[x][y])</span>
+<span class="c">#                 except:</span>
+<span class="c">#                     #print errm</span>
+<span class="c">#                     table.pop(x)</span>
+<span class="c">#                     break</span>
+<span class="c">#         if not table:</span>
+<span class="c">#             raise Exception(&quot;table has no valid data&quot;)</span>
+<span class="c">#         if checkAscending:</span>
+<span class="c">#             #look whether table sorted:</span>
+<span class="c">#             v0 = table[0][0]</span>
+<span class="c">#             for n in range(1,len(table),1):</span>
+<span class="c">#                 v1 = table[n][0]</span>
+<span class="c">#                 if v0 &gt; v1:</span>
+<span class="c">#                     raise Exception(</span>
+<span class="c">#                         &quot;table-input has to be in ascending order, see value &#39;%s&#39; at row &#39;%s&#39;&quot;</span>
+<span class="c">#                         %(v1,n+1))</span>
+<span class="c">#                 v0 = v1</span>
+<span class="c">#         #self._table = np.array(sorted(table))</span>
+<span class="c">#         return np.array(table)</span>
+<span class="c"># </span>
+<span class="c"># registerParameterType(&#39;table&#39;, TableParameter, override=True)</span>
+
+
+
+
+<span class="c"># </span>
+<span class="c"># class GroupParameterItem(ParameterItem):</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     Group parameters are used mainly as a generic parent item that holds (and groups!) a set</span>
+<span class="c">#     of child parameters. It also provides a simple mechanism for displaying a button or combo</span>
+<span class="c">#     that can be used to add new parameters to the group.</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     def __init__(self, param, depth):</span>
+<span class="c">#         ParameterItem.__init__(self, param, depth)</span>
+<span class="c">#         self.updateDepth(depth)</span>
+<span class="c">#         self.addItem = None</span>
+<span class="c">#         l = param.opts.get(&#39;limits&#39;, None)</span>
+<span class="c">#         if l!=None:</span>
+<span class="c">#             #addText = param.value()#param.opts[&#39;value&#39;]</span>
+<span class="c">#         #    if len(l) &gt; 1: #or &#39;getLimits&#39; in param.opts:</span>
+<span class="c">#             self.addWidget = QtGui.QComboBox()</span>
+<span class="c">#             self.addWidget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)</span>
+<span class="c">#             #self.updateLimits()</span>
+<span class="c">#             self.addWidget.currentIndexChanged.connect(self.addChanged)</span>
+<span class="c">#             #self.addChanged()</span>
+<span class="c">#             #else:</span>
+<span class="c">#             #    self.addWidget = QtGui.QPushButton(l[0])</span>
+<span class="c">#             #    self.addWidget.clicked.connect(self.addClicked)</span>
+<span class="c">#                     #self.param.sigLimitsChanged.connect(self.updateLimits)</span>
+<span class="c">#             self.updateLimits()</span>
+<span class="c">#             w = QtGui.QWidget()</span>
+<span class="c">#             l = QtGui.QHBoxLayout()</span>
+<span class="c">#             l.setContentsMargins(0,0,0,0)</span>
+<span class="c">#             w.setLayout(l)</span>
+<span class="c">#             l.addWidget(self.addWidget)</span>
+<span class="c">#             l.addStretch()</span>
+<span class="c">#             #l.addItem(QtGui.QSpacerItem(200, 10, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum))</span>
+<span class="c">#             self.addWidgetBox = w</span>
+<span class="c">#             self.addItem = QtGui.QTreeWidgetItem([])</span>
+<span class="c">#             self.addItem.setFlags(QtCore.Qt.ItemIsEnabled)</span>
+<span class="c">#             ParameterItem.addChild(self, self.addItem)            #self.limitsChanged = self.updateLimits</span>
+<span class="c">#             self.param.sigLimitsChanged.connect(self.updateLimits)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     #def updateDepth(self, depth):</span>
+<span class="c">#         ### Change item&#39;s appearance based on its depth in the tree</span>
+<span class="c">#         ### This allows highest-level groups to be displayed more prominently.</span>
+<span class="c">#         #if depth == 0:</span>
+<span class="c">#             #for c in [0,1]:</span>
+<span class="c">#                 #self.setBackground(c, QtGui.QBrush(QtGui.QColor(100,100,100)))</span>
+<span class="c">#                 #self.setForeground(c, QtGui.QBrush(QtGui.QColor(220,220,255)))</span>
+<span class="c">#                 #font = self.font(c)</span>
+<span class="c">#                 #font.setBold(True)</span>
+<span class="c">#                 #font.setPointSize(font.pointSize()+1)</span>
+<span class="c">#                 #self.setFont(c, font)</span>
+<span class="c">#                 #self.setSizeHint(0, QtCore.QSize(0, 25))</span>
+<span class="c">#         #else:</span>
+<span class="c">#             #for c in [0,1]:</span>
+<span class="c">#                 #self.setBackground(c, QtGui.QBrush(QtGui.QColor(220,220,220)))</span>
+<span class="c">#                 #font = self.font(c)</span>
+<span class="c">#                 #font.setBold(True)</span>
+<span class="c">#                 ##font.setPointSize(font.pointSize()+1)</span>
+<span class="c">#                 #self.setFont(c, font)</span>
+<span class="c">#                 #self.setSizeHint(0, QtCore.QSize(0, 20))</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def addClicked(self):</span>
+<span class="c">#         &quot;&quot;&quot;Called when &quot;add new&quot; button is clicked</span>
+<span class="c">#         The parameter MUST have an &#39;addNew&#39; method defined.</span>
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         typ = asUnicode(self.addWidget.currentText())</span>
+<span class="c">#         #self.param.opts[&#39;limits&#39;][0] = typ</span>
+<span class="c">#         self.param.opts[&#39;value&#39;] = typ</span>
+<span class="c"># </span>
+<span class="c">#         self.param.sigValueChanged.emit(self, None)</span>
+<span class="c">#         #self.param.addNew()</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def addChanged(self):</span>
+<span class="c">#         &quot;&quot;&quot;Called when &quot;add new&quot; combo is changed</span>
+<span class="c">#         The parameter MUST have an &#39;addNew&#39; method defined.</span>
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         if self.addWidget.currentIndex() == 0:</span>
+<span class="c">#             return</span>
+<span class="c">#         typ = asUnicode(self.addWidget.currentText())</span>
+<span class="c">#         #self.param.opts[&#39;limits&#39;][0] = typ</span>
+<span class="c">#         self.param.opts[&#39;value&#39;] = typ</span>
+<span class="c">#         self.param.sigValueChanged.emit(self, None)</span>
+<span class="c"># </span>
+<span class="c">#         #self.param.addNew(typ)</span>
+<span class="c">#         self.addWidget.setCurrentIndex(0)</span>
+<span class="c"># </span>
+<span class="c">#     def treeWidgetChanged(self):</span>
+<span class="c">#         ParameterItem.treeWidgetChanged(self)</span>
+<span class="c">#         self.treeWidget().setFirstItemColumnSpanned(self, True)</span>
+<span class="c">#         if self.addItem is not None:</span>
+<span class="c">#             self.treeWidget().setItemWidget(self.addItem, 0, self.addWidgetBox)</span>
+<span class="c">#             self.treeWidget().setFirstItemColumnSpanned(self.addItem, True)</span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c"># </span>
+<span class="c">#     def updateLimits(self):</span>
+<span class="c">#         l = self.param.opts.get(&#39;limits&#39;)</span>
+<span class="c">#         #if len(l) == 1:</span>
+<span class="c">#         #    self.addWidget.activated.connect(self.addClicked)</span>
+<span class="c">#         </span>
+<span class="c">#         #else:</span>
+<span class="c">#             #try:</span>
+<span class="c">#         #        self.addWidget.activated.disconnect(self.addClicked)</span>
+<span class="c">#         #    except TypeError:</span>
+<span class="c">#         #        pass # not connected</span>
+<span class="c">#         self.addWidget.blockSignals(True)</span>
+<span class="c">#         if isinstance(self.addWidget, QtGui.QComboBox):</span>
+<span class="c">#             try:</span>
+<span class="c">#                 self.addWidget.clear()</span>
+<span class="c">#                 try:</span>
+<span class="c">#                     self.addWidget.addItem(self.param.opts[&#39;addName&#39;])</span>
+<span class="c">#                 except KeyError:</span>
+<span class="c">#                     pass</span>
+<span class="c">#                 if not l:</span>
+<span class="c">#                     self.addWidget.hide()</span>
+<span class="c">#                 else:</span>
+<span class="c">#                     self.addWidget.show()</span>
+<span class="c">#                 for t in l:#self.param.opts[&#39;limits&#39;]:</span>
+<span class="c">#                     self.addWidget.addItem(t)</span>
+<span class="c">#             finally:</span>
+<span class="c">#                 self.addWidget.blockSignals(False)</span>
+
+
+
+<span class="c"># class GroupParameter(Parameter):</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     Group parameters are used mainly as a generic parent item that holds (and groups!) a set</span>
+<span class="c">#     of child parameters.</span>
+<span class="c"># </span>
+<span class="c">#     It also provides a simple mechanism for displaying a button or combo</span>
+<span class="c">#     that can be used to add new parameters to the group. To enable this, the group</span>
+<span class="c">#     must be initialized with the &#39;addText&#39; option (the text will be displayed on</span>
+<span class="c">#     a button which, when clicked, will cause addNew() to be called). If the &#39;addList&#39;</span>
+<span class="c">#     option is specified as well, then a dropdown-list of addable items will be displayed</span>
+<span class="c">#     instead of a button.</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     itemClass = GroupParameterItem</span>
+<span class="c"># registerParameterType(&#39;group&#39;, GroupParameter, override=True)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Karl Bedrich.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

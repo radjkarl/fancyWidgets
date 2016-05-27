@@ -1,0 +1,8 @@
+fancywidgets.media package
+==========================
+
+.. automodule:: fancywidgets.media
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

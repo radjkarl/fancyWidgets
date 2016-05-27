@@ -1,0 +1,35 @@
+fancywidgets.pyqtgraphBased package
+===================================
+
+.. automodule:: fancywidgets.pyqtgraphBased
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    fancywidgets.pyqtgraphBased.parametertree
+
+Submodules
+----------
+
+fancywidgets.pyqtgraphBased.Dock module
+---------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.Dock
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fancywidgets.pyqtgraphBased.DockArea module
+-------------------------------------------
+
+.. automodule:: fancywidgets.pyqtgraphBased.DockArea
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
