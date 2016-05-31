@@ -1,7 +1,11 @@
 ===========================================================
 fancyWidgets - various QT based widgets for every day usage
 ===========================================================
-It uses `pyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_ and `pyqtgraph <http://www.pyqtgraph.org/>`_
+
+.. image:: https://img.shields.io/badge/License-GPLv3-red.svg
+.. image:: https://img.shields.io/badge/python-2.6%7C2.7-yellow.svg
+
+Based on `pyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_ and `pyqtgraph <http://www.pyqtgraph.org/>`_
 
 
 - Browse the `API Documentation <http://radjkarl.github.io/fancyWidgets>`_

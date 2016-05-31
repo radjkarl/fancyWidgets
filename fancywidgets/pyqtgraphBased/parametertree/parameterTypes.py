@@ -1,17 +1,17 @@
 #EXACT COPY OF PYQTGRAPGH.PARAMETERTREE.PARAMETRERtYPES needed to load my parameter
 
 #CHENGED RELATIVE TO ABSOLUTE IMPORTS:
-from pyqtgraph.Qt import QtCore, QtGui
-from pyqtgraph.python2_3 import asUnicode
+from pyqtgraph_karl.Qt import QtCore, QtGui
+from pyqtgraph_karl.python2_3 import asUnicode
 from Parameter import Parameter, registerParameterType #!!!!CHANGED
 from ParameterItem import ParameterItem
-from pyqtgraph.widgets.SpinBox import SpinBox
-from pyqtgraph.widgets.ColorButton import ColorButton
+from pyqtgraph_karl.widgets.SpinBox import SpinBox
+from pyqtgraph_karl.widgets.ColorButton import ColorButton
 #from ..widgets.GradientWidget import GradientWidget ## creates import loop
-from pyqtgraph import pixmaps as pixmaps
-from pyqtgraph import functions as fn
+from pyqtgraph_karl import pixmaps as pixmaps
+from pyqtgraph_karl import functions as fn
 import os
-from pyqtgraph.pgcollections import OrderedDict
+from pyqtgraph_karl.pgcollections import OrderedDict
 
 class WidgetParameterItem(ParameterItem):
     """

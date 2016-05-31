@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from pyqtgraph.parametertree.ParameterItem import ParameterItem as OldPI
+from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem as OldPI
 #from pyqtgraph.parametertree.parameterTypes import ActionParameter
 
-from pyqtgraph.Qt import QtGui, QtCore
+from pyqtgraph_karl.Qt import QtGui, QtCore
 
 
 class ParameterItem(OldPI):

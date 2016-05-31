@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import pyqtgraph.dockarea as pgDock
-from pyqtgraph.Qt import QtGui, QtCore
+import pyqtgraph_karl.dockarea as pgDock
+from pyqtgraph_karl.Qt import QtGui, QtCore
 import weakref
 
 

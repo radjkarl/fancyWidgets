@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pyqtgraph.dockarea import DockArea as pgDockArea
+from pyqtgraph_karl.dockarea import DockArea as pgDockArea
 # from QtRec.QtGui import QWidget
 # 
 # b = list(pgDockArea.__bases__)

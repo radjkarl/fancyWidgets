@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pyqtgraph.parametertree.ParameterTree import ParameterTree as PTree
+from pyqtgraph_karl.parametertree.ParameterTree import ParameterTree as PTree
 
 
 class ParameterTree(PTree):

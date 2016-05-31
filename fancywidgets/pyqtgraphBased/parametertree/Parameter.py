@@ -2,14 +2,14 @@
 
 
 
-from pyqtgraph.parametertree.Parameter import Parameter as pgParameter
-from pyqtgraph.parametertree.Parameter import registerParameterType
+from pyqtgraph_karl.parametertree.Parameter import Parameter as pgParameter
+from pyqtgraph_karl.parametertree.Parameter import registerParameterType
 
-from pyqtgraph.parametertree.Parameter import PARAM_TYPES, PARAM_NAMES
+from pyqtgraph_karl.parametertree.Parameter import PARAM_TYPES, PARAM_NAMES
 
 
-from pyqtgraph import asUnicode
-from pyqtgraph.Qt import QtGui, QtCore
+from pyqtgraph_karl import asUnicode
+from pyqtgraph_karl.Qt import QtGui, QtCore
 
 import traceback
 
