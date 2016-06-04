@@ -190,13 +190,15 @@ class _CodeTextEdit(QtGui.QPlainTextEdit):
 
 
     def _getInstalledModules(self):
-        pip = importlib.import_module('pip')#save some startup time
-
-
-        l = sorted(
-                ["%s (%s)" % (i.key, i.version) 
-                 for i in pip.get_installed_distributions()]
-                   )
+        try:
+            pip = importlib.import_module('pip')#save some startup time
+            l = sorted(
+                    ["%s (%s)" % (i.key, i.version) 
+                     for i in pip.get_installed_distributions()]
+                       )
+        except ImportError:
+            #pip doesn't exist
+            l = None
         #FIXME: with pip v8.1.1. l will be []
         #if executed in a frozen environment
         #for this case load infos from file:
