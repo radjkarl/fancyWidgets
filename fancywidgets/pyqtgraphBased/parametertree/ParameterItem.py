@@ -32,7 +32,7 @@ class ParameterItem(OldPI):
 		#DUPLICABILITY
 		if param.opts.get('duplicatable', False):
 			self.contextMenu.addAction("Duplicate").triggered.connect(param.duplicate)
-		if param.opts.get('type')=='group' or param.opts.get('isGroup', False):
+		if param.opts.get('type')=='group' or param.opts.get('highlight', False):
 			self.updateDepth(depth)
 		#ICON
 		iconpath = param.opts.get('icon', False)

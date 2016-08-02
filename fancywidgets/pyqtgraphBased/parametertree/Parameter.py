@@ -21,7 +21,7 @@ class Parameter(pgParameter):
 		* 'duplicatable' (see ParameterItem)
 		* 'key' -> name or QKeySequence of the shortcut (see ParameterItem)
 		* 'keyParent' -> QWidget where the key is active
-		* 'isGroup' -> True/False (coded in ParameterItem)
+		* 'highlight' -> True/False (coded in ParameterItem)
 		* 'icon' -> 'path/to/icon' (see ParameterItem)
 	'''
 
