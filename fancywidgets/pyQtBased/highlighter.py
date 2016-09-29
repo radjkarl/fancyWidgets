@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 import sys
+try:
+    unicode
+except NameError:
+    unicode = str
+
 #import re
 from PyQt4 import QtGui#QtCore
 from pygments import highlight
+
 
 
 from pygments.lexers import get_lexer_by_name

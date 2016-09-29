@@ -1,5 +1,12 @@
 from PyQt4 import QtGui, QtCore
-import __builtin__
+
+try:
+    #py3-2 issue
+    import __builtin__
+except ImportError:
+    import builtins 
+    __builtin__ = builtins
+    
 import importlib
 from pkginfo import Installed
 import warnings
@@ -157,7 +164,7 @@ class _CodeTextEdit(QtGui.QPlainTextEdit):
         mg.aboutToShow.disconnect(self._buildGlobalsMenu)
 
         # GIVEN GLOBALS:
-        for gi in naturalSorting(self._globals.keys()):
+        for gi in naturalSorting(list(self._globals.keys())):
             mg.addAction(gi).triggered.connect(
                 lambda checked, n=gi: self._addObject(n))
         if self._globals:
@@ -169,7 +176,7 @@ class _CodeTextEdit(QtGui.QPlainTextEdit):
         # exclude warnings and errors:
         err = []
         war = []
-        for i in xrange(len(l)-1,-1,-1):
+        for i in range(len(l)-1,-1,-1):
             v = l[i]
             if v.endswith('Error') or v.endswith('Exception'):
                 err.append(l.pop(i))
@@ -375,6 +382,6 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     w = CodeEditor()
     w.setWindowTitle(w.__class__.__name__)
-    w.editor.setPlainText('#python highlighting\ni = int(5)\ndef fn(a,i):\n\tprint a,i')
+    w.editor.setPlainText('#python highlighting\ni = int(5)\ndef fn(a,i):\n\tprint(a,i)')
     w.show()
     app.exec_()

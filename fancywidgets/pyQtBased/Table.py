@@ -5,7 +5,12 @@ from PyQt4 import QtGui, QtCore
 from fancywidgets.pyQtBased.Dialogs import Dialogs
 #foreign
 import csv
+from _ast import Str
 
+try:
+    unicode
+except NameError:
+    unicode = Str
 
 
 class Table(QtGui.QTableWidget):
@@ -126,7 +131,7 @@ class Table(QtGui.QTableWidget):
         #TODO: insert only cells for selected range
         r = self.selectedRanges()
         if len(r) > 1:
-            print 'Cannot insert cells on multiple selections'
+            print ('Cannot insert cells on multiple selections')
             return
         r = r[0]
         if r.leftColumn() == r.rightColumn():
@@ -134,14 +139,14 @@ class Table(QtGui.QTableWidget):
         elif r.leftRow() == r.rightRow():
             self.insertRow(r.leftRow())
         else:
-            print 'Need one line of rows or columns to insert blank cells'
+            print ('Need one line of rows or columns to insert blank cells')
             
             
     def removeBlankCells(self):
         #TODO: remove only cells for selected range
         r = self.selectedRanges()
         if len(r) > 1:
-            print 'Cannot remove cells on multiple selections'
+            print('Cannot remove cells on multiple selections')
             return
         r = r[0]
         if r.leftColumn() == r.rightColumn():
@@ -149,7 +154,7 @@ class Table(QtGui.QTableWidget):
         elif r.leftRow() == r.rightRow():
             self.removeRow(r.leftRow())
         else:
-            print 'Need one line of rows or columns to insert blank cells'
+            print('Need one line of rows or columns to insert blank cells')
 
 
     def delete(self):

@@ -1,4 +1,5 @@
 from PyQt4 import QtGui
+from six import string_types
 
 
 
@@ -61,7 +62,7 @@ class MenuBar(QtGui.QMenuBar):
         @rtype: QAction instance
         @return: action for inserted menu
         """
-        if isinstance(before_menu, basestring):
+        if isinstance(before_menu, string_types):
             before_menu = self.findMenu(before_menu)
         before_action = self.actionForMenu(before_menu)
         # I have no clue why QMenuBar::insertMenu only allows

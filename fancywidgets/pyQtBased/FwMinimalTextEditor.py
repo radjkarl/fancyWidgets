@@ -1,6 +1,5 @@
 #foreign
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt
 #this pkg
 from _textEditorUtils import ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
