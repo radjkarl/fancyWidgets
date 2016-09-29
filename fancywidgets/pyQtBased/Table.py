@@ -260,7 +260,13 @@ class Table(QtGui.QTableWidget):
                     n -= 1
                 n += 1   
         return table    
-
+    
+    @staticmethod
+    def fromArray(arr):
+        assert arr.ndim < 3
+        t = Table()
+        t.importTable(arr)
+        return t
     
     @staticmethod
     def fromText(text):
@@ -282,7 +288,7 @@ class Table(QtGui.QTableWidget):
 
 
     def importTable(self, table, startRow=None, startCol=None):
-        if table != None and len(table):
+        if table is not None and len(table):
             if startRow is None or startCol is None:
                 try:
                     #try to get array to paste in from selection

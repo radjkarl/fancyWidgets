@@ -279,17 +279,17 @@ class WidgetParameterItem(ParameterItem):
         name, value, default, or limits"""
         #print "opts changed:", opts
         ParameterItem.optsChanged(self, param, opts)
-        
+        w = self.widget
         if 'readonly' in opts:
             self.updateDefaultBtn()
-            if isinstance(self.widget, (QtGui.QCheckBox,ColorButton)):
+            if isinstance(w, (QtGui.QCheckBox,ColorButton)):
                 w.setEnabled(not opts['readonly'])
         
         ## If widget is a SpinBox, pass options straight through
         if isinstance(self.widget, SpinBox):
             if 'units' in opts and 'suffix' not in opts:
                 opts['suffix'] = opts['units']
-            self.widget.setOpts(**opts)
+            w.setOpts(**opts)
             self.updateDisplayLabel()
         
         
