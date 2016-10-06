@@ -15,7 +15,7 @@ class FwTabWidget(QtWidgets.QTabWidget):
     * tab renaming
     '''
 
-    sigTabAdded = QtCore.pyqtSignal(object)#tab
+    sigTabAdded = QtCore.Signal(object)#tab
 
     def __init__(self, defaultTabWidget=QtWidgets.QWidget):
         QtWidgets.QTabWidget.__init__(self)

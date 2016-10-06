@@ -23,7 +23,7 @@ class Table(QtWidgets.QTableWidget):
     * import from clipboard
     * dynamic add of new rows and cells when needed
     '''
-    sigPathChanged = QtCore.pyqtSignal(object) # file path
+    sigPathChanged = QtCore.Signal(object) # file path
 
     def __init__(self, rows=3,cols=3, colFiled=False, rowFixed=False, parent=None):
         super(Table, self).__init__(rows,cols,parent)

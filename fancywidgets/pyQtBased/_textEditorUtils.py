@@ -194,7 +194,7 @@ class Date(QtWidgets.QDialog):
 
 
 class ToolBarEdit(QtWidgets.QToolBar):
-    sigPathChanged = QtCore.pyqtSignal(object) # file path
+    sigPathChanged = QtCore.Signal(object) # file path
 
     def __init__(self, textEdit):
         QtWidgets.QToolBar.__init__(self, 'Options')
