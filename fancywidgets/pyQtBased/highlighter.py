@@ -6,7 +6,7 @@ except NameError:
     unicode = str
 
 #import re
-from PyQt4 import QtGui#QtCore
+from qtpy import QtGui, QtPrintSupport, QtWidgets#QtCore
 from pygments import highlight
 
 
@@ -117,14 +117,14 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     
-    rst = QtGui.QPlainTextEdit()
+    rst = QtWidgets.QPlainTextEdit()
     rst.setWindowTitle('reSt')
     hl=Highlighter(rst.document(),"rest")
     rst.show()
 
-    python = QtGui.QPlainTextEdit()
+    python = QtWidgets.QPlainTextEdit()
     python.setWindowTitle('python')
     hl=Highlighter(python.document(),"python")
     python.show()

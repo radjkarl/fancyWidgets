@@ -37,7 +37,7 @@ class MenuParameterItem(WidgetParameterItem):
 
     def makeWidget(self):
         v = self.param.opts.get('value',self.param.opts.get('limits',[''])[0])
-        w = QtGui.QMenuBar()
+        w = QtWidgets.QMenuBar()
         w.menu=w.addMenu(v)
         w.sigChanged = None
         w.value = lambda: ''
@@ -94,7 +94,7 @@ registerParameterType('resetList', ResetListParameter, override=True)
 # 
 # 
 # 
-# class _SubItem(QtGui.QTreeWidgetItem):
+# class _SubItem(QtWidgets.QTreeWidgetItem):
 # #    def __init__(self, *opts):
 # #        super(_TableSubItem, self).__init__(*opts)
 #     def selected(self, value):
@@ -158,7 +158,7 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #     def headerChanged(self, header):
 #         #print header,88888
 #         for n,h in enumerate(header):
-#             item = QtGui.QTableWidgetItem()
+#             item = QtWidgets.QTableWidgetItem()
 #             #item.setText(str(h))#QtCore.QString(val))
 #             item.setText(h)#QtCore.QString(val))
 # 
@@ -173,9 +173,9 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         
 #     def makeWidget(self):
 #         #init shape
-#         self.layoutWidget = QtGui.QWidget()
+#         self.layoutWidget = QtWidgets.QWidget()
 #         self.tableBox = nIOpTableWidget(self._x,self._y,self.layoutWidget)
-# #        self.tableBox.setSizePolicy(QtGui.QSizePolicy.MinimumExpanding,QtGui.QSizePolicy.MinimumExpanding)
+# #        self.tableBox.setSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,QtWidgets.QSizePolicy.MinimumExpanding)
 #         self.tableBox.horizontalHeader().setStretchLastSection(True)
 #         for col in range(self.tableBox.columnCount()-1):
 #             self.tableBox.setColumnWidth(col,50)
@@ -184,7 +184,7 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         self.tableBox.setAcceptDrops(True)
 # 
 # 
-#         #self.textBox = QtGui.QTextEdit()
+#         #self.textBox = QtWidgets.QTextEdit()
 #         #self.textBox.setMaximumHeight(100)
 #         #self.textBox.value = lambda: str(self.textBox.toPlainText())
 #         #self.textBox.setValue = self.textBox.setPlainText
@@ -282,25 +282,25 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         if l!=None:
 #             #addText = param.value()#param.opts['value']
 #         #    if len(l) > 1: #or 'getLimits' in param.opts:
-#             self.addWidget = QtGui.QComboBox()
-#             self.addWidget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
+#             self.addWidget = QtWidgets.QComboBox()
+#             self.addWidget.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
 #             #self.updateLimits()
 #             self.addWidget.currentIndexChanged.connect(self.addChanged)
 #             #self.addChanged()
 #             #else:
-#             #    self.addWidget = QtGui.QPushButton(l[0])
+#             #    self.addWidget = QtWidgets.QPushButton(l[0])
 #             #    self.addWidget.clicked.connect(self.addClicked)
 #                     #self.param.sigLimitsChanged.connect(self.updateLimits)
 #             self.updateLimits()
-#             w = QtGui.QWidget()
-#             l = QtGui.QHBoxLayout()
+#             w = QtWidgets.QWidget()
+#             l = QtWidgets.QHBoxLayout()
 #             l.setContentsMargins(0,0,0,0)
 #             w.setLayout(l)
 #             l.addWidget(self.addWidget)
 #             l.addStretch()
-#             #l.addItem(QtGui.QSpacerItem(200, 10, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum))
+#             #l.addItem(QtWidgets.QSpacerItem(200, 10, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
 #             self.addWidgetBox = w
-#             self.addItem = QtGui.QTreeWidgetItem([])
+#             self.addItem = QtWidgets.QTreeWidgetItem([])
 #             self.addItem.setFlags(QtCore.Qt.ItemIsEnabled)
 #             ParameterItem.addChild(self, self.addItem)            #self.limitsChanged = self.updateLimits
 #             self.param.sigLimitsChanged.connect(self.updateLimits)
@@ -375,7 +375,7 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         #    except TypeError:
 #         #        pass # not connected
 #         self.addWidget.blockSignals(True)
-#         if isinstance(self.addWidget, QtGui.QComboBox):
+#         if isinstance(self.addWidget, QtWidgets.QComboBox):
 #             try:
 #                 self.addWidget.clear()
 #                 try:

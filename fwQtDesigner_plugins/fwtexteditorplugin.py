@@ -7,7 +7,7 @@ analogclockplugin.py
 An analog clock custom widget plugin for Qt Designer.
 """
 
-from PyQt4 import QtGui, QtDesigner
+from qtpy import QtGui, QtPrintSupport, QtWidgets, QtDesigner
 from fancywidgets.pyQtBased.FwTextEditor import FwTextEditor
 
 class FwTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):

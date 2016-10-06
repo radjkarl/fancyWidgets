@@ -1,8 +1,8 @@
 
-from PyQt4 import QtGui,QtCore
+from qtpy import QtGui, QtPrintSupport, QtWidgets,QtCore
 
 
-class CircleWidget(QtGui.QWidget):
+class CircleWidget(QtWidgets.QWidget):
     '''a simple circle - useful as indicator'''
     
     def __init__(self, parent=None, 
@@ -41,7 +41,7 @@ class CircleWidget(QtGui.QWidget):
 
 if __name__ == '__main__':
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w= CircleWidget()
     w.setWindowTitle(w.__class__.__name__)
 

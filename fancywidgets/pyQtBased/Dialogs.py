@@ -3,7 +3,7 @@
 from fancytools.os.PathStr import PathStr
 
 #foreign
-from PyQt4 import QtGui
+from qtpy import QtGui, QtPrintSupport, QtWidgets
 
 
 class Dialogs(object):
@@ -35,7 +35,7 @@ class Dialogs(object):
 
     def getSaveFileName(self, *args, **kwargs):
         '''
-        analog to QtGui.QFileDialog.getSaveFileNameAndFilter
+        analog to QtWidgets.QFileDialog.getSaveFileNameAndFilter
         but returns the filename + chosen file ending even if not typed in gui
         '''
         if not 'directory' in kwargs:
@@ -43,7 +43,7 @@ class Dialogs(object):
                 if self.opts['save']:
                     kwargs['directory'] = self.opts['save']
             
-        fname = QtGui.QFileDialog.getSaveFileName(**kwargs)
+        fname = QtWidgets.QFileDialog.getSaveFileName(**kwargs)
         if fname:
             p = PathStr(fname)
             self.opts['save'] = p.dirname()
@@ -61,7 +61,7 @@ class Dialogs(object):
 
     def getOpenFileName(self, **kwargs):
         kwargs = self._processOpenKwargs(kwargs)
-        fname = QtGui.QFileDialog.getOpenFileName(**kwargs)
+        fname = QtWidgets.QFileDialog.getOpenFileName(**kwargs)
         if fname:
             p = PathStr(fname)
             self.opts['open'] = p.dirname()
@@ -70,7 +70,7 @@ class Dialogs(object):
 
     def getOpenFileNames(self, **kwargs):
         kwargs = self._processOpenKwargs(kwargs)
-        fnames = list(QtGui.QFileDialog.getOpenFileNames(**kwargs))
+        fnames = list(QtWidgets.QFileDialog.getOpenFileNames(**kwargs))
         for n,f in enumerate(fnames):
             fnames[n] = PathStr(f)
         if fnames:
@@ -80,7 +80,7 @@ class Dialogs(object):
     
     def getExistingDirectory(self, **kwargs):
         kwargs = self._processOpenKwargs(kwargs)
-        fname = QtGui.QFileDialog.getExistingDirectory(**kwargs)
+        fname = QtWidgets.QFileDialog.getExistingDirectory(**kwargs)
         if fname:
             p = PathStr(fname)
             self.opts['open'] = p.dirname()

@@ -9,7 +9,7 @@ from pyqtgraph_karl.parametertree.Parameter import PARAM_TYPES, PARAM_NAMES
 
 
 from pyqtgraph_karl import asUnicode
-from pyqtgraph_karl.Qt import QtGui, QtCore
+from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 import traceback
 

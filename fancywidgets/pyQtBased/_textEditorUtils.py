@@ -7,8 +7,8 @@ text editor utils used by
 
 #foreign
 import time
-from PyQt4 import QtGui, QtCore#, QtSvg # QtSvg has to be imported under windows to show svg icons
-from PyQt4.QtCore import Qt
+from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore#, QtSvg # QtSvg has to be imported under windows to show svg icons
+from qtpy.QtCore import Qt
 #own
 from fancywidgets.pyQtBased.Dialogs import Dialogs
 from fancytools.os.PathStr import PathStr
@@ -29,9 +29,9 @@ iconfolder = PathStr(media.__file__).dirname().join("icons","foundation-icon-fon
 dialogs = Dialogs()
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
+        QtWidgets.QMainWindow.__init__(self,parent)
         self.setWindowFlags(Qt.Widget) #allow to use mainwindow as widget
 
         self.text = _TextEdit(self)   
@@ -40,7 +40,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def showToolbar(self, show):
         self.text.showToolbarChecked = show
-        for t in  self.findChildren(QtGui.QToolBar):
+        for t in  self.findChildren(QtWidgets.QToolBar):
         #for t in self.toolbars:
             if show:
                 t.show()
@@ -48,21 +48,21 @@ class MainWindow(QtGui.QMainWindow):
                 t.hide()
 
 
-class _TextEdit(QtGui.QTextEdit):
+class _TextEdit(QtWidgets.QTextEdit):
     '''
     allow to show/hide the toolbar through context menu
     '''
     def __init__(self, editor):
         self.editor = editor
-        QtGui.QTextEdit.__init__(self, editor)
+        QtWidgets.QTextEdit.__init__(self, editor)
         self.showToolbarChecked = True
         
         
     def contextMenuEvent(self, event):
-        menu = QtGui.QTextEdit.createStandardContextMenu(self)
+        menu = QtWidgets.QTextEdit.createStandardContextMenu(self)
         menu.addSeparator()
 
-        a = QtGui.QAction('Show Toolbar', menu)
+        a = QtWidgets.QAction('Show Toolbar', menu)
         a.triggered.connect(self.editor.showToolbar)
         a.triggered.connect(self._storeActionValueToolbarChecked)
         a.setCheckable(True)
@@ -78,45 +78,45 @@ class _TextEdit(QtGui.QTextEdit):
 
 
 
-class Find(QtGui.QDialog):
+class Find(QtWidgets.QDialog):
     def __init__(self,parent = None):
-        QtGui.QDialog.__init__(self, parent)
+        QtWidgets.QDialog.__init__(self, parent)
 
         self.initUI()
 
     def initUI(self):
 
-        self.lb1 = QtGui.QLabel("Search for: ",self)
+        self.lb1 = QtWidgets.QLabel("Search for: ",self)
         self.lb1.setStyleSheet("font-size: 15px; ")
         self.lb1.move(10,10)
 
-        self.te = QtGui.QTextEdit(self)
+        self.te = QtWidgets.QTextEdit(self)
         self.te.move(10,40)
         self.te.resize(250,25)
 
-        self.src = QtGui.QPushButton("Find",self)
+        self.src = QtWidgets.QPushButton("Find",self)
         self.src.move(270,40)
 
-        self.lb2 = QtGui.QLabel("Replace all by: ",self)
+        self.lb2 = QtWidgets.QLabel("Replace all by: ",self)
         self.lb2.setStyleSheet("font-size: 15px; ")
         self.lb2.move(10,80)
 
-        self.rp = QtGui.QTextEdit(self)
+        self.rp = QtWidgets.QTextEdit(self)
         self.rp.move(10,110)
         self.rp.resize(250,25)
 
-        self.rpb = QtGui.QPushButton("Replace",self)
+        self.rpb = QtWidgets.QPushButton("Replace",self)
         self.rpb.move(270,110)
 
-        self.opt1 = QtGui.QCheckBox("Case sensitive",self)
+        self.opt1 = QtWidgets.QCheckBox("Case sensitive",self)
         self.opt1.move(10,160)
         self.opt1.stateChanged.connect(self.CS)
 
-        self.opt2 = QtGui.QCheckBox("Whole words only",self)
+        self.opt2 = QtWidgets.QCheckBox("Whole words only",self)
         self.opt2.move(10,190)
         self.opt2.stateChanged.connect(self.WWO)
 
-        self.close = QtGui.QPushButton("Close",self)
+        self.close = QtWidgets.QPushButton("Close",self)
         self.close.move(270,220)
         self.close.clicked.connect(self.Close)
 
@@ -148,16 +148,16 @@ class Find(QtGui.QDialog):
 
 
 
-class Date(QtGui.QDialog):
+class Date(QtWidgets.QDialog):
     def __init__(self,parent = None):
-        QtGui.QDialog.__init__(self, parent)
+        QtWidgets.QDialog.__init__(self, parent)
 
         self.initUI()
 
 
     def initUI(self):
 
-        self.form = QtGui.QComboBox(self)
+        self.form = QtWidgets.QComboBox(self)
         self.form.move(10,10)
         self.form.addItem(time.strftime("%d.%m.%Y"))
         self.form.addItem(time.strftime("%A, %d. %B %Y"))
@@ -172,10 +172,10 @@ class Date(QtGui.QDialog):
 
         self.form.activated[str].connect(self.handleChoice)
 
-        self.ok = QtGui.QPushButton("Insert",self)
+        self.ok = QtWidgets.QPushButton("Insert",self)
         self.ok.move(180,10)
 
-        self.cancel = QtGui.QPushButton("Cancel",self)
+        self.cancel = QtWidgets.QPushButton("Cancel",self)
         self.cancel.move(180,40)
         self.cancel.clicked.connect(self.Cancel)
 
@@ -193,70 +193,70 @@ class Date(QtGui.QDialog):
 
 
 
-class ToolBarEdit(QtGui.QToolBar):
+class ToolBarEdit(QtWidgets.QToolBar):
     sigPathChanged = QtCore.pyqtSignal(object) # file path
 
     def __init__(self, textEdit):
-        QtGui.QToolBar.__init__(self, 'Options')
+        QtWidgets.QToolBar.__init__(self, 'Options')
         self.text = textEdit
 
 
-        newAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-page.svg")),"New", self)
+        newAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-page.svg")),"New", self)
         newAction.setShortcut("Ctrl+N")
         newAction.setStatusTip("Create a new document from scratch.")
         newAction.triggered.connect(self.New)
 
-        openAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-folder.svg")),"Open file", self)
+        openAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-folder.svg")),"Open file", self)
         openAction.setStatusTip("Open existing document")
         openAction.setShortcut("Ctrl+O")
         openAction.triggered.connect(self.Open)
 
-        saveAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-save.svg")),"Save", self)
+        saveAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-save.svg")),"Save", self)
         saveAction.setStatusTip("Save document")
         saveAction.setShortcut("Ctrl+S")
         saveAction.triggered.connect(self.Save)
 
-        previewAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-results.svg")),"Page view", self)
+        previewAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-results.svg")),"Page view", self)
         previewAction.setStatusTip("Preview page before printing")
         previewAction.setShortcut("Ctrl+Shift+P")
         previewAction.triggered.connect(self.PageView)
 
-        findAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-page-search.svg")),"Find", self)
+        findAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-page-search.svg")),"Find", self)
         findAction.setStatusTip("Find words in your document")
         findAction.setShortcut("Ctrl+F")
         findAction.triggered.connect(self.Find)
 
-        cutAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-crop.svg")),"Cut to clipboard", self)
+        cutAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-crop.svg")),"Cut to clipboard", self)
         cutAction.setStatusTip("Delete and copy text to clipboard")
         cutAction.setShortcut("Ctrl+X")
         cutAction.triggered.connect(self.Cut)
 
-        copyAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-page-copy.svg")),"Copy to clipboard", self)
+        copyAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-page-copy.svg")),"Copy to clipboard", self)
         copyAction.setStatusTip("Copy text to clipboard")
         copyAction.setShortcut("Ctrl+C")
         copyAction.triggered.connect(self.Copy)
 
-        pasteAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-clipboard-notes.svg")),"Paste from clipboard", self)
+        pasteAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-clipboard-notes.svg")),"Paste from clipboard", self)
         pasteAction.setStatusTip("Paste text from clipboard")
         pasteAction.setShortcut("Ctrl+V")
         pasteAction.triggered.connect(self.Paste)
 
-        undoAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-arrow-left.svg")),"Undo last action", self)
+        undoAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-arrow-left.svg")),"Undo last action", self)
         undoAction.setStatusTip("Undo last action")
         undoAction.setShortcut("Ctrl+Z")
         undoAction.triggered.connect(self.Undo)
 
-        redoAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-arrow-right.svg")),"Redo last undone thing", self)
+        redoAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-arrow-right.svg")),"Redo last undone thing", self)
         redoAction.setStatusTip("Redo last undone thing")
         redoAction.setShortcut("Ctrl+Y")
         redoAction.triggered.connect(self.Redo)
 
-        dtAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-clock.svg")),"Insert current date/time", self)
+        dtAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-clock.svg")),"Insert current date/time", self)
         dtAction.setStatusTip("Insert current date/time")
         dtAction.setShortcut("Ctrl+D")
         dtAction.triggered.connect(self.DateTime)
 
-        printAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-print.svg")),"Print document", self)
+        printAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-print.svg")),"Print document", self)
         printAction.setStatusTip("Print document")
         printAction.setShortcut("Ctrl+P")
         printAction.triggered.connect(self.Print)
@@ -314,28 +314,28 @@ class ToolBarEdit(QtGui.QToolBar):
 
 
     def PageView(self):
-        preview = QtGui.QPrintPreviewDialog()
+        preview = QtPrintSupport.QPrintPreviewDialog()
         preview.paintRequested.connect(self.PaintPageView)
         preview.exec_()
 
 
     def Print(self):
-        dialog = QtGui.QPrintDialog()
-        if dialog.exec_() == QtGui.QDialog.Accepted:
+        dialog = QtPrintSupport.QPrintDialog()
+        if dialog.exec_() == QtWidgets.QDialog.Accepted:
             self.text.document().print_(dialog.printer())
 
 
     def PDF(self, name=None):
-        printer = QtGui.QPrinter()
+        printer = QtPrintSupport.QPrinter()
         printer.setOutputFormat(printer.NativeFormat)
         if name:
             printer.setOutputFileName(name)
             self.text.document().print_(printer)
         else:
 
-            dialog = QtGui.QPrintDialog(printer)
+            dialog = QtPrintSupport.QPrintDialog(printer)
             dialog.setOption(dialog.PrintToFile)
-            if dialog.exec_() == QtGui.QDialog.Accepted:
+            if dialog.exec_() == QtWidgets.QDialog.Accepted:
                 self.text.document().print_(dialog.printer())
 
 
@@ -424,28 +424,28 @@ class ToolBarEdit(QtGui.QToolBar):
 
 
 
-class ToolBarInsert(QtGui.QToolBar):
+class ToolBarInsert(QtWidgets.QToolBar):
     
     def __init__(self, textEdit):
-        QtGui.QToolBar.__init__(self, 'insert')
+        QtWidgets.QToolBar.__init__(self, 'insert')
         self.text = textEdit
-        imageAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-photo.svg")),"Add an image.", self)
+        imageAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-photo.svg")),"Add an image.", self)
         imageAction.setShortcut("Ctrl+Shift+I")
         imageAction.triggered.connect(self.insertImage)
         self.addAction(imageAction)
 
     
     def insertImage(self):
-        filename = QtGui.QFileDialog.getOpenFileName(caption="Select an image",
+        filename = QtWidgets.QFileDialog.getOpenFileName(caption="Select an image",
                                                     directory=".", 
                                                     filter="Image Files (*.png *.jpg *.bmp)" )
         image = QtGui.QImage(filename)
         # Error if unloadable
         if image.isNull():
-            popup = QtGui.QMessageBox(QtGui.QMessageBox.Critical,
+            popup = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical,
                                       "Image load error",
                                       "Could not load image file!",
-                                      QtGui.QMessageBox.Ok,
+                                      QtWidgets.QMessageBox.Ok,
                                       self)
             popup.show()
         
@@ -463,16 +463,16 @@ class ToolBarInsert(QtGui.QToolBar):
 
 
 
-class ToolBarFont(QtGui.QToolBar):
+class ToolBarFont(QtWidgets.QToolBar):
     
     def __init__(self, textEdit):
-        QtGui.QToolBar.__init__(self, 'Font')
+        QtWidgets.QToolBar.__init__(self, 'Font')
         self.text = textEdit
 
-        self.fontFamily = QtGui.QFontComboBox(self)
+        self.fontFamily = QtWidgets.QFontComboBox(self)
         self.fontFamily.currentFontChanged.connect(self.FontFamily)
 
-        fontSize = QtGui.QComboBox(self)
+        fontSize = QtWidgets.QComboBox(self)
         fontSize.setEditable(True)
         fontSize.setMinimumContentsLength(3)
         fontSize.activated.connect(self.FontSize)
@@ -482,8 +482,8 @@ class ToolBarFont(QtGui.QToolBar):
         for i in flist:
             fontSize.addItem(str(i))
 
-        space1 = QtGui.QLabel("  ",self)
-        space2 = QtGui.QLabel(" ",self)
+        space1 = QtWidgets.QLabel("  ",self)
+        space2 = QtWidgets.QLabel(" ",self)
 
         self.addWidget(self.fontFamily)
         self.addWidget(space1)
@@ -502,52 +502,52 @@ class ToolBarFont(QtGui.QToolBar):
 
 
 
-class ToolBarFormat(QtGui.QToolBar):
+class ToolBarFormat(QtWidgets.QToolBar):
     
     def __init__(self, textEdit):
-        QtGui.QToolBar.__init__(self, 'Format')
+        QtWidgets.QToolBar.__init__(self, 'Format')
         self.text = textEdit
 
 
-        fontColor = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-text-color.svg")),"Change font color",self)
+        fontColor = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-text-color.svg")),"Change font color",self)
         fontColor.triggered.connect(self.FontColor)
 
-        boldAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-bold.svg")),"Bold",self)
+        boldAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-bold.svg")),"Bold",self)
         boldAction.triggered.connect(self.Bold)
 
-        italicAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-italic.svg")),"Italic",self)
+        italicAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-italic.svg")),"Italic",self)
         italicAction.triggered.connect(self.Italic)
 
-        underlAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-underline.svg")),"Underline",self)
+        underlAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-underline.svg")),"Underline",self)
         underlAction.triggered.connect(self.Underl)
 
-        alignLeft = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-align-left.svg")),"Align left",self)
+        alignLeft = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-align-left.svg")),"Align left",self)
         alignLeft.triggered.connect(self.alignLeft)
 
-        alignCenter = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-align-center.svg")),"Align center",self)
+        alignCenter = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-align-center.svg")),"Align center",self)
         alignCenter.triggered.connect(self.alignCenter)
 
-        alignRight = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-align-right.svg")),"Align right",self)
+        alignRight = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-align-right.svg")),"Align right",self)
         alignRight.triggered.connect(self.alignRight)
 
-        alignJustify = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-align-justify.svg")),"Align justify",self)
+        alignJustify = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-align-justify.svg")),"Align justify",self)
         alignJustify.triggered.connect(self.alignJustify)
 
-        indentAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-indent-more.svg")),"Indent Area",self)
+        indentAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-indent-more.svg")),"Indent Area",self)
         indentAction.setShortcut("Ctrl+Tab")
         indentAction.triggered.connect(self.Indent)
 
-        dedentAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-indent-less.svg")),"Dedent Area",self)
+        dedentAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-indent-less.svg")),"Dedent Area",self)
         dedentAction.setShortcut("Shift+Tab")
         dedentAction.triggered.connect(self.Dedent)
 
-        backColor = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-background-color.svg")),"Change background color",self)
+        backColor = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-background-color.svg")),"Change background color",self)
         backColor.triggered.connect(self.FontBackColor)
 
-        bulletAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-list-bullet.svg")),"Insert Bullet List",self)
+        bulletAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-list-bullet.svg")),"Insert Bullet List",self)
         bulletAction.triggered.connect(self.BulletList)
 
-        numberedAction = QtGui.QAction(QtGui.QIcon(iconfolder.join("fi-list-number.svg")),"Insert Numbered List",self)
+        numberedAction = QtWidgets.QAction(QtGui.QIcon(iconfolder.join("fi-list-number.svg")),"Insert Numbered List",self)
         numberedAction.triggered.connect(self.NumberedList)
 
         self.addAction(fontColor)
@@ -575,12 +575,12 @@ class ToolBarFormat(QtGui.QToolBar):
 
 
     def FontColor(self):
-        c = QtGui.QColorDialog.getColor()
+        c = QtWidgets.QColorDialog.getColor()
         self.text.setTextColor(c)
 
 
     def FontBackColor(self):
-        c = QtGui.QColorDialog.getColor()
+        c = QtWidgets.QColorDialog.getColor()
         self.text.setTextBackgroundColor(c)
 
 
