@@ -62,6 +62,8 @@ class Dialogs(object):
     def getOpenFileName(self, **kwargs):
         kwargs = self._processOpenKwargs(kwargs)
         fname = QtWidgets.QFileDialog.getOpenFileName(**kwargs)
+        if isinstance(fname, tuple):
+            fname = fname[0]
         if fname:
             p = PathStr(fname)
             self.opts['open'] = p.dirname()
@@ -70,7 +72,10 @@ class Dialogs(object):
 
     def getOpenFileNames(self, **kwargs):
         kwargs = self._processOpenKwargs(kwargs)
-        fnames = list(QtWidgets.QFileDialog.getOpenFileNames(**kwargs))
+        fnames = QtWidgets.QFileDialog.getOpenFileNames(**kwargs)
+        # PyQt4 and 5 comp. workaround
+        if isinstance(fnames, tuple) and isinstance(fnames[0], list):
+            fnames = fnames[0]
         for n,f in enumerate(fnames):
             fnames[n] = PathStr(f)
         if fnames:

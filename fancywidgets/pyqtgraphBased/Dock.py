@@ -152,7 +152,8 @@ class DockLabelMenu(QtWidgets.QMenu):
 
         #enable this menu on right click:
         self.dock.label.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.connect(self.dock.label,QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self._showContextMenu)
+        self.dock.label.customContextMenuRequested[QtCore.QPoint].connect(self._showContextMenu)
+        # self.connect(self.dock.label,QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self._showContextMenu)
 
         self.editor = None #set-name-editor
 
