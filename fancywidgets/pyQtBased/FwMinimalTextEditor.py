@@ -1,7 +1,7 @@
 #foreign
 from PyQt4 import QtGui, QtCore
 #this pkg
-from _textEditorUtils import ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
+from ._textEditorUtils import ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
 
 class FwMinimalTextEditor(MainWindow):

@@ -1,7 +1,3 @@
-from __future__ import print_function
-# from future import standard_library
-# standard_library.install_aliases()
-
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -21,7 +17,7 @@ from fancytools.fcollections.naturalSorting import naturalSorting
 # FIXME
 # in order to also have in in a frozen environment
 # see _getInstalledModules
-from fancywidgets.pyQtBased import _installed_modules
+from . import _installed_modules
 
 
 class CodeEditor(QtGui.QWidget):

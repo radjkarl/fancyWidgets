@@ -1,6 +1,5 @@
 # -*- coding: utf-8 *-*
 
-from __future__ import print_function
 from PyQt4 import QtGui
 
 
@@ -127,7 +126,7 @@ if __name__ == '__main__':
     w.show()
     
     #print a normal message that will be visible in the shell AND in the console
-    print((1,2,3,'test'))
+    print (1,2,3,'test')
     # print an error if button is pressed:
     def printError(evt):
         raise Exception('this is an error test')

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 #foreign
-from __future__ import absolute_import
 from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 #this pkg
-from ._textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
+from _textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
 
 

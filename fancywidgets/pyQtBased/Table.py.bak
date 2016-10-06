@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-
 
 #own
 from PyQt4 import QtGui, QtCore
@@ -10,9 +8,9 @@ import csv
 from _ast import Str
 
 try:
-    str
+    unicode
 except NameError:
-    str = Str
+    unicode = Str
 
 
 class Table(QtGui.QTableWidget):
@@ -73,7 +71,7 @@ class Table(QtGui.QTableWidget):
                 item = self.item(row, column)
                 if item is not None:
                     rowdata.append(
-                        str(item.text()).encode('utf8'))
+                        unicode(item.text()).encode('utf8'))
                 else:
                     rowdata.append('')    
             l.append(rowdata)
@@ -88,7 +86,7 @@ class Table(QtGui.QTableWidget):
             path = self._dialogs.getSaveFileName(filter='*.csv')
         if path:
             self._setPath(path)
-            with open(str(self._path), 'wb') as stream:
+            with open(unicode(self._path), 'wb') as stream:
                 writer = csv.writer(stream)
                 table = self.table()
                 for row in table:
@@ -316,7 +314,7 @@ class Table(QtGui.QTableWidget):
             for row,line in enumerate(table):
                 for col, text in enumerate(line):
                     r,c = row+startRow,col+startCol
-                    self.setItemText(r,c, str(text))
+                    self.setItemText(r,c, unicode(text))
 
 
     def setItemText(self, row, col, text):

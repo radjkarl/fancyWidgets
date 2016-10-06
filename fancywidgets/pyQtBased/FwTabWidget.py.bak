@@ -75,7 +75,7 @@ class FwTabWidget(QtGui.QTabWidget):
         return self
     
     
-    def __next__(self):
+    def next(self):
         self._i += 1
         if self._i == self.count():
             raise StopIteration()
