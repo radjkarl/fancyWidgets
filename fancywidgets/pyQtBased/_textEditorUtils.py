@@ -4,7 +4,6 @@ text editor utils used by
 * FwTextEditor
 '''
 
-
 #foreign
 import time
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore#, QtSvg # QtSvg has to be imported under windows to show svg icons

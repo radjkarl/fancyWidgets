@@ -1,11 +1,10 @@
-from builtins import str
 #EXACT COPY OF PYQTGRAPGH.PARAMETERTREE.PARAMETRERtYPES needed to load my parameter
 
 #CHENGED RELATIVE TO ABSOLUTE IMPORTS:
-from pyqtgraph_karl.Qt import QtCore, QtGui, QtPrintSupport, QtWidgets
+from pyqtgraph_karl.Qt import QtCore, QtGui
 from pyqtgraph_karl.python2_3 import asUnicode
-from pyqtgraph_karl.parametertree.Parameter import Parameter, registerParameterType #!!!!CHANGED
-from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem
+from .Parameter import Parameter, registerParameterType #!!!!CHANGED
+from .ParameterItem import ParameterItem
 from pyqtgraph_karl.widgets.SpinBox import SpinBox
 from pyqtgraph_karl.widgets.ColorButton import ColorButton
 #from ..widgets.GradientWidget import GradientWidget ## creates import loop
@@ -51,7 +50,7 @@ class WidgetParameterItem(ParameterItem):
         if 'tip' in opts:
             w.setToolTip(opts['tip'])
         
-        self.defaultBtn = QtWidgets.QPushButton()
+        self.defaultBtn = QtGui.QPushButton()
         self.defaultBtn.setFixedWidth(20)
         self.defaultBtn.setFixedHeight(20)
         modDir = os.path.dirname(__file__)
@@ -61,15 +60,15 @@ class WidgetParameterItem(ParameterItem):
         if opts.get('readonly', False):
             self.defaultBtn.hide()
         
-        self.displayLabel = QtWidgets.QLabel()
+        self.displayLabel = QtGui.QLabel()
         
-        layout = QtWidgets.QHBoxLayout()
+        layout = QtGui.QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(2)
         layout.addWidget(w)
         layout.addWidget(self.displayLabel)
         layout.addWidget(self.defaultBtn)
-        self.layoutWidget = QtWidgets.QWidget()
+        self.layoutWidget = QtGui.QWidget()
         self.layoutWidget.setLayout(layout)
 
         if w.sigChanged is not None:
@@ -127,14 +126,14 @@ class WidgetParameterItem(ParameterItem):
             w.sigChanged = w.sigValueChanged
             w.sigChanging = w.sigValueChanging
         elif t == 'bool':
-            w = QtWidgets.QCheckBox()
+            w = QtGui.QCheckBox()
             w.sigChanged = w.toggled
             w.value = w.isChecked
             w.setValue = w.setChecked
             w.setEnabled(not opts.get('readonly', False))
             self.hideWidget = False
         elif t == 'str':
-            w = QtWidgets.QLineEdit()
+            w = QtGui.QLineEdit()
             w.sigChanged = w.editingFinished
             w.value = lambda: asUnicode(w.text())
             w.setValue = lambda v: w.setText(asUnicode(v))
@@ -204,9 +203,9 @@ class WidgetParameterItem(ParameterItem):
         if value is None:
             value = self.param.value()
         opts = self.param.opts
-        if isinstance(self.widget, QtWidgets.QAbstractSpinBox):
+        if isinstance(self.widget, QtGui.QAbstractSpinBox):
             text = asUnicode(self.widget.lineEdit().text())
-        elif isinstance(self.widget, QtWidgets.QComboBox):
+        elif isinstance(self.widget, QtGui.QComboBox):
             text = self.widget.currentText()
         else:
             text = asUnicode(value)
@@ -283,7 +282,7 @@ class WidgetParameterItem(ParameterItem):
         w = self.widget
         if 'readonly' in opts:
             self.updateDefaultBtn()
-            if isinstance(w, (QtWidgets.QCheckBox,ColorButton)):
+            if isinstance(w, (QtGui.QCheckBox,ColorButton)):
                 w.setEnabled(not opts['readonly'])
         
         ## If widget is a SpinBox, pass options straight through
@@ -352,22 +351,22 @@ class GroupParameterItem(ParameterItem):
         if 'addText' in param.opts:
             addText = param.opts['addText']
             if 'addList' in param.opts:
-                self.addWidget = QtWidgets.QComboBox()
-                self.addWidget.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+                self.addWidget = QtGui.QComboBox()
+                self.addWidget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
                 self.updateAddList()
                 self.addWidget.currentIndexChanged.connect(self.addChanged)
             else:
-                self.addWidget = QtWidgets.QPushButton(addText)
+                self.addWidget = QtGui.QPushButton(addText)
                 self.addWidget.clicked.connect(self.addClicked)
-            w = QtWidgets.QWidget()
-            l = QtWidgets.QHBoxLayout()
+            w = QtGui.QWidget()
+            l = QtGui.QHBoxLayout()
             l.setContentsMargins(0,0,0,0)
             w.setLayout(l)
             l.addWidget(self.addWidget)
             l.addStretch()
-            #l.addItem(QtWidgets.QSpacerItem(200, 10, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+            #l.addItem(QtGui.QSpacerItem(200, 10, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum))
             self.addWidgetBox = w
-            self.addItem = QtWidgets.QTreeWidgetItem([])
+            self.addItem = QtGui.QTreeWidgetItem([])
             self.addItem.setFlags(QtCore.Qt.ItemIsEnabled)
             ParameterItem.addChild(self, self.addItem)
             
@@ -480,7 +479,7 @@ class ListParameterItem(WidgetParameterItem):
     def makeWidget(self):
         opts = self.param.opts
         t = opts['type']
-        w = QtWidgets.QComboBox()
+        w = QtGui.QComboBox()
         w.setMaximumHeight(20)  ## set to match height of spin box and line edit
         w.sigChanged = w.currentIndexChanged
         w.value = self.value
@@ -574,7 +573,7 @@ class ListParameter(Parameter):
         forward = OrderedDict()  ## {name: value, ...}
         reverse = ([], [])       ## ([value, ...], [name, ...])
         if isinstance(limits, dict):
-            for k, v in list(limits.items()):
+            for k, v in limits.items():
                 forward[k] = v
                 reverse[0].append(v)
                 reverse[1].append(k)
@@ -593,10 +592,10 @@ registerParameterType('list', ListParameter, override=True)
 class ActionParameterItem(ParameterItem):
     def __init__(self, param, depth):
         ParameterItem.__init__(self, param, depth)
-        self.layoutWidget = QtWidgets.QWidget()
-        self.layout = QtWidgets.QHBoxLayout()
+        self.layoutWidget = QtGui.QWidget()
+        self.layout = QtGui.QHBoxLayout()
         self.layoutWidget.setLayout(self.layout)
-        self.button = QtWidgets.QPushButton(param.name())
+        self.button = QtGui.QPushButton(param.name())
         #self.layout.addSpacing(100)
         self.layout.addWidget(self.button)
         self.layout.addStretch()
@@ -642,7 +641,7 @@ class TextParameterItem(WidgetParameterItem):
     def __init__(self, param, depth):
         WidgetParameterItem.__init__(self, param, depth)
         self.hideWidget = False
-        self.subItem = QtWidgets.QTreeWidgetItem()
+        self.subItem = QtGui.QTreeWidgetItem()
         self.addChild(self.subItem)
 
     def selected(self, value):
@@ -665,7 +664,7 @@ class TextParameterItem(WidgetParameterItem):
         self.setExpanded(self.param.opts.get('expanded', True))
         
     def makeWidget(self):
-        self.textBox = QtWidgets.QTextEdit()
+        self.textBox = QtGui.QTextEdit()
         self.textBox.setMaximumHeight(100)
         self.textBox.setReadOnly(self.param.opts.get('readonly', False))
         self.textBox.value = lambda: str(self.textBox.toPlainText())

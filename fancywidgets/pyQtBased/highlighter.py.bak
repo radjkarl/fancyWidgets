@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import sys
 try:
-    str
+    unicode
 except NameError:
-    str = str
+    unicode = str
 
 #import re
-from qtpy import QtGui, QtPrintSupport, QtWidgets#QtCore
+from PyQt4 import QtGui#QtCore
 from pygments import highlight
 
 
@@ -95,7 +95,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         # The \n is not really needed, but sometimes  
         # you are in an empty last block, so your position is
         # **after** the end of the document.
-        text=str(self.document().toPlainText())+'\n'
+        text=unicode(self.document().toPlainText())+'\n'
         
         # Yes, re-highlight the whole document.
         # There **must** be some optimizacion possibilities
@@ -105,7 +105,7 @@ class Highlighter(QtGui.QSyntaxHighlighter):
         # Just apply the formatting to this block.
         # For titles, it may be necessary to backtrack
         # and format a couple of blocks **earlier**.
-        for i in range(len(str(text))):
+        for i in range(len(unicode(text))):
             try:
                 self.setFormat(i,1,self.formatter.data[p+i])
             except IndexError:
@@ -117,14 +117,14 @@ class Highlighter(QtGui.QSyntaxHighlighter):
 
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    app = QtGui.QApplication(sys.argv)
     
-    rst = QtWidgets.QPlainTextEdit()
+    rst = QtGui.QPlainTextEdit()
     rst.setWindowTitle('reSt')
     hl=Highlighter(rst.document(),"rest")
     rst.show()
 
-    python = QtWidgets.QPlainTextEdit()
+    python = QtGui.QPlainTextEdit()
     python.setWindowTitle('python')
     hl=Highlighter(python.document(),"python")
     python.show()

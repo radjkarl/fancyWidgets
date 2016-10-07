@@ -58,7 +58,7 @@ class ArgSetter(QtWidgets.QDialog):
         self.values = []
         self.args = {}
 
-        for row, (name, val) in enumerate(argdict.iteritems()):
+        for row, (name, val) in enumerate(argdict.items()):
             limits = val.get('limits', None)
             value = str(val.get('value', ''))
             unit = val.get('unit', None)
@@ -192,7 +192,7 @@ class ArgSetter(QtWidgets.QDialog):
         with open(self.label_save.text(),'w') as f:
             d = {}
             for name, widget, _ in self.values:
-                d[name] = unicode(widget.text())
+                d[name] = str(widget.text())
             f.write(str(d))
 
 
@@ -288,7 +288,7 @@ if __name__ == '__main__':
                             'tip':'foo bar'},
             'webcam_index': {
                             'value':-1,
-                            'limits':range(-1,10), 
+                            'limits':list(range(-1,10)), 
                             'dtype':int},
             'output_file_name':{
                             'value':'output.csv',
@@ -298,7 +298,7 @@ if __name__ == '__main__':
                             'dtype':str},
             'nAverageSteps': {
                             'value':3, 
-                            'limits':range(1,20), 
+                            'limits':list(range(1,20)), 
                             'dtype':int},
             'refreshRate': {
                             'value':100, 
@@ -324,7 +324,7 @@ if __name__ == '__main__':
                             'tip':'foo bar'},
             'two': {
                             'value':-1, 
-                            'limits':range(-1,10), 
+                            'limits':list(range(-1,10)), 
                             'dtype':int},
             'three':{
                             'value':'output.csv',
@@ -334,7 +334,7 @@ if __name__ == '__main__':
                             'dtype':str},
             'fife': {
                             'value':3, 
-                            'limits':range(1,20), 
+                            'limits':list(range(1,20)), 
                             'dtype':int},
             'six': {
                             'value':100, 

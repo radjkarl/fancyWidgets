@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-
 
 #own
-from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
+from PyQt4 import QtGui, QtCore
 from fancywidgets.pyQtBased.Dialogs import Dialogs
 #foreign
 import csv
 from _ast import Str
 
 try:
-    str
+    unicode
 except NameError:
-    str = Str
+    unicode = Str
 
 
-class Table(QtWidgets.QTableWidget):
+class Table(QtGui.QTableWidget):
     '''
     A QTableWidget with:
     * Shortcuts: copy, paste, cut, insert/delete row/column
@@ -25,7 +23,7 @@ class Table(QtWidgets.QTableWidget):
     * import from clipboard
     * dynamic add of new rows and cells when needed
     '''
-    sigPathChanged = QtCore.Signal(object) # file path
+    sigPathChanged = QtCore.pyqtSignal(object) # file path
 
     def __init__(self, rows=3,cols=3, colFiled=False, rowFixed=False, parent=None):
         super(Table, self).__init__(rows,cols,parent)
@@ -73,7 +71,7 @@ class Table(QtWidgets.QTableWidget):
                 item = self.item(row, column)
                 if item is not None:
                     rowdata.append(
-                        str(item.text()).encode('utf8'))
+                        unicode(item.text()).encode('utf8'))
                 else:
                     rowdata.append('')    
             l.append(rowdata)
@@ -88,7 +86,7 @@ class Table(QtWidgets.QTableWidget):
             path = self._dialogs.getSaveFileName(filter='*.csv')
         if path:
             self._setPath(path)
-            with open(str(self._path), 'wb') as stream:
+            with open(unicode(self._path), 'wb') as stream:
                 writer = csv.writer(stream)
                 table = self.table()
                 for row in table:
@@ -126,7 +124,7 @@ class Table(QtWidgets.QTableWidget):
         elif event.matches(QtGui.QKeySequence.Paste):
             self.paste()
         else:
-            QtWidgets.QTableWidget.keyPressEvent(self, event)
+            QtGui.QTableWidget.keyPressEvent(self, event)
 
 
     def insertBlankCells(self):
@@ -233,7 +231,7 @@ class Table(QtWidgets.QTableWidget):
                 if col != lastCol-1:
                     text += '\t'
             text += '\n'
-        QtWidgets.QApplication.clipboard().setText(text)
+        QtGui.QApplication.clipboard().setText(text)
 
 
     def _textToTable(self, text, separator='\t'):
@@ -288,7 +286,7 @@ class Table(QtWidgets.QTableWidget):
 
     def paste(self):
         #get the text from the clipboard
-        text = str(QtWidgets.QApplication.clipboard().text())
+        text = str(QtGui.QApplication.clipboard().text())
         if text:
             table = self._textToTable(text)
             self.importTable(table)
@@ -316,24 +314,24 @@ class Table(QtWidgets.QTableWidget):
             for row,line in enumerate(table):
                 for col, text in enumerate(line):
                     r,c = row+startRow,col+startCol
-                    self.setItemText(r,c, str(text))
+                    self.setItemText(r,c, unicode(text))
 
 
     def setItemText(self, row, col, text):
         item = self.item(row,col)
         if not item:
-            item = QtWidgets.QTableWidgetItem()
+            item = QtGui.QTableWidgetItem()
             self.setItem(row,col,item)
         item.setText(text)
 
 
 
 
-class _TableMenu(QtWidgets.QWidget):
+class _TableMenu(QtGui.QWidget):
     def __init__(self, table):
-        QtWidgets.QWidget.__init__(self)
+        QtGui.QWidget.__init__(self)
         self._table = table
-        self._menu=QtWidgets.QMenu(self)
+        self._menu=QtGui.QMenu(self)
 
         a = self._menu.addAction('Clean')
         a.triggered.connect(self._table.cleanTable)
@@ -374,28 +372,28 @@ class _TableMenu(QtWidgets.QWidget):
 
 
 
-# class _HeaderMenu(QtWidgets.QWidget):
+# class _HeaderMenu(QtGui.QWidget):
 #     '''an individual header menu for QTableWidgets
 #      - not used at the moment'''
 #     def __init__(self, header):
-#         QtWidgets.QWidget.__init__(self)
+#         QtGui.QWidget.__init__(self)
 #         self._header = header
 # 
 #     def show(self, evt):
-#         menu=QtWidgets.QMenu(self)
+#         menu=QtGui.QMenu(self)
 #         menu.addAction('test')#.triggered.connect(self._table.addRow)
 #         menu.popup(evt.globalPos())#evt.globalPos())
 # 
 # 
-# class _Header(QtWidgets.QHeaderView):
+# class _Header(QtGui.QHeaderView):
 #     '''an individual header for QTableWidgets enables a 
 #     context menu on right click 
 #     - not used at the moment'''
 # 
 #     def __init__(self, orientation, parent=None):
-#         QtWidgets.QHeaderView.__init__(self, orientation, parent)
+#         QtGui.QHeaderView.__init__(self, orientation, parent)
 #         self._menu = _HeaderMenu(self)
-#         self.setResizeMode(QtWidgets.QHeaderView.Fixed)
+#         self.setResizeMode(QtGui.QHeaderView.Fixed)
 # 
 # 
 #     def mousePressEvent(self, evt):
@@ -411,7 +409,7 @@ class _TableMenu(QtWidgets.QWidget):
 if __name__ == '__main__':    
     import sys
 
-    app = QtWidgets.QApplication(sys.argv)
+    app = QtGui.QApplication(sys.argv)
     w = Table(rows=10,cols=10)
     w.setWindowTitle(w.__class__.__name__)
     w.show()
