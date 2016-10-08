@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from PyQt4 import QtGui, QtCore
+from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
 
-class FwTabWidget(QtGui.QTabWidget):
+class FwTabWidget(QtWidgets.QTabWidget):
     '''
     * allow to iterate over all tabs using for tab in TabWidget...
     * allow to give tabs (and not indexes) to:
@@ -15,10 +15,10 @@ class FwTabWidget(QtGui.QTabWidget):
     * tab renaming
     '''
 
-    sigTabAdded = QtCore.pyqtSignal(object)#tab
+    sigTabAdded = QtCore.Signal(object)#tab
 
-    def __init__(self, defaultTabWidget=QtGui.QWidget):
-        QtGui.QTabWidget.__init__(self)
+    def __init__(self, defaultTabWidget=QtWidgets.QWidget):
+        QtWidgets.QTabWidget.__init__(self)
         #use lambda to make later overwriting possible:
         self.tabCloseRequested.connect(lambda index: self.removeTab(index))
         self.setTabBar(_TabBar())
@@ -32,9 +32,9 @@ class FwTabWidget(QtGui.QTabWidget):
 
     def setTabsAddable(self, addable):
         if addable:
-            btn = QtGui.QToolButton(self)
+            btn = QtWidgets.QToolButton(self)
             btn.clicked.connect(lambda checked: self.addEmptyTab())
-            btn.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_FileDialogNewFolder))
+            btn.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_FileDialogNewFolder))
             self.setCornerWidget(btn)
             self.tabCloseRequested.connect(self._mkAddBtnVisible)
             self._mkAddBtnVisible() 
@@ -105,16 +105,16 @@ class FwTabWidget(QtGui.QTabWidget):
 
 
 
-class _TabBar(QtGui.QTabBar):
+class _TabBar(QtWidgets.QTabBar):
     '''
     allow change of tabTitle via double click
     '''
     def __init__(self, parent=None):
-        QtGui.QTabBar.__init__(self, parent)
+        QtWidgets.QTabBar.__init__(self, parent)
         
         self.tabsRenamable = False
         
-        self._editor = QtGui.QLineEdit(self)
+        self._editor = QtWidgets.QLineEdit(self)
         self._editor.setWindowFlags(QtCore.Qt.Popup)
         self._editor.setFocusProxy(self)
         self._editor.editingFinished.connect(self.handleEditingFinished)
@@ -128,7 +128,7 @@ class _TabBar(QtGui.QTabBar):
              event.key() == QtCore.Qt.Key_Escape)):
             self._editor.hide()
             return True
-        return QtGui.QTabBar.eventFilter(self, widget, event)
+        return QtWidgets.QTabBar.eventFilter(self, widget, event)
 
 
     def mouseDoubleClickEvent(self, event):
@@ -158,7 +158,7 @@ class _TabBar(QtGui.QTabBar):
  
 if __name__ == '__main__':
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w = FwTabWidget()
     w.setWindowTitle(w.__class__.__name__)
 

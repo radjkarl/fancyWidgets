@@ -1,9 +1,9 @@
-from PyQt4 import QtGui
+from qtpy import QtGui, QtPrintSupport, QtWidgets
 from six import string_types
 
 
 
-class MenuBar(QtGui.QMenuBar):
+class MenuBar(QtWidgets.QMenuBar):
     '''
     QMenuBar with easier insertMenu methods
     methods are used from:

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 *-*
 
 from __future__ import print_function
-from PyQt4 import QtGui
+from qtpy import QtGui, QtPrintSupport, QtWidgets
 
 
-
-class Console(QtGui.QTextEdit):
+class Console(QtWidgets.QTextEdit):
     '''
     A simple qWidget with one read-only QTextEdit with a limited number of lines
     to display output generated with messages which 
@@ -14,7 +13,7 @@ class Console(QtGui.QTextEdit):
     MAXLINES = 300
 
     def __init__(self, outputSignal=None, errorSignal=None, *args, **kwargs):
-        QtGui.QTextEdit.__init__(self, *args, **kwargs)
+        QtWidgets.QTextEdit.__init__(self, *args, **kwargs)
 
         self._red = QtGui.QColor(255,0,0)
         self._black = QtGui.QColor(0,0,0)
@@ -88,22 +87,22 @@ class Console(QtGui.QTextEdit):
         * 'Show line numbers'
         * 'Save to file'
         '''
-        menu = QtGui.QTextEdit.createStandardContextMenu(self)
+        menu = QtWidgets.QTextEdit.createStandardContextMenu(self)
         
         #create max.lines spin box:
-        w = QtGui.QWidget()
-        l = QtGui.QHBoxLayout()
+        w = QtWidgets.QWidget()
+        l = QtWidgets.QHBoxLayout()
         w.setLayout(l)
-        e = QtGui.QSpinBox()
+        e = QtWidgets.QSpinBox()
         e.setRange(1,1e6)
         e.setValue(self.MAXLINES)
         e.valueChanged.connect(self.document().setMaximumBlockCount)
-        l.addWidget(QtGui.QLabel('Max. lines'))
+        l.addWidget(QtWidgets.QLabel('Max. lines'))
         l.addWidget(e)
 
 
         #add spinbox to menu:
-        a = QtGui.QWidgetAction(self)
+        a = QtWidgets.QWidgetAction(self)
         a.setDefaultWidget(w)
         menu.addAction(a)
         
@@ -115,7 +114,7 @@ if __name__ == '__main__':
     import sys
     from fancytools.utils.StreamSignal import StreamSignal
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
     #create 2 connectable stdout/stderr signals:
     sout = StreamSignal('out')
@@ -131,7 +130,7 @@ if __name__ == '__main__':
     # print an error if button is pressed:
     def printError(evt):
         raise Exception('this is an error test')
-    a = QtGui.QPushButton('press for error')
+    a = QtWidgets.QPushButton('press for error')
     a.clicked.connect(printError) 
 
     a.show()

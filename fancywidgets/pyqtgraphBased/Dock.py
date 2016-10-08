@@ -2,7 +2,7 @@
 from __future__ import division
 from past.utils import old_div
 import pyqtgraph_karl.dockarea as pgDock
-from pyqtgraph_karl.Qt import QtGui, QtCore
+from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
 import weakref
 
 
@@ -39,7 +39,7 @@ class Dock(pgDock.Dock):
             self.showNormal()
         pgDock.Dock.close(self)
         if f:
-            QtGui.QWidget.close(self)
+            QtWidgets.QWidget.close(self)
 
 
     def closeEvent(self, evt):
@@ -49,7 +49,7 @@ class Dock(pgDock.Dock):
   
     def setFullscreen(self):
         if not self.isFullScreen():
-            d = QtGui.QApplication.desktop()
+            d = QtWidgets.QApplication.desktop()
             n = d.screenNumber(self)
             self.release()
             #go to current screen:
@@ -113,13 +113,13 @@ class Dock(pgDock.Dock):
 
 
 
-class FullscreenMsg(QtGui.QLabel):
+class FullscreenMsg(QtWidgets.QLabel):
     '''
     Simple message on top of this window
     hides itself after few seconds
     '''
     def __init__(self, parent):
-        QtGui.QLabel.__init__(self, 'Press <ESC> to exit full screen', parent=parent)
+        QtWidgets.QLabel.__init__(self, 'Press <ESC> to exit full screen', parent=parent)
         #make frameles:
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
         self.setStyleSheet("QLabel { background-color : black; color : white; }")
@@ -131,17 +131,17 @@ class FullscreenMsg(QtGui.QLabel):
 
 
 
-class DockLabelMenu(QtGui.QMenu):
+class DockLabelMenu(QtWidgets.QMenu):
     
     def __init__(self, dock, *args):
-        QtGui.QMenu.__init__(self, *args)
+        QtWidgets.QMenu.__init__(self, *args)
         
         self.dock = dock
 
-        self.action_popout = QtGui.QAction('Pop out', self, checkable=True)
+        self.action_popout = QtWidgets.QAction('Pop out', self, checkable=True)
         self.addAction(self.action_popout)
 
-        self.action_fullscreen = QtGui.QAction('Fullscreen (double click)', self)#, checkable=True)
+        self.action_fullscreen = QtWidgets.QAction('Fullscreen (double click)', self)#, checkable=True)
         self.addAction(self.action_fullscreen)
         
         self.action_name = self.addAction('Set Name')
@@ -154,7 +154,8 @@ class DockLabelMenu(QtGui.QMenu):
 
         #enable this menu on right click:
         self.dock.label.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.connect(self.dock.label,QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self._showContextMenu)
+        self.dock.label.customContextMenuRequested[QtCore.QPoint].connect(self._showContextMenu)
+        # self.connect(self.dock.label,QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self._showContextMenu)
 
         self.editor = None #set-name-editor
 
@@ -200,7 +201,7 @@ class DockLabelMenu(QtGui.QMenu):
 
     def setLabelName(self):
         if not self.editor:
-            self.editor = QtGui.QLineEdit(self.dock.label)
+            self.editor = QtWidgets.QLineEdit(self.dock.label)
             self.editor.setText(self.dock.label.text())
             #set smaller size to fit text in label:
             font = QtGui.QFont("Arial", 7)    
@@ -224,8 +225,8 @@ class DockLabelMenu(QtGui.QMenu):
 if __name__ == '__main__':
     import sys
     from fancywidgets.pyqtgraphBased.DockArea import DockArea
-    app = QtGui.QApplication(sys.argv)
-    win = QtGui.QMainWindow()
+    app = QtWidgets.QApplication(sys.argv)
+    win = QtWidgets.QMainWindow()
     win.setWindowTitle('Dock')
 
     area = DockArea()

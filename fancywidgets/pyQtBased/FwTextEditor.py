@@ -2,9 +2,8 @@
 
 #foreign
 from __future__ import absolute_import
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt
-#this pkg
+from qtpy import QtGui, QtPrintSupport, QtWidgets
+from qtpy.QtCore import Qt#this pkg
 from ._textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
 
 
@@ -40,7 +39,7 @@ class FwTextEditor(MainWindow):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w= FwTextEditor()
     w.setWindowTitle(w.__class__.__name__)
     w.show()

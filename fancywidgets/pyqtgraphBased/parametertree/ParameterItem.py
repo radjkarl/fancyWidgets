@@ -3,7 +3,7 @@
 from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem as OldPI
 #from pyqtgraph.parametertree.parameterTypes import ActionParameter
 
-from pyqtgraph_karl.Qt import QtGui, QtCore
+from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
 class ParameterItem(OldPI):
@@ -11,19 +11,19 @@ class ParameterItem(OldPI):
 	def __init__(self, param, depth=0):
 		#SLIDING
 		if param.opts.get('sliding', False):
-			self.controls = QtGui.QWidget()
-			btnlayout = QtGui.QVBoxLayout() 
+			self.controls = QtWidgets.QWidget()
+			btnlayout = QtWidgets.QVBoxLayout() 
 			btnlayout.setContentsMargins(0, 0, 0, 0)
 			btnlayout.setSpacing(0)
 			self.controls.setLayout(btnlayout)
-			slideBtnUp = QtGui.QPushButton()
-			slideBtnDown = QtGui.QPushButton()
+			slideBtnUp = QtWidgets.QPushButton()
+			slideBtnDown = QtWidgets.QPushButton()
 			for btn in (slideBtnUp, slideBtnDown):
 				btn.setFixedWidth(10)
 				btn.setFixedHeight(10)
 				btnlayout.addWidget(btn)
-			slideBtnUp.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_ArrowUp))
-			slideBtnDown.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_ArrowDown))
+			slideBtnUp.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp))
+			slideBtnDown.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowDown))
 			slideBtnUp.clicked.connect(lambda: self.slideChild(-1))#param.slide(-1))
 			slideBtnDown.clicked.connect(lambda: self.slideChild(1))#param.slide(1))
 
@@ -57,7 +57,7 @@ class ParameterItem(OldPI):
 # 			if not widget:
 # 				widget = self.widget
 
-			k = QtGui.QShortcut(parent)#QtGui.QApplication.instance())
+			k = QtWidgets.QShortcut(parent)#QtWidgets.QApplication.instance())
 			if not isinstance(key, QtGui.QKeySequence):
 				key = QtGui.QKeySequence(key)
 			k.setKey(QtGui.QKeySequence(key))

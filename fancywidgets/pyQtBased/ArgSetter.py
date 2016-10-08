@@ -1,10 +1,9 @@
 from __future__ import print_function
-
-from PyQt4 import QtGui, QtCore
-
+from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
-class ArgSetter(QtGui.QDialog):
+
+class ArgSetter(QtWidgets.QDialog):
     '''Create an window to setup attributes graphically
 
     useful as quick configurator for other functions/classes that need 
@@ -42,7 +41,7 @@ class ArgSetter(QtGui.QDialog):
         unpackDict             True, False | True: 
         ====================   =========================================================
         '''
-        QtGui.QDialog.__init__(self)
+        QtWidgets.QDialog.__init__(self)
         self._wantToClose = False
         self.unpackDict = unpackDict
 
@@ -50,7 +49,7 @@ class ArgSetter(QtGui.QDialog):
             self.finished.connect(self.stayOpen)
 
         self.setWindowTitle(title)
-        layout = QtGui.QGridLayout()
+        layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
 
         if introduction:
@@ -67,27 +66,27 @@ class ArgSetter(QtGui.QDialog):
             tip = val.get('tip', None)
 
             # NAME
-            nameLabel = QtGui.QLabel(name)
+            nameLabel = QtWidgets.QLabel(name)
             layout.addWidget(nameLabel, row, 0)
                 # LINE
             if dtype == 'line':
                 nameLabel.setText('<b>%s</b>' %nameLabel.text())
-                line = QtGui.QFrame()
-                line.setFrameStyle(QtGui.QFrame.HLine | QtGui.QFrame.Raised)
+                line = QtWidgets.QFrame()
+                line.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Raised)
                 layout.addWidget(line, row, 1, 1, 3)
                 # FILE/DIRECTORY
             elif dtype in (file, dir):
-                wl = QtGui.QHBoxLayout()
-                q = QtGui.QLineEdit(value)
-                btn = QtGui.QPushButton()
+                wl = QtWidgets.QHBoxLayout()
+                q = QtWidgets.QLineEdit(value)
+                btn = QtWidgets.QPushButton()
 
                 if dtype == file:
                     fn = self._getFile
-                    btn.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_FileIcon))
+                    btn.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_FileIcon))
 
                 else:
                     fn = self._getFolder
-                    btn.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon))
+                    btn.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
 
                 btn.clicked.connect(lambda checked, fn=fn, lineEdit=q: fn(lineEdit))
 
@@ -100,7 +99,7 @@ class ArgSetter(QtGui.QDialog):
             else:
                 if type(limits) in (list, tuple):
                     # create a QCombobox if LIMITS are given
-                    q = QtGui.QComboBox()
+                    q = QtWidgets.QComboBox()
                     q.text = q.currentText
                     for n, l in enumerate(limits):
                         limits[n] = str(l)
@@ -111,7 +110,7 @@ class ArgSetter(QtGui.QDialog):
                     q.addItems(limits)
                 else:
                     # if NO LIMITS given: create a lieEdit 
-                    q = QtGui.QLineEdit(value)
+                    q = QtWidgets.QLineEdit(value)
                     if dtype and dtype in self.validators:
                         q.setValidator(self.validators[dtype]())
                 if tip:
@@ -120,27 +119,27 @@ class ArgSetter(QtGui.QDialog):
                 layout.addWidget(q, row, 1)
                 # UNIT
                 if unit:
-                    layout.addWidget(QtGui.QLabel(str(unit)), row, 2)
+                    layout.addWidget(QtWidgets.QLabel(str(unit)), row, 2)
 
                 self.values.append((name, q, dtype))
 
         # SAVE/LOAD BUTTON
         if saveLoadButton:
-            box = QtGui.QGroupBox('Preferences')
-            bLayout = QtGui.QGridLayout()
+            box = QtWidgets.QGroupBox('Preferences')
+            bLayout = QtWidgets.QGridLayout()
             box.setLayout(bLayout)
 
-            btn_load = QtGui.QPushButton('Load')
-            self.label_load = QtGui.QLineEdit(loadPath)
-            btn_change_load = QtGui.QPushButton()
-            btn_change_load.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon))
+            btn_load = QtWidgets.QPushButton('Load')
+            self.label_load = QtWidgets.QLineEdit(loadPath)
+            btn_change_load = QtWidgets.QPushButton()
+            btn_change_load.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
             btn_change_load.clicked.connect(self._setLoadPath)
             btn_load.clicked.connect(self._loadPreferences)
 
-            btn_save = QtGui.QPushButton('Save')
-            self.label_save = QtGui.QLineEdit(savePath)
-            btn_change_save = QtGui.QPushButton()
-            btn_change_save.setIcon(QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon))
+            btn_save = QtWidgets.QPushButton('Save')
+            self.label_save = QtWidgets.QLineEdit(savePath)
+            btn_change_save = QtWidgets.QPushButton()
+            btn_change_save.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
             btn_change_save.clicked.connect(self._setSavePath)
             btn_save.clicked.connect(self._savePreferences)
 
@@ -155,32 +154,32 @@ class ArgSetter(QtGui.QDialog):
             layout.addWidget(box, row, 0, 1, 3)
 
         # DONE BUTTON
-        self.btn_done = QtGui.QPushButton('done')
+        self.btn_done = QtWidgets.QPushButton('done')
         self.btn_done.clicked.connect(self.check)
         layout.addWidget(self.btn_done, row+1,0, 1, 3)
 
 
     @staticmethod
     def _getFile(lineEdit):
-        filename = QtGui.QFileDialog.getOpenFileName(directory=lineEdit.text())
+        filename = QtWidgets.QFileDialog.getOpenFileName(directory=lineEdit.text())
         if filename:
             lineEdit.setText(str(filename))
 
 
     @staticmethod
     def _getFolder(lineEdit):
-        folder = QtGui.QFileDialog.getExistingDirectory(directory=lineEdit.text())
+        folder = QtWidgets.QFileDialog.getExistingDirectory(directory=lineEdit.text())
         if folder:
             lineEdit.setText(str(folder))
 
 
     def _setSavePath(self):
-        path = QtGui.QFileDialog.getSaveFileName(filter='*.txt')
+        path = QtWidgets.QFileDialog.getSaveFileName(filter='*.txt')
         self.label_save.setText(path) 
 
 
     def _setLoadPath(self):
-        path = QtGui.QFileDialog.getOpenFileName(filter='*.txt')
+        path = QtWidgets.QFileDialog.getOpenFileName(filter='*.txt')
         self.label_load.setText(path) 
 
 
@@ -206,7 +205,7 @@ class ArgSetter(QtGui.QDialog):
         with open(self.label_load.text(), 'r') as f:
             d = eval(f.read())
             for name, widget, _ in self.values:
-                if isinstance(widget, QtGui.QComboBox):
+                if isinstance(widget, QtWidgets.QComboBox):
                     for c in range(widget.count()):
                         if widget.itemText(c) == d[name]:
                             widget.setCurrentIndex(c)
@@ -221,12 +220,12 @@ class ArgSetter(QtGui.QDialog):
         because now the dialog doesn't block (anymore)
         '''
         self.btn_done.clicked.connect(lambda: self.btn_done.setText('update'))
-        QtGui.QDialog.show(self)
+        QtWidgets.QDialog.show(self)
 
 
     def run(self, processClass):
         self.processClass = processClass
-        QtGui.QDialog.show(self)
+        QtWidgets.QDialog.show(self)
         self.btn_done.clicked.connect(self._startProcess)
 
 
@@ -247,7 +246,7 @@ class ArgSetter(QtGui.QDialog):
                 try:
                     val = dtype(val)
                 except:
-                    msgBox = QtGui.QMessageBox()
+                    msgBox = QtWidgets.QMessageBox()
                     msgBox.setText('attribute %s has not the right dtype(%s)' %(name, str(dtype)))
                     msgBox.exec_()
             self.args[name] = val
@@ -256,13 +255,13 @@ class ArgSetter(QtGui.QDialog):
 
     def closeEvent(self, evt):
         self._wantToClose = True
-        QtGui.QDialog.closeEvent(self, evt)
+        QtWidgets.QDialog.closeEvent(self, evt)
 
 
     def done(self, result):
         '''save the geometry before dialog is close to restore it later'''
         self._geometry = self.geometry()
-        QtGui.QDialog.done(self, result)
+        QtWidgets.QDialog.done(self, result)
 
 
     def stayOpen(self):
@@ -275,7 +274,7 @@ class ArgSetter(QtGui.QDialog):
 
 if __name__ == '__main__':
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
     print("""TEST 1:
 * ArgSetter will block until the button 'done' is pressed. 
@@ -309,9 +308,9 @@ if __name__ == '__main__':
 
     a.exec_()
     if a.result():
-        print (a.args)
+        print(a.args)
     else:
-        print ('setup cancelled')
+        print('setup cancelled')
 
 
     print("""TEST 2:
@@ -344,7 +343,7 @@ if __name__ == '__main__':
             }, stayOpen=True, saveLoadButton=True)
 
 
-    class MyProcedure(QtGui.QTextEdit):
+    class MyProcedure(QtWidgets.QTextEdit):
         '''
         a procedure taking the argument from ArgSetter
         as self.opts
@@ -354,7 +353,7 @@ if __name__ == '__main__':
         '''
 
         def __init__(self, opts):
-            QtGui.QWidget.__init__(self)
+            QtWidgets.QWidget.__init__(self)
             self.setReadOnly(True)
             self.opts = opts
             self.timer = QtCore.QTimer()

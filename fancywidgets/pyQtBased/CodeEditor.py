@@ -2,8 +2,7 @@ from __future__ import print_function
 # from future import standard_library
 # standard_library.install_aliases()
 
-from PyQt4 import QtGui, QtCore
-
+from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 try:
     #py3-2 issue
     import __builtin__
@@ -21,24 +20,24 @@ from fancytools.fcollections.naturalSorting import naturalSorting
 # FIXME
 # in order to also have in in a frozen environment
 # see _getInstalledModules
-from fancywidgets.pyQtBased import _installed_modules
+from . import _installed_modules
 
 
-class CodeEditor(QtGui.QWidget):
+class CodeEditor(QtWidgets.QWidget):
     '''
     A simple code editor with a QPlainTextEdit and line numbers of the left side
     '''
     def __init__(self, dialog=None):
-        QtGui.QWidget.__init__(self)
+        QtWidgets.QWidget.__init__(self)
 
         if dialog is None:
-            dialog = QtGui.QFileDialog
+            dialog = QtWidgets.QFileDialog
         self.dialog = dialog
 
         self.editor = _CodeTextEdit(self)
         self.lineNumbers = _LineNumberArea(self.editor)
 
-        l = QtGui.QHBoxLayout()
+        l = QtWidgets.QHBoxLayout()
         self.setLayout(l)
         l.addWidget(self.lineNumbers)
         l.addWidget(self.editor)
@@ -52,7 +51,7 @@ class CodeEditor(QtGui.QWidget):
 
 
 
-class _CodeTextEdit(QtGui.QPlainTextEdit):
+class _CodeTextEdit(QtWidgets.QPlainTextEdit):
     '''
     a text editor with ... 
     * monospace font, 
@@ -61,7 +60,7 @@ class _CodeTextEdit(QtGui.QPlainTextEdit):
     * 'save to file' in context menu 
     '''
     def __init__(self, codeEditor):
-        QtGui.QPlainTextEdit.__init__(self)
+        QtWidgets.QPlainTextEdit.__init__(self)
 
         self._globals = {}
         self._mg = None
@@ -78,7 +77,7 @@ class _CodeTextEdit(QtGui.QPlainTextEdit):
         metrics = QtGui.QFontMetrics(font)
         self.setTabStopWidth(tabStop * metrics.width(' '))
         # SCROLL BAR - horizontal:
-        self.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
+        self.setLineWrapMode(QtWidgets.QPlainTextEdit.NoWrap)
         # SYNTAX highlighter:
         self.highlighter = Highlighter(self.document(), "python")
 
@@ -257,7 +256,7 @@ l=''')
             txt = txt[:1000]
             txt += '\n...'
             
-        QtGui.QToolTip.showText(
+        QtWidgets.QToolTip.showText(
             QtGui.QCursor.pos(), txt,
             mg, mg.actionGeometry(action))
 
@@ -267,7 +266,7 @@ l=''')
             return self._mg
         
         #add globals to menu:
-        self._mg = mg = QtGui.QMenu('Globals')
+        self._mg = mg = QtWidgets.QMenu('Globals')
         #to show tooltips of its containing actions:
         mg.hovered.connect(self._globalMenuHovered)
         #make font bold:
@@ -287,7 +286,7 @@ l=''')
         * 'Show line numbers'
         * 'Save to file'
         '''
-        menu = QtGui.QPlainTextEdit.createStandardContextMenu(self)
+        menu = QtWidgets.QPlainTextEdit.createStandardContextMenu(self)
         mg = self.getGlobalsMenu()
         
         a0 = menu.actions()[0]
@@ -295,7 +294,7 @@ l=''')
         menu.insertSeparator(a0)
 
         menu.addSeparator()
-        a = QtGui.QAction('Show line numbers', menu)
+        a = QtWidgets.QAction('Show line numbers', menu)
         l = self.codeEditor.lineNumbers
         a.setCheckable(True)
         a.setChecked(l.isVisible())
@@ -303,7 +302,7 @@ l=''')
         menu.addAction(a)
 
         menu.addSeparator()
-        a = QtGui.QAction('Save to file', menu)
+        a = QtWidgets.QAction('Save to file', menu)
         a.triggered.connect(self.saveToFile)
         menu.addAction(a)
 
@@ -325,17 +324,17 @@ l=''')
         '''
         replace [tab] with 4 spaces 
         '''
-        txt = QtGui.QPlainTextEdit.toPlainText(self)
+        txt = QtWidgets.QPlainTextEdit.toPlainText(self)
         return txt.replace('\t', '    ')
 
 
 
-class  _LineNumberArea(QtGui.QPlainTextEdit):
+class  _LineNumberArea(QtWidgets.QPlainTextEdit):
     '''
     Left area to show line numbers of the code editor
     '''
     def __init__(self, editor):
-        QtGui.QPlainTextEdit.__init__(self)
+        QtWidgets.QPlainTextEdit.__init__(self)
         self.setReadOnly(True)
         self.setFont(editor.font())
         self.setEnabled(False)
@@ -383,7 +382,7 @@ class  _LineNumberArea(QtGui.QPlainTextEdit):
 
 if __name__ == '__main__':
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w = CodeEditor()
     w.setWindowTitle(w.__class__.__name__)
     w.editor.setPlainText('#python highlighting\ni = int(5)\ndef fn(a,i):\n\tprint(a,i)')
