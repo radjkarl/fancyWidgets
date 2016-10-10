@@ -3,7 +3,7 @@
 from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem as OldPI
 #from pyqtgraph.parametertree.parameterTypes import ActionParameter
 
-from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
+from qtpy import QtGui, QtWidgets, QtCore
 
 
 class ParameterItem(OldPI):

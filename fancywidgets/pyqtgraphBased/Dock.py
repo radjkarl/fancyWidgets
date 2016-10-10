@@ -2,7 +2,7 @@
 from __future__ import division
 from past.utils import old_div
 import pyqtgraph_karl.dockarea as pgDock
-from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
+from qtpy import QtGui, QtWidgets, QtCore
 import weakref
 
 

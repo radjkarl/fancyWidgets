@@ -8,10 +8,10 @@ from pyqtgraph_karl.parametertree.Parameter import registerParameterType
 from pyqtgraph_karl.parametertree.Parameter import PARAM_TYPES, PARAM_NAMES
 
 
-from pyqtgraph_karl import asUnicode
-from pyqtgraph_karl.Qt import QtGui, QtPrintSupport, QtWidgets, QtCore
+# from pyqtgraph_karl import asUnicode
+from qtpy import QtCore
 
-import traceback
+# import traceback
 
 
 class Parameter(pgParameter):

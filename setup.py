@@ -35,9 +35,9 @@ setup(
 	license			= package.__license__,
 	install_requires= [
         "fancytools",
-        "pkginfo"
+        "pkginfo",
+        "qtpy"
         #'pyqtgraph_karl', #optional
-        #"PyQt4" # not in pip
     ],
 	classifiers		= [
         'Intended Audience :: Developers',
