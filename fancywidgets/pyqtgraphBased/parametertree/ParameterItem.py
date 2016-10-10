@@ -24,8 +24,6 @@ class ParameterItem(OldPI):
                 btn.setFixedHeight(10)
                 btnlayout.addWidget(btn)
             
-            print(QtWidgets.QApplication.style().standardIcon(
-                                QtWidgets.QStyle.SP_ArrowUp),555)
             slideBtnUp.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp))
             slideBtnDown.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowDown))
             slideBtnUp.clicked.connect(lambda: self.slideChild(-1))#param.slide(-1))
