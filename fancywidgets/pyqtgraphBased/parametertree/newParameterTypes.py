@@ -9,10 +9,9 @@ from .ParameterItem import ParameterItem
 from .parameterTypes import *
 
 # import numpy as np
-# 
+#
 # import os
 # import inspect
-
 
 
 class EmptyParameter(Parameter):
@@ -22,61 +21,62 @@ class EmptyParameter(Parameter):
 registerParameterType('empty', EmptyParameter, override=True)
 
 
-
 class MenuParameterItem(WidgetParameterItem):
     """
     Group parameters are used mainly as a generic parent item that holds (and groups!) a set
     of child parameters. It also provides a simple mechanism for displaying a button or combo
     that can be used to add new parameters to the group.
     """
+
     def __init__(self, param, depth):
 
         WidgetParameterItem.__init__(self, param, depth)
         self.hideWidget = False
 
-
     def makeWidget(self):
-        v = self.param.opts.get('value',self.param.opts.get('limits',[''])[0])
+        v = self.param.opts.get(
+            'value', self.param.opts.get(
+                'limits', [''])[0])
         w = QtWidgets.QMenuBar()
-        w.menu=w.addMenu(v)
+        w.menu = w.addMenu(v)
         w.sigChanged = None
         w.value = lambda: ''
-        w.menu.aboutToShow.connect(lambda menu=w.menu:self.param.aboutToShow.emit(menu))
+        w.menu.aboutToShow.connect(
+            lambda menu=w.menu: self.param.aboutToShow.emit(menu))
         return w
 
 
 class MenuParameter(Parameter):
     itemClass = MenuParameterItem
-    aboutToShow = QtCore.Signal(object)  ## qmenu
+    aboutToShow = QtCore.Signal(object)  # qmenu
 
     def value(self):
-        return self.items.keyrefs()[0]().widget.menu.title() 
-    #TODO: doesnt work
+        return self.items.keyrefs()[0]().widget.menu.title()
+    # TODO: doesnt work
 #     def setValue(self, val):
 #         self.items[xxx].widget.setTitle(val)
 
 registerParameterType('menu', MenuParameter, override=True)
 
 
-
 class ResetListParameterItem(ListParameterItem):
     """
     a list-Parameter that always returning to the first item
     """
-    def __init__(self, param, depth):
-        super(ResetListParameterItem,self).__init__(param, depth)
-        #the resetList will reset automatically - there is no need for a default button
-        self.defaultBtn.hide()
 
+    def __init__(self, param, depth):
+        super(ResetListParameterItem, self).__init__(param, depth)
+        # the resetList will reset automatically - there is no need for a
+        # default button
+        self.defaultBtn.hide()
 
     def valueChanged(self, *args, **kwargs):
         self.widget.setCurrentIndex(0)
-        self.targetValue = self.widget.itemText(0)#.currentText()
-
+        self.targetValue = self.widget.itemText(0)  # .currentText()
 
     def limitsChanged(self, param, limits):
         self.widget.setCurrentIndex(0)
-        super(ResetListParameterItem,self).limitsChanged(param, limits)
+        super(ResetListParameterItem, self).limitsChanged(param, limits)
 
 
 class ResetListParameter(ListParameter):
@@ -84,16 +84,9 @@ class ResetListParameter(ListParameter):
 registerParameterType('resetList', ResetListParameter, override=True)
 
 
-
-
-
-
-
-
-
-# 
-# 
-# 
+#
+#
+#
 # class _SubItem(QtWidgets.QTreeWidgetItem):
 # #    def __init__(self, *opts):
 # #        super(_TableSubItem, self).__init__(*opts)
@@ -104,12 +97,12 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #             #self.lastSel.selected(False)
 #             #AttributeError: 'QTreeWidgetItem' object has no attribute 'selected'
 #         pass
-# 
-# 
+#
+#
 # class TableParameterItem(WidgetParameterItem):
 #     '''doesnt work at the moment...'''
 #     def __init__(self, param, depth):
-# 
+#
 #         initTable = param.opts.get('value')
 #         if initTable:
 #             self._y = len(initTable[0])
@@ -117,60 +110,60 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         else:
 #             self._x = 3
 #             self._y = 3
-# 
+#
 #         WidgetParameterItem.__init__(self, param, depth)
 #         #debug:
 #         self.subItem = _SubItem()
 #         self.addChild(self.subItem)
-# 
+#
 #         self.param.sigHeaderChanged.connect(self.headerChanged)
-# 
+#
 #         if initTable:
 #             self.tableBox.importTable(initTable)
 #         header = self.param.opts.get('header')
 #         if header:
 #             self.headerChanged(header)
-# 
+#
 #         colFixed = self.param.opts.get('columnsFixed', False)
 #         #if colFixed:
 #         self.tableBox.setColumnsFixed(colFixed)
 # #        if not param.opts.get('visible',True):
 # #            self.tableBox.hide()
-# 
+#
 #     #def show(show=True):
-#         
+#
 #         #visible = self.param.opts.get('visible', None)
 #         #if visible != None:
 #         #    print 11111,visible
 #     #    self.param.show()
 #     #    self.param.hide()#visible)
 #         #self.setHidden(True)
-# 
+#
 # #    def setColumnsFixed(self, value):
 #     #    self.tableBox.setColumnsFixed(value)
-# 
+#
 #     def limitsChanged(self, param, limits):
 #         #self._updateSize(limits)#[0],limits[1])
 #         self.tableBox.setRowCount(limits[1])
 #         self.tableBox.setColumnCount(limits[0])
-# 
-# 
+#
+#
 #     def headerChanged(self, header):
 #         #print header,88888
 #         for n,h in enumerate(header):
 #             item = QtWidgets.QTableWidgetItem()
 #             #item.setText(str(h))#QtCore.QString(val))
 #             item.setText(h)#QtCore.QString(val))
-# 
+#
 #             #print n,h,self.tableBox.horizontalHeaderItem(n)
 #             self.tableBox.setHorizontalHeaderItem(n,item)
-# 
-# 
+#
+#
 #     def treeWidgetChanged(self):
 #         self.treeWidget().setFirstItemColumnSpanned(self.subItem, True)
 #         self.treeWidget().setItemWidget(self.subItem, 0, self.tableBox)
 #         self.setExpanded(True)
-#         
+#
 #     def makeWidget(self):
 #         #init shape
 #         self.layoutWidget = QtWidgets.QWidget()
@@ -179,11 +172,11 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         self.tableBox.horizontalHeader().setStretchLastSection(True)
 #         for col in range(self.tableBox.columnCount()-1):
 #             self.tableBox.setColumnWidth(col,50)
-# 
+#
 #         #self.tableBox.setDragEnabled(True)
 #         self.tableBox.setAcceptDrops(True)
-# 
-# 
+#
+#
 #         #self.textBox = QtWidgets.QTextEdit()
 #         #self.textBox.setMaximumHeight(100)
 #         #self.textBox.value = lambda: str(self.textBox.toPlainText())
@@ -193,16 +186,16 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #     #    self.tableBox.setItem(0,0, self.tableBox.item(0,0))
 #     #    print self.tableBox.currentItem(),445
 #         #self.setHidden = self.tableBox.hide
-# 
+#
 #         #self.layoutWidget.hide()
 #         #self.tableBox.hide()
 #         self.layoutWidget.value = self._getTable#lambda: self.__call__(value=arg)
 #         #self.layoutWidget.value = self.tableBox.currentItem.text#lambda:
 #         self.layoutWidget.setValue = self.tableBox.importTable#self.tableBox.currentItem.text#lambda:
-# 
+#
 #         return self.layoutWidget#self.tableBox#.table
-# 
-# 
+#
+#
 #     def _getTable(self):
 #         l = []#rowCount()
 #         for row in range(self.tableBox.rowCount()):
@@ -218,24 +211,24 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #                 l[-1].append(text)
 #         return l
 #                     #self._notepadItem.setItem(row,col, item)
-# 
-# 
-#     
-#         
+#
+#
+#
+#
 # class TableParameter(Parameter):
 #     """Editable string; displayed as large text box in the tree."""
 #     itemClass = TableParameterItem
 #     sigHeaderChanged = QtCore.Signal(object,object)  ## self, {opt:val, ...}
 #     #sigColumnsFixedChanged = QtCore.Signal(object,object)  ## self, {opt:val, ...}
-# 
+#
 #     def setHeader(self, header):
 #         #print header,55555
 #         self.sigHeaderChanged.emit(self, header)
-# 
+#
 #     #def setColumnsFixed(self, value):
 #     #    self.sigColumnsChanged.emit(self, value)
-# 
-# 
+#
+#
 #     def toArray(self, checkAscending=False):
 #         table =  self.value()
 #         lenCol = len(table[0])
@@ -261,13 +254,11 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #                 v0 = v1
 #         #self._table = np.array(sorted(table))
 #         return np.array(table)
-# 
+#
 # registerParameterType('table', TableParameter, override=True)
 
 
-
-
-# 
+#
 # class GroupParameterItem(ParameterItem):
 #     """
 #     Group parameters are used mainly as a generic parent item that holds (and groups!) a set
@@ -304,9 +295,9 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #             self.addItem.setFlags(QtCore.Qt.ItemIsEnabled)
 #             ParameterItem.addChild(self, self.addItem)            #self.limitsChanged = self.updateLimits
 #             self.param.sigLimitsChanged.connect(self.updateLimits)
-# 
-# 
-# 
+#
+#
+#
 #     #def updateDepth(self, depth):
 #         ### Change item's appearance based on its depth in the tree
 #         ### This allows highest-level groups to be displayed more prominently.
@@ -327,8 +318,8 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #                 ##font.setPointSize(font.pointSize()+1)
 #                 #self.setFont(c, font)
 #                 #self.setSizeHint(0, QtCore.QSize(0, 20))
-# 
-# 
+#
+#
 #     def addClicked(self):
 #         """Called when "add new" button is clicked
 #         The parameter MUST have an 'addNew' method defined.
@@ -336,11 +327,11 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         typ = asUnicode(self.addWidget.currentText())
 #         #self.param.opts['limits'][0] = typ
 #         self.param.opts['value'] = typ
-# 
+#
 #         self.param.sigValueChanged.emit(self, None)
 #         #self.param.addNew()
-# 
-# 
+#
+#
 #     def addChanged(self):
 #         """Called when "add new" combo is changed
 #         The parameter MUST have an 'addNew' method defined.
@@ -351,24 +342,24 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #         #self.param.opts['limits'][0] = typ
 #         self.param.opts['value'] = typ
 #         self.param.sigValueChanged.emit(self, None)
-# 
+#
 #         #self.param.addNew(typ)
 #         self.addWidget.setCurrentIndex(0)
-# 
+#
 #     def treeWidgetChanged(self):
 #         ParameterItem.treeWidgetChanged(self)
 #         self.treeWidget().setFirstItemColumnSpanned(self, True)
 #         if self.addItem is not None:
 #             self.treeWidget().setItemWidget(self.addItem, 0, self.addWidgetBox)
 #             self.treeWidget().setFirstItemColumnSpanned(self.addItem, True)
-# 
-# 
-# 
+#
+#
+#
 #     def updateLimits(self):
 #         l = self.param.opts.get('limits')
 #         #if len(l) == 1:
 #         #    self.addWidget.activated.connect(self.addClicked)
-#         
+#
 #         #else:
 #             #try:
 #         #        self.addWidget.activated.disconnect(self.addClicked)
@@ -392,12 +383,11 @@ registerParameterType('resetList', ResetListParameter, override=True)
 #                 self.addWidget.blockSignals(False)
 
 
-
 # class GroupParameter(Parameter):
 #     """
 #     Group parameters are used mainly as a generic parent item that holds (and groups!) a set
 #     of child parameters.
-# 
+#
 #     It also provides a simple mechanism for displaying a button or combo
 #     that can be used to add new parameters to the group. To enable this, the group
 #     must be initialized with the 'addText' option (the text will be displayed on

@@ -1,22 +1,22 @@
+# coding=utf-8
 from __future__ import print_function
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
-
 class ArgSetter(QtWidgets.QDialog):
-    '''Create an window to setup attributes graphically
+    """Create an window to setup attributes graphically
 
-    useful as quick configurator for other functions/classes that need 
-    keyword arguments that must be passed graphically 
+    useful as quick configurator for other functions/classes that need
+    keyword arguments that must be passed graphically
     e.g. for py2exe/pyinstaller apps
-    '''
-    validators = {float: QtGui.QDoubleValidator, 
+    """
+    validators = {float: QtGui.QDoubleValidator,
                   int: QtGui.QIntValidator}
 
     def __init__(self, title, argdict, stayOpen=False, saveLoadButton=False,
-                 savePath='config.txt', loadPath='config.txt', 
+                 savePath='config.txt', loadPath='config.txt',
                  introduction=None, unpackDict=False):
-        '''
+        """
         ====================   =========================================================
         Argument               Comment
         ====================   =========================================================
@@ -38,9 +38,9 @@ class ArgSetter(QtWidgets.QDialog):
         saveLoadButton         True -> add 2 buttons to save and load these preferences
         savePath               Default save path
         loadPath               Default load path
-        unpackDict             True, False | True: 
+        unpackDict             True, False | True:
         ====================   =========================================================
-        '''
+        """
         QtWidgets.QDialog.__init__(self)
         self._wantToClose = False
         self.unpackDict = unpackDict
@@ -68,11 +68,12 @@ class ArgSetter(QtWidgets.QDialog):
             # NAME
             nameLabel = QtWidgets.QLabel(name)
             layout.addWidget(nameLabel, row, 0)
-                # LINE
+            # LINE
             if dtype == 'line':
-                nameLabel.setText('<b>%s</b>' %nameLabel.text())
+                nameLabel.setText('<b>%s</b>' % nameLabel.text())
                 line = QtWidgets.QFrame()
-                line.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Raised)
+                line.setFrameStyle(
+                    QtWidgets.QFrame.HLine | QtWidgets.QFrame.Raised)
                 layout.addWidget(line, row, 1, 1, 3)
                 # FILE/DIRECTORY
             elif dtype in ('file', 'dir'):
@@ -82,13 +83,18 @@ class ArgSetter(QtWidgets.QDialog):
 
                 if dtype == 'file':
                     fn = self._getFile
-                    btn.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_FileIcon))
+                    btn.setIcon(
+                        QtWidgets.QApplication.style().standardIcon(
+                            QtWidgets.QStyle.SP_FileIcon))
 
                 else:
                     fn = self._getFolder
-                    btn.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
+                    btn.setIcon(
+                        QtWidgets.QApplication.style().standardIcon(
+                            QtWidgets.QStyle.SP_DirIcon))
 
-                btn.clicked.connect(lambda checked, fn=fn, lineEdit=q: fn(lineEdit))
+                btn.clicked.connect(
+                    lambda checked, fn=fn, lineEdit=q: fn(lineEdit))
 
                 wl.addWidget(q)
                 wl.addWidget(btn)
@@ -106,10 +112,10 @@ class ArgSetter(QtWidgets.QDialog):
                     if value:
                         if value in limits:
                             limits.remove(value)
-                        limits.insert(0,value)
+                        limits.insert(0, value)
                     q.addItems(limits)
                 else:
-                    # if NO LIMITS given: create a lieEdit 
+                    # if NO LIMITS given: create a lieEdit
                     q = QtWidgets.QLineEdit(value)
                     if dtype and dtype in self.validators:
                         q.setValidator(self.validators[dtype]())
@@ -132,23 +138,27 @@ class ArgSetter(QtWidgets.QDialog):
             btn_load = QtWidgets.QPushButton('Load')
             self.label_load = QtWidgets.QLineEdit(loadPath)
             btn_change_load = QtWidgets.QPushButton()
-            btn_change_load.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
+            btn_change_load.setIcon(
+                QtWidgets.QApplication.style().standardIcon(
+                    QtWidgets.QStyle.SP_DirIcon))
             btn_change_load.clicked.connect(self._setLoadPath)
             btn_load.clicked.connect(self._loadPreferences)
 
             btn_save = QtWidgets.QPushButton('Save')
             self.label_save = QtWidgets.QLineEdit(savePath)
             btn_change_save = QtWidgets.QPushButton()
-            btn_change_save.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_DirIcon))
+            btn_change_save.setIcon(
+                QtWidgets.QApplication.style().standardIcon(
+                    QtWidgets.QStyle.SP_DirIcon))
             btn_change_save.clicked.connect(self._setSavePath)
             btn_save.clicked.connect(self._savePreferences)
 
-            bLayout.addWidget(btn_load, 0,0)
-            bLayout.addWidget(self.label_load, 0,1)
-            bLayout.addWidget(btn_change_load, 0,2)
-            bLayout.addWidget(btn_save, 1,0)
-            bLayout.addWidget(self.label_save, 1,1)
-            bLayout.addWidget(btn_change_save, 1,2)
+            bLayout.addWidget(btn_load, 0, 0)
+            bLayout.addWidget(self.label_load, 0, 1)
+            bLayout.addWidget(btn_change_load, 0, 2)
+            bLayout.addWidget(btn_save, 1, 0)
+            bLayout.addWidget(self.label_save, 1, 1)
+            bLayout.addWidget(btn_change_save, 1, 2)
 
             row += 1
             layout.addWidget(box, row, 0, 1, 3)
@@ -156,32 +166,29 @@ class ArgSetter(QtWidgets.QDialog):
         # DONE BUTTON
         self.btn_done = QtWidgets.QPushButton('done')
         self.btn_done.clicked.connect(self.check)
-        layout.addWidget(self.btn_done, row+1,0, 1, 3)
-
+        layout.addWidget(self.btn_done, row + 1, 0, 1, 3)
 
     @staticmethod
     def _getFile(lineEdit):
-        filename = QtWidgets.QFileDialog.getOpenFileName(directory=lineEdit.text())
+        filename = QtWidgets.QFileDialog.getOpenFileName(
+            directory=lineEdit.text())
         if filename:
             lineEdit.setText(str(filename))
 
-
     @staticmethod
     def _getFolder(lineEdit):
-        folder = QtWidgets.QFileDialog.getExistingDirectory(directory=lineEdit.text())
+        folder = QtWidgets.QFileDialog.getExistingDirectory(
+            directory=lineEdit.text())
         if folder:
             lineEdit.setText(str(folder))
 
-
     def _setSavePath(self):
         path = QtWidgets.QFileDialog.getSaveFileName(filter='*.txt')
-        self.label_save.setText(path) 
-
+        self.label_save.setText(path)
 
     def _setLoadPath(self):
         path = QtWidgets.QFileDialog.getOpenFileName(filter='*.txt')
-        self.label_load.setText(path) 
-
+        self.label_load.setText(path)
 
     def _savePreferences(self):
         if self.label_save.text() in ('', '[NOT SAVED]'):
@@ -189,12 +196,11 @@ class ArgSetter(QtWidgets.QDialog):
         if self.label_save.text() == '':
             self.label_save.setText('[NOT SAVED]')
             return
-        with open(self.label_save.text(),'w') as f:
+        with open(self.label_save.text(), 'w') as f:
             d = {}
             for name, widget, _ in self.values:
                 d[name] = str(widget.text())
             f.write(str(d))
-
 
     def _loadPreferences(self):
         if self.label_load.text() in ('', '[NOT LOADED]'):
@@ -212,22 +218,19 @@ class ArgSetter(QtWidgets.QDialog):
                 else:
                     widget.setText(d[name])
 
-
     def show(self):
-        '''
+        """
         if the dialog is showed again or is not started with exec_
         naming the done button to 'update' make more sense
         because now the dialog doesn't block (anymore)
-        '''
+        """
         self.btn_done.clicked.connect(lambda: self.btn_done.setText('update'))
         QtWidgets.QDialog.show(self)
-
 
     def run(self, processClass):
         self.processClass = processClass
         QtWidgets.QDialog.show(self)
         self.btn_done.clicked.connect(self._startProcess)
-
 
     def _startProcess(self):
         self.btn_done.clicked.disconnect(self._startProcess)
@@ -237,9 +240,8 @@ class ArgSetter(QtWidgets.QDialog):
             p = self.processClass(self.args)
         self.btn_done.setText('update')
 
-
     def check(self):
-        '''check whether all attributes are setted and have the right dtype'''
+        """check whether all attributes are setted and have the right dtype"""
         for name, valItem, dtype in self.values:
             val = valItem.text()
             if dtype:
@@ -247,29 +249,27 @@ class ArgSetter(QtWidgets.QDialog):
                     val = dtype(val)
                 except:
                     msgBox = QtWidgets.QMessageBox()
-                    msgBox.setText('attribute %s has not the right dtype(%s)' %(name, str(dtype)))
+                    msgBox.setText(
+                        'attribute %s has not the right dtype(%s)' %
+                        (name, str(dtype)))
                     msgBox.exec_()
             self.args[name] = val
         self.accept()
-
 
     def closeEvent(self, evt):
         self._wantToClose = True
         QtWidgets.QDialog.closeEvent(self, evt)
 
-
     def done(self, result):
-        '''save the geometry before dialog is close to restore it later'''
+        """save the geometry before dialog is close to restore it later"""
         self._geometry = self.geometry()
         QtWidgets.QDialog.done(self, result)
 
-
     def stayOpen(self):
-        '''optional dialog restore'''
+        """optional dialog restore"""
         if not self._wantToClose:
             self.show()
             self.setGeometry(self._geometry)
-
 
 
 if __name__ == '__main__':
@@ -277,34 +277,34 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
 
     print("""TEST 1:
-* ArgSetter will block until the button 'done' is pressed. 
+* ArgSetter will block until the button 'done' is pressed.
 * If the dialog is not cancelled the arguments are printed""")
 
     a = ArgSetter('CloseAfterDone', {
-            'show_output_after_start':{
-                            'value': True, 
-                            'limits':[True, False], 
-                            'dtype':bool,
-                            'tip':'foo bar'},
-            'webcam_index': {
-                            'value':-1,
-                            'limits':list(range(-1,10)), 
-                            'dtype':int},
-            'output_file_name':{
-                            'value':'output.csv',
-                            'dtype':str},
-            'camera_calibration_File':{
-                            'value':'', 
-                            'dtype':str},
-            'nAverageSteps': {
-                            'value':3, 
-                            'limits':list(range(1,20)), 
-                            'dtype':int},
-            'refreshRate': {
-                            'value':100, 
-                            'dtype':int, 
-                            'unit':'ms'}
-            })
+        'show_output_after_start': {
+            'value': True,
+            'limits': [True, False],
+            'dtype': bool,
+            'tip': 'foo bar'},
+        'webcam_index': {
+            'value': -1,
+            'limits': list(range(-1, 10)),
+            'dtype': int},
+        'output_file_name': {
+            'value': 'output.csv',
+            'dtype': str},
+        'camera_calibration_File': {
+            'value': '',
+            'dtype': str},
+        'nAverageSteps': {
+            'value': 3,
+            'limits': list(range(1, 20)),
+            'dtype': int},
+        'refreshRate': {
+            'value': 100,
+            'dtype': int,
+            'unit': 'ms'}
+    })
 
     a.exec_()
     if a.result():
@@ -312,45 +312,43 @@ if __name__ == '__main__':
     else:
         print('setup cancelled')
 
-
     print("""TEST 2:
 * ArgSetter won't block but update its agument every time 'update' is pressed. """)
 
     a = ArgSetter('StayOpen', {
-            'one':{
-                            'value': True, 
-                            'limits':[True, False], 
-                            'dtype':bool,
-                            'tip':'foo bar'},
-            'two': {
-                            'value':-1, 
-                            'limits':list(range(-1,10)), 
-                            'dtype':int},
-            'three':{
-                            'value':'output.csv',
-                            'dtype':str},
-            'four':{
-                            'value':'', 
-                            'dtype':str},
-            'fife': {
-                            'value':3, 
-                            'limits':list(range(1,20)), 
-                            'dtype':int},
-            'six': {
-                            'value':100, 
-                            'dtype':int, 
-                            'unit':'ms'}
-            }, stayOpen=True, saveLoadButton=True)
-
+        'one': {
+            'value': True,
+            'limits': [True, False],
+            'dtype': bool,
+            'tip': 'foo bar'},
+        'two': {
+            'value': -1,
+            'limits': list(range(-1, 10)),
+            'dtype': int},
+        'three': {
+            'value': 'output.csv',
+            'dtype': str},
+        'four': {
+            'value': '',
+            'dtype': str},
+        'fife': {
+            'value': 3,
+            'limits': list(range(1, 20)),
+            'dtype': int},
+        'six': {
+            'value': 100,
+            'dtype': int,
+            'unit': 'ms'}
+    }, stayOpen=True, saveLoadButton=True)
 
     class MyProcedure(QtWidgets.QTextEdit):
-        '''
+        """
         a procedure taking the argument from ArgSetter
         as self.opts
 
         This shows the feature to interactively update argument using a
         graphical interface
-        '''
+        """
 
         def __init__(self, opts):
             QtWidgets.QWidget.__init__(self)
