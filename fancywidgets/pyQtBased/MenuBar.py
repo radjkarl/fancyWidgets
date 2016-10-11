@@ -1,18 +1,17 @@
+# coding=utf-8
 from qtpy import QtGui, QtPrintSupport, QtWidgets
 from six import string_types
 
 
-
 class MenuBar(QtWidgets.QMenuBar):
-    '''
+    """
     QMenuBar with easier insertMenu methods
     methods are used from:
     http://scribus.info/svn/Scribus/trunk/Scribus/scribus/plugins/scripter/python/scripter_hooks.py
-    '''
+    """
 
     def __init__(self):
         super(MenuBar, self).__init__()
-
 
     def iter_menus(self):
         for action in self.actions():
@@ -20,13 +19,11 @@ class MenuBar(QtWidgets.QMenuBar):
             if menu:
                 yield menu
 
-
     def iter_inner_menus(self, menu):
         for action in menu.actions():
             menu = action.menu()
             if menu:
                 yield menu
-
 
     def findMenu(self, title):
         """
@@ -38,7 +35,7 @@ class MenuBar(QtWidgets.QMenuBar):
         @return:      None if no menu was found, else the menu with title
         """
         # See also http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#differences-between-pyqt-and-qt
-        #title = QApplication.translate(mikro.classname(self.window), title) 
+        #title = QApplication.translate(mikro.classname(self.window), title)
         for menu in self.iter_menus():
             if menu.title() == title:
                 return menu
@@ -46,12 +43,10 @@ class MenuBar(QtWidgets.QMenuBar):
                 if innerMenu.title() == title:
                     return innerMenu
 
-
     def actionForMenu(self, menu):
         for action in self.actions():
             if action.menu() == menu:
                 return action
-
 
     def insertMenuBefore(self, before_menu, new_menu):
         """

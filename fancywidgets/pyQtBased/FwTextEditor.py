@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 
-#foreign
+# foreign
 from __future__ import absolute_import
 from qtpy import QtGui, QtPrintSupport, QtWidgets
-from qtpy.QtCore import Qt#this pkg
+from qtpy.QtCore import Qt  # this pkg
 from ._textEditorUtils import ToolBarEdit, ToolBarFormat, ToolBarFont, ToolBarInsert, MainWindow
-
-
 
 
 class FwTextEditor(MainWindow):
 
     def __init__(self, parent=None):
-        MainWindow.__init__(self,parent)
+        MainWindow.__init__(self, parent)
 
         self.toolbar_edit = ToolBarEdit(self.text)
         self.addToolBar(self.toolbar_edit)
@@ -27,20 +25,13 @@ class FwTextEditor(MainWindow):
 
         #self.toolbars = [self.toolbar_edit, t_font, t_format, t_insert]
 
-        self.setGeometry(100,100,700,700)
-
-
-
-                
-
-
-
+        self.setGeometry(100, 100, 700, 700)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    w= FwTextEditor()
+    w = FwTextEditor()
     w.setWindowTitle(w.__class__.__name__)
     w.show()
     app.exec_()
