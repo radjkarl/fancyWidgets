@@ -478,7 +478,7 @@ class ToolBarInsert(QtWidgets.QToolBar):
             ba = QtCore.QByteArray()
             buf = QtCore.QBuffer(ba)
             buf.open(QtCore.QIODevice.WriteOnly)
-            image.save(buffer, 'PNG')
+            image.save(buf, 'PNG')
             encoded = ba.toBase64().data()
             # insert to html:
             cursor = self.text.textCursor()

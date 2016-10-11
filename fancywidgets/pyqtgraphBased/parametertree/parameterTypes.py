@@ -3,13 +3,15 @@ from builtins import str
 # parameter
 
 # CHENGED RELATIVE TO ABSOLUTE IMPORTS:
-from pyqtgraph_karl.Qt import QtCore, QtGui, QtPrintSupport, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 from pyqtgraph_karl.python2_3 import asUnicode
-from pyqtgraph_karl.parametertree.Parameter import Parameter, registerParameterType  # !!!!CHANGED
-from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem
+from .Parameter import Parameter, registerParameterType  #!!!!CHANGED
+#from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem
+from .ParameterItem import ParameterItem
 from pyqtgraph_karl.widgets.SpinBox import SpinBox
 from pyqtgraph_karl.widgets.ColorButton import ColorButton
 # from ..widgets.GradientWidget import GradientWidget ## creates import loop
+from pyqtgraph_karl.widgets.GradientWidget import GradientWidget
 from pyqtgraph_karl import pixmaps as pixmaps
 from pyqtgraph_karl import functions as fn
 import os
@@ -151,8 +153,7 @@ class WidgetParameterItem(ParameterItem):
             w.setFlat(True)
             w.setEnabled(not opts.get('readonly', False))
         elif t == 'colormap':
-            # need this here to avoid import loop
-            from ..widgets.GradientWidget import GradientWidget
+            #from pyqtgraph_karl.widgets.GradientWidget import GradientWidget ## need this here to avoid import loop
             w = GradientWidget(orientation='bottom')
             w.sigChanged = w.sigGradientChangeFinished
             w.sigChanging = w.sigGradientChanged

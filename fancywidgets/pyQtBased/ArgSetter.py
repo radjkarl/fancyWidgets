@@ -75,12 +75,12 @@ class ArgSetter(QtWidgets.QDialog):
                     QtWidgets.QFrame.HLine | QtWidgets.QFrame.Raised)
                 layout.addWidget(line, row, 1, 1, 3)
                 # FILE/DIRECTORY
-            elif dtype in (file, dir):
+            elif dtype in ('file', 'dir'):
                 wl = QtWidgets.QHBoxLayout()
                 q = QtWidgets.QLineEdit(value)
                 btn = QtWidgets.QPushButton()
 
-                if dtype == file:
+                if dtype == 'file':
                     fn = self._getFile
                     btn.setIcon(
                         QtWidgets.QApplication.style().standardIcon(
