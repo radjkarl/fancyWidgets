@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import print_function
 # from future import standard_library
 # standard_library.install_aliases()
@@ -24,9 +25,9 @@ from . import _installed_modules
 
 
 class CodeEditor(QtWidgets.QWidget):
-    '''
+    """
     A simple code editor with a QPlainTextEdit and line numbers of the left side
-    '''
+    """
 
     def __init__(self, dialog=None):
         QtWidgets.QWidget.__init__(self)
@@ -44,21 +45,21 @@ class CodeEditor(QtWidgets.QWidget):
         l.addWidget(self.editor)
 
     def addGlobals(self, g):
-        '''
+        """
         g ==> {name:description,...}
-        '''
+        """
         self.editor._globals.update(g)
         pass
 
 
 class _CodeTextEdit(QtWidgets.QPlainTextEdit):
-    '''
+    """
     a text editor with ...
     * monospace font,
     * tab2spaces,
     * python syntax highlighter
     * 'save to file' in context menu
-    '''
+    """
 
     def __init__(self, codeEditor):
         QtWidgets.QPlainTextEdit.__init__(self)
@@ -111,7 +112,7 @@ class _CodeTextEdit(QtWidgets.QPlainTextEdit):
             self.setTextCursor(c)
             if c.hasSelection():
                 c.removeSelectedText()
-                txt = txt + ' '
+                txt += ' '
             else:
                 txt = ' '
         c.clearSelection()
@@ -274,11 +275,11 @@ l=''')
         return mg
 
     def contextMenuEvent(self, event):
-        '''
+        """
         Add menu action:
         * 'Show line numbers'
         * 'Save to file'
-        '''
+        """
         menu = QtWidgets.QPlainTextEdit.createStandardContextMenu(self)
         mg = self.getGlobalsMenu()
 
@@ -302,9 +303,9 @@ l=''')
         menu.exec_(event.globalPos())
 
     def saveToFile(self):
-        '''
+        """
         Save the current text to file
-        '''
+        """
         filename = self.codeEditor.dialog.getSaveFileName()
         if filename and filename != '.':
             with open(filename, 'w') as f:
@@ -312,17 +313,17 @@ l=''')
             print('saved script under %s' % filename)
 
     def toPlainText(self):
-        '''
+        """
         replace [tab] with 4 spaces
-        '''
+        """
         txt = QtWidgets.QPlainTextEdit.toPlainText(self)
         return txt.replace('\t', '    ')
 
 
 class _LineNumberArea(QtWidgets.QPlainTextEdit):
-    '''
+    """
     Left area to show line numbers of the code editor
-    '''
+    """
 
     def __init__(self, editor):
         QtWidgets.QPlainTextEdit.__init__(self)
@@ -339,15 +340,15 @@ class _LineNumberArea(QtWidgets.QPlainTextEdit):
         editor.verticalScrollBar().sliderMoved.connect(self._syncHScrollBar)
 
     def _syncHScrollBar(self, val):
-        '''
+        """
         Synchronize the view with the code editor
-        '''
+        """
         self.verticalScrollBar().setValue(val)
 
     def _updateNumbers(self, linenumers):
-        '''
+        """
         add/remove line numbers
-        '''
+        """
         b = self.blockCount()
         c = b - linenumers
         if c > 0:

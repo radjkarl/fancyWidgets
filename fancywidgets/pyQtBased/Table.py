@@ -16,7 +16,7 @@ except NameError:
 
 
 class Table(QtWidgets.QTableWidget):
-    '''
+    """
     A QTableWidget with:
     * Shortcuts: copy, paste, cut, insert/delete row/column
     * Context Menu
@@ -24,7 +24,7 @@ class Table(QtWidgets.QTableWidget):
     * Save/open
     * import from clipboard
     * dynamic add of new rows and cells when needed
-    '''
+    """
     sigPathChanged = QtCore.Signal(object)  # file path
 
     def __init__(self, rows=3, cols=3, colFiled=False,
@@ -58,9 +58,9 @@ class Table(QtWidgets.QTableWidget):
         self.sigPathChanged.emit(path)
 
     def save(self):
-        '''
+        """
         save to file - override last saved file
-        '''
+        """
         self.saveAs(self._path)
 
     def table(self):
@@ -78,9 +78,9 @@ class Table(QtWidgets.QTableWidget):
         return l
 
     def saveAs(self, path):
-        '''
+        """
         save to file under given name
-        '''
+        """
         if not path:
             path = self._dialogs.getSaveFileName(filter='*.csv')
         if path:
@@ -223,9 +223,9 @@ class Table(QtWidgets.QTableWidget):
         QtWidgets.QApplication.clipboard().setText(text)
 
     def _textToTable(self, text, separator='\t'):
-        '''
+        """
         format csv, [[...]], ((..)) strings to a 2d table
-        '''
+        """
         table = None
         if text.startswith('[[') or text.startswith('(('):
             try:
@@ -350,6 +350,7 @@ class _TableMenu(QtWidgets.QWidget):
         self._menu.addAction('Save').triggered.connect(self._table.save)
         self._menu.addAction('Save As').triggered.connect(self._table.saveAs)
 
+    # TODO: does not match overriden method
     def show(self, evt):
         self._menu.popup(evt.globalPos())
 

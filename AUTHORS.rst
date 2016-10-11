@@ -1,2 +1,2 @@
-Karl Bedrich 2013 -
+# coding=utf-8Karl Bedrich 2013 -
 

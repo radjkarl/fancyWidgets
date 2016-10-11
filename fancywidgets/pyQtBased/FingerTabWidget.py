@@ -1,6 +1,7 @@
-'''A vertical tab widget - code origin from:
+# coding=utf-8
+"""A vertical tab widget - code origin from:
 https://gist.github.com/LegoStormtroopr/5075267
-'''
+"""
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 

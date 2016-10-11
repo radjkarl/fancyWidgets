@@ -55,6 +55,7 @@ class QFormatter(Formatter):
             self.styles[str(token)] = qtf
 
     def format(self, tokensource, outfile):
+        # TODO: undefined?
         global styles
         # We ignore outfile, keep output in a buffer
         self.data = []

@@ -7,14 +7,14 @@ import weakref
 
 
 class Dock(pgDock.Dock):
-    '''
+    """
     added function:
 
     * setWidget
     * fullscreen in right click menu of label
     * rename in right click menu of label
     * embedd/release to (temporary) free the Dock from its parent DockArea
-    '''
+    """
 
     def __init__(self, name, area=None, size=(1, 1),
                  widget=None, hideTitle=False, autoOrientation=False,
@@ -104,10 +104,10 @@ class Dock(pgDock.Dock):
 
 
 class FullscreenMsg(QtWidgets.QLabel):
-    '''
+    """
     Simple message on top of this window
     hides itself after few seconds
-    '''
+    """
 
     def __init__(self, parent):
         QtWidgets.QLabel.__init__(

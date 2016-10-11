@@ -1,3 +1,4 @@
+# coding=utf-8
 from builtins import str
 # EXACT COPY OF PYQTGRAPGH.PARAMETERTREE.PARAMETRERtYPES needed to load my
 # parameter
@@ -5,7 +6,7 @@ from builtins import str
 # CHENGED RELATIVE TO ABSOLUTE IMPORTS:
 from qtpy import QtCore, QtGui, QtWidgets
 from pyqtgraph_karl.python2_3 import asUnicode
-from .Parameter import Parameter, registerParameterType  #!!!!CHANGED
+from .Parameter import Parameter, registerParameterType  # !!!!CHANGED
 #from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem
 from .ParameterItem import ParameterItem
 from pyqtgraph_karl.widgets.SpinBox import SpinBox
@@ -153,7 +154,8 @@ class WidgetParameterItem(ParameterItem):
             w.setFlat(True)
             w.setEnabled(not opts.get('readonly', False))
         elif t == 'colormap':
-            #from pyqtgraph_karl.widgets.GradientWidget import GradientWidget ## need this here to avoid import loop
+            # from pyqtgraph_karl.widgets.GradientWidget import GradientWidget
+            # ## need this here to avoid import loop
             w = GradientWidget(orientation='bottom')
             w.sigChanged = w.sigGradientChangeFinished
             w.sigChanging = w.sigGradientChanged
@@ -615,10 +617,11 @@ class ActionParameterItem(ParameterItem):
         param.sigNameChanged.connect(self.paramRenamed)
         self.setText(0, '')
 
+    # TODO: does not match overriden method
     def nameChanged(self, name):
-        '''
+        """
         Pass method, otherwise name is additionally set in tableView
-        '''
+        """
         pass
 
     def treeWidgetChanged(self):

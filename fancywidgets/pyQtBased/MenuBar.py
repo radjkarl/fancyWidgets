@@ -1,13 +1,14 @@
+# coding=utf-8
 from qtpy import QtGui, QtPrintSupport, QtWidgets
 from six import string_types
 
 
 class MenuBar(QtWidgets.QMenuBar):
-    '''
+    """
     QMenuBar with easier insertMenu methods
     methods are used from:
     http://scribus.info/svn/Scribus/trunk/Scribus/scribus/plugins/scripter/python/scripter_hooks.py
-    '''
+    """
 
     def __init__(self):
         super(MenuBar, self).__init__()

@@ -1,21 +1,22 @@
+# coding=utf-8
 from __future__ import print_function
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
 class ArgSetter(QtWidgets.QDialog):
-    '''Create an window to setup attributes graphically
+    """Create an window to setup attributes graphically
 
     useful as quick configurator for other functions/classes that need
     keyword arguments that must be passed graphically
     e.g. for py2exe/pyinstaller apps
-    '''
+    """
     validators = {float: QtGui.QDoubleValidator,
                   int: QtGui.QIntValidator}
 
     def __init__(self, title, argdict, stayOpen=False, saveLoadButton=False,
                  savePath='config.txt', loadPath='config.txt',
                  introduction=None, unpackDict=False):
-        '''
+        """
         ====================   =========================================================
         Argument               Comment
         ====================   =========================================================
@@ -39,7 +40,7 @@ class ArgSetter(QtWidgets.QDialog):
         loadPath               Default load path
         unpackDict             True, False | True:
         ====================   =========================================================
-        '''
+        """
         QtWidgets.QDialog.__init__(self)
         self._wantToClose = False
         self.unpackDict = unpackDict
@@ -218,11 +219,11 @@ class ArgSetter(QtWidgets.QDialog):
                     widget.setText(d[name])
 
     def show(self):
-        '''
+        """
         if the dialog is showed again or is not started with exec_
         naming the done button to 'update' make more sense
         because now the dialog doesn't block (anymore)
-        '''
+        """
         self.btn_done.clicked.connect(lambda: self.btn_done.setText('update'))
         QtWidgets.QDialog.show(self)
 
@@ -240,7 +241,7 @@ class ArgSetter(QtWidgets.QDialog):
         self.btn_done.setText('update')
 
     def check(self):
-        '''check whether all attributes are setted and have the right dtype'''
+        """check whether all attributes are setted and have the right dtype"""
         for name, valItem, dtype in self.values:
             val = valItem.text()
             if dtype:
@@ -260,12 +261,12 @@ class ArgSetter(QtWidgets.QDialog):
         QtWidgets.QDialog.closeEvent(self, evt)
 
     def done(self, result):
-        '''save the geometry before dialog is close to restore it later'''
+        """save the geometry before dialog is close to restore it later"""
         self._geometry = self.geometry()
         QtWidgets.QDialog.done(self, result)
 
     def stayOpen(self):
-        '''optional dialog restore'''
+        """optional dialog restore"""
         if not self._wantToClose:
             self.show()
             self.setGeometry(self._geometry)
@@ -341,13 +342,13 @@ if __name__ == '__main__':
     }, stayOpen=True, saveLoadButton=True)
 
     class MyProcedure(QtWidgets.QTextEdit):
-        '''
+        """
         a procedure taking the argument from ArgSetter
         as self.opts
 
         This shows the feature to interactively update argument using a
         graphical interface
-        '''
+        """
 
         def __init__(self, opts):
             QtWidgets.QWidget.__init__(self)

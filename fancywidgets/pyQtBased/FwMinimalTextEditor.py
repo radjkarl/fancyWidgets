@@ -1,3 +1,4 @@
+# coding=utf-8
 # foreign
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 # this pkg

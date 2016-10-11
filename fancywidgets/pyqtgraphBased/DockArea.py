@@ -10,11 +10,12 @@ from pyqtgraph_karl.dockarea import DockArea as pgDockArea
 
 
 class DockArea(pgDockArea):
-    '''
+    """
     save the initial position of a dock and
     restores it if wished
-    '''
+    """
 
+    # TODO: does not match overriden method
     def addDock(self, dock, *args, **kwargs):
         dock.init_position = kwargs
         return super(DockArea, self).addDock(dock, *args, **kwargs)

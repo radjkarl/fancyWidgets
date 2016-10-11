@@ -1,11 +1,12 @@
-'''
+# coding=utf-8
+"""
 usage:
  (sudo) python setup.py +
-	 install		... local
-	 register		... at http://pypi.python.org/pypi
-	 sdist			... create *.tar to be uploaded to pyPI
-	 sdist upload	... build the package and upload in to pyPI
-'''
+     install        ... local
+     register       ... at http://pypi.python.org/pypi
+     sdist          ... create *.tar to be uploaded to pyPI
+     sdist upload   ... build the package and upload in to pyPI
+"""
 
 #########################
 import fancywidgets as package

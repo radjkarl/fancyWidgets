@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import division
 from past.utils import old_div
 
@@ -5,7 +6,7 @@ from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
 class CircleWidget(QtWidgets.QWidget):
-    '''a simple circle - useful as indicator'''
+    """a simple circle - useful as indicator"""
 
     def __init__(self, parent=None,
                  circle_size=6,

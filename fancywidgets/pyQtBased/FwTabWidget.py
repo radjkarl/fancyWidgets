@@ -3,7 +3,7 @@ from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
 
 class FwTabWidget(QtWidgets.QTabWidget):
-    '''
+    """
     * allow to iterate over all tabs using for tab in TabWidget...
     * allow to give tabs (and not indexes) to:
         * removeTab
@@ -12,7 +12,7 @@ class FwTabWidget(QtWidgets.QTabWidget):
     * adding of new tabs,
     * tab removal
     * tab renaming
-    '''
+    """
 
     sigTabAdded = QtCore.Signal(object)  # tab
 
@@ -44,9 +44,9 @@ class FwTabWidget(QtWidgets.QTabWidget):
                 self.tabCloseRequested.disconnect(self._mkAddBtnVisible)
 
     def addEmptyTab(self, text=''):
-        '''
+        """
         Add a new DEFAULT_TAB_WIDGET, open editor to set text if no text is given
-        '''
+        """
         tab = self.defaultTabWidget()
         c = self.count()
         self.addTab(tab, text)
@@ -57,9 +57,9 @@ class FwTabWidget(QtWidgets.QTabWidget):
         return tab
 
     def _mkAddBtnVisible(self):
-        '''
+        """
         Ensure that the Add button is visible also when there are no tabs
-        '''
+        """
         if not self._btn_add_height:
             self._btn_add_height = self.cornerWidget().height()
         if self.count() == 0:
@@ -82,22 +82,22 @@ class FwTabWidget(QtWidgets.QTabWidget):
                 return self.widet(i)
 
     def removeTab(self, tab):
-        '''allows to remove a tab directly -not only by giving its index'''
+        """allows to remove a tab directly -not only by giving its index"""
         if not isinstance(tab, int):
             tab = self.indexOf(tab)
         return super(FwTabWidget, self).removeTab(tab)
 
     def tabText(self, tab):
-        ''' allow index or tab widget instance'''
+        """ allow index or tab widget instance"""
         if not isinstance(tab, int):
             tab = self.indexOf(tab)
         return super(FwTabWidget, self).tabText(tab)
 
 
 class _TabBar(QtWidgets.QTabBar):
-    '''
+    """
     allow change of tabTitle via double click
-    '''
+    """
 
     def __init__(self, parent=None):
         QtWidgets.QTabBar.__init__(self, parent)

@@ -1,8 +1,9 @@
-'''
+# coding=utf-8
+"""
 text editor utils used by
 * FwMinimalTextEditor
 * FwTextEditor
-'''
+"""
 
 # foreign
 import time
@@ -53,9 +54,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 class _TextEdit(QtWidgets.QTextEdit):
-    '''
+    """
     allow to show/hide the toolbar through context menu
-    '''
+    """
 
     def __init__(self, editor):
         self.editor = editor
@@ -394,7 +395,9 @@ class ToolBarEdit(QtWidgets.QToolBar):
                 flag = QtGui.QTextDocument.FindBackward and QtGui.QTextDocument.FindWholeWords
 
             elif cs == True and wwo == True:
-                flag = QtGui.QTextDocument.FindBackward and QtGui.QTextDocument.FindCaseSensitively and QtGui.QTextDocument.FindWholeWords
+                flag = QtGui.QTextDocument.FindBackward and \
+                       QtGui.QTextDocument.FindCaseSensitively and \
+                       QtGui.QTextDocument.FindWholeWords
 
             self.text.find(f, flag)
 

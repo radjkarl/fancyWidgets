@@ -5,11 +5,11 @@ from qtpy import QtGui, QtPrintSupport, QtWidgets
 
 
 class Console(QtWidgets.QTextEdit):
-    '''
+    """
     A simple qWidget with one read-only QTextEdit with a limited number of lines
     to display output generated with messages which
     print() in black and raise() in red color
-    '''
+    """
     MAXLINES = 300
 
     def __init__(self, outputSignal=None, errorSignal=None, *args, **kwargs):
@@ -50,17 +50,17 @@ class Console(QtWidgets.QTextEdit):
             pass  # was not connected
 
     def addTextOut(self, text):
-        '''add black text'''
+        """add black text"""
         self._currentColor = self._black
         self.addText(text)
 
     def addTextErr(self, text):
-        '''add red text'''
+        """add red text"""
         self._currentColor = self._red
         self.addText(text)
 
     def addText(self, text):
-        '''append text in the chosen color'''
+        """append text in the chosen color"""
         # move to the end of the doc
         self.moveCursor(QtGui.QTextCursor.End)
         # insert the text
@@ -68,15 +68,15 @@ class Console(QtWidgets.QTextEdit):
         self.textCursor().insertText(text)
 
     def __del__(self):
-        '''disconnect from output and error signal'''
+        """disconnect from output and error signal"""
         self.setInactive()
 
     def contextMenuEvent(self, event):
-        '''
+        """
         Add menu action:
         * 'Show line numbers'
         * 'Save to file'
-        '''
+        """
         menu = QtWidgets.QTextEdit.createStandardContextMenu(self)
 
         # create max.lines spin box:

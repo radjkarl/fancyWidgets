@@ -14,7 +14,7 @@ from qtpy import QtCore
 
 
 class Parameter(pgParameter):
-    '''
+    """
     add new options to pyQtGraphs 'Parameter'-Class to be fully interactive
     and log all changes:
             * 'duplicatable' (see ParameterItem)
@@ -22,7 +22,7 @@ class Parameter(pgParameter):
             * 'keyParent' -> QWidget where the key is active
             * 'highlight' -> True/False (coded in ParameterItem)
             * 'icon' -> 'path/to/icon' (see ParameterItem)
-    '''
+    """
 
 # signals to log:
 # tree.itemExpanded(item)
@@ -62,7 +62,7 @@ class Parameter(pgParameter):
         self.sigRemoved.emit()
 
     def blockSignals(self, boolean):
-        '''add block/unblock of keyboard shortcut'''
+        """add block/unblock of keyboard shortcut"""
         pgParameter.blockSignals(self, boolean)
         try:
             item = self.items[0]
@@ -108,7 +108,7 @@ class Parameter(pgParameter):
 # 				myChild.setValues(masterChild, includeChilds)
 
     def replaceWith(self, param):
-        '''replace this parameter with another'''
+        """replace this parameter with another"""
         i = self.parent().children().index(self)
         # TODO: transfer the children:
         p = self.parent()
