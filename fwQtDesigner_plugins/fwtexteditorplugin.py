@@ -3,17 +3,18 @@
 """
 code origin from ...
 
-analogclockplugin.py 
+analogclockplugin.py
 An analog clock custom widget plugin for Qt Designer.
 """
 
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtDesigner
 from fancywidgets.pyQtBased.FwTextEditor import FwTextEditor
 
+
 class FwTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
 
     """FwTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin)
-    
+
     Provides a Python custom plugin for Qt Designer by implementing the
     QDesignerCustomWidgetPlugin via a PyQt-specific custom plugin class.
     """
@@ -21,7 +22,7 @@ class FwTextEditorPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     # The __init__() method is only used to set up the plugin and define its
     # initialized variable.
     def __init__(self, parent=None):
-    
+
         super(FwTextEditorPlugin, self).__init__(parent)
 
         self.initialized = False

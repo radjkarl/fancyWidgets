@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 from pyqtgraph_karl.parametertree.Parameter import Parameter as pgParameter
 from pyqtgraph_karl.parametertree.Parameter import registerParameterType
 
@@ -15,98 +14,87 @@ import traceback
 
 
 class Parameter(pgParameter):
-	'''
-	add new options to pyQtGraphs 'Parameter'-Class to be fully interactive
-	and log all changes:
-		* 'duplicatable' (see ParameterItem)
-		* 'key' -> name or QKeySequence of the shortcut (see ParameterItem)
-		* 'keyParent' -> QWidget where the key is active
-		* 'highlight' -> True/False (coded in ParameterItem)
-		* 'icon' -> 'path/to/icon' (see ParameterItem)
-	'''
+    '''
+    add new options to pyQtGraphs 'Parameter'-Class to be fully interactive
+    and log all changes:
+            * 'duplicatable' (see ParameterItem)
+            * 'key' -> name or QKeySequence of the shortcut (see ParameterItem)
+            * 'keyParent' -> QWidget where the key is active
+            * 'highlight' -> True/False (coded in ParameterItem)
+            * 'icon' -> 'path/to/icon' (see ParameterItem)
+    '''
 
-#signals to log:
-#tree.itemExpanded(item)
-#tree.itemCollapsed(item)
+# signals to log:
+# tree.itemExpanded(item)
+# tree.itemCollapsed(item)
 
-
-
-	sigDuplicated = QtCore.Signal()
-	sigRemoved = QtCore.Signal()
-
+    sigDuplicated = QtCore.Signal()
+    sigRemoved = QtCore.Signal()
 
 
 # 	def __init__(self, **opts):
 # 		pgParameter.__init__(self, **opts)
 
+    # , linked=False, readonly=False, recursive=False):
+    def duplicate(self, recursive=True):
 
+        # 		def recursiveReadOnly(param):
+        # 			param.setReadonly(True)
+        # 			for ch in param.children():
+        # 				recursiveReadOnly(ch)
+        #
+        # 		def recursiveLinked(param, master):
+        # 			master.sigOptionsChanged.connect(param.setOpts)
+        # 			for ch, mCh in zip(param.children(), master.children()):
+        # 				recursiveLinked(ch, mCh)
 
-
-	def duplicate(self, recursive=True):#, linked=False, readonly=False, recursive=False):
- 
-# 		def recursiveReadOnly(param):
-# 			param.setReadonly(True)
-# 			for ch in param.children():
-# 				recursiveReadOnly(ch)
-#  				
-# 		def recursiveLinked(param, master):
-# 			master.sigOptionsChanged.connect(param.setOpts)
-# 			for ch, mCh in zip(param.children(), master.children()):
-# 				recursiveLinked(ch, mCh)
- 				
-		p = Parameter.create(type=self.opts['type'], name='', value='')
-		p.restoreState(self.saveState(), recursive=recursive)
-#  		
+        p = Parameter.create(type=self.opts['type'], name='', value='')
+        p.restoreState(self.saveState(), recursive=recursive)
+#
 # 		if readonly: recursiveReadOnly(p)
 # 		if linked: recursiveLinked(p, self)
- 				
-		self.sigDuplicated.emit()
-		return p
 
+        self.sigDuplicated.emit()
+        return p
 
-	def remove(self):
-		pgParameter.remove(self)
-		self.sigRemoved.emit()
+    def remove(self):
+        pgParameter.remove(self)
+        self.sigRemoved.emit()
 
+    def blockSignals(self, boolean):
+        '''add block/unblock of keyboard shortcut'''
+        pgParameter.blockSignals(self, boolean)
+        try:
+            item = self.items[0]
+            if item.key:
+                item.key.blockSignals(boolean)
+        except:
+            pass
 
-	def blockSignals(self, boolean):
-		'''add block/unblock of keyboard shortcut'''
-		pgParameter.blockSignals(self, boolean)
-		try:
-			item = self.items[0]
-			if item.key:
-				item.key.blockSignals(boolean)
-		except:
-			pass
-
-
-	def hasVisibleChilds(self):#TODO: remove?
-		for ch in self.children():
-			if ch.opts['visible']:
-				return True
-		return False
-
-
+    def hasVisibleChilds(self):  # TODO: remove?
+        for ch in self.children():
+            if ch.opts['visible']:
+                return True
+        return False
 
 
 #	def duplicate(self, log=True):
-		#if log:
-		#	self.container.logMethod(self.duplicate)
+        # if log:
+        #	self.container.logMethod(self.duplicate)
 # 		self.sigDuplicated.emit()
 
+    def isVisible(self):
+        if self.opts['visible']:
+            p = self
+            while True:
+                p = p.parent()
+                if not p:
+                    return True
+                if not p.opts['visible']:
+                    break
+        return False
 
-	def isVisible(self):
-		if self.opts['visible']:
-			p = self
-			while True:
-				p = p.parent()
-				if not p:
-					return True
-				if not p.opts['visible']:
-					break
-		return False
-
-	#TODO: raus!!! restoreState ist besser
+    # TODO: raus!!! restoreState ist besser
 # 	def setValues(self, masterParam, includeChilds=True):
 # 		'''duplicate values, names and limits from one analog parameter recursively'''
 # 		self.setValue(masterParam.value())
@@ -119,34 +107,30 @@ class Parameter(pgParameter):
 # 			for myChild,masterChild in zip(self.children(),masterParam.children()):
 # 				myChild.setValues(masterChild, includeChilds)
 
+    def replaceWith(self, param):
+        '''replace this parameter with another'''
+        i = self.parent().children().index(self)
+        # TODO: transfer the children:
+        p = self.parent()
+        self.parent().removeChild(self)
+        p.insertChild(i, param)
+        self = param
+        # return p.insertChild(i, param)
 
-	def replaceWith(self, param):
-		'''replace this parameter with another'''
-		i = self.parent().children().index(self)
-		#TODO: transfer the children:
-		p = self.parent()
-		self.parent().removeChild(self)
-		p.insertChild(i, param)
-		self = param
-		#return p.insertChild(i, param)
-
-
-	def path(self):
-		c = p = self.parent()
-		l = self.name()
-		while p:
-			l = p.name() + ', ' + l
-			c = p
-			p = p.parent()
-		return c, l
+    def path(self):
+        c = p = self.parent()
+        l = self.name()
+        while p:
+            l = p.name() + ', ' + l
+            c = p
+            p = p.parent()
+        return c, l
 
 
-
-#  
+#
 # 	def init(self):
 # 		self.setValue(value=self.value, blockSignal=self.sigValueChanged)
 # 		return self
-
 
 
 # 	@staticmethod
@@ -165,7 +149,7 @@ class Parameter(pgParameter):
 # 				opts['limits'] = l
 # 		except KeyError:
 # 			pass
-# 
+#
 # 		if 'value' not in opts:
 # 			try:
 # 				opts['value'] = opts['getValue'] (opts['index'])
@@ -177,10 +161,9 @@ class Parameter(pgParameter):
 # 					opts['value'] = opts['getValue'] ()
 # 				except KeyError:
 # 					pass
-# 
+#
 # 		cls = PARAM_TYPES[opts['type']]
 # 		return cls(container, **opts)
-
 
 
 # 	def unblock(self):
@@ -200,8 +183,8 @@ class Parameter(pgParameter):
 # 		if log:
 # 			self.container.logMethod(self, self.remove, **kwargs)
 # 		self._remove()
-# 
-# 
+#
+#
 # 	def _remove(self):
 # 		try:
 # 			m = self.opts['setRemove']
@@ -219,18 +202,18 @@ class Parameter(pgParameter):
 # 		self.forAllParamRecursive(self,self._setRemoved)
 # 		super(Parameter, self).remove()
 # 		self.session.container.sigParamChanged.emit()
-# 
-# 
+#
+#
 # 	def _setRemoved(self):
 # 		self.removed = True
-# 
-# 
+#
+#
 # 	def forAllParamRecursive(self,param, method):
 # 		for ch in param.children():
 # 			self.forAllParamRecursive(ch, method)
 # 		method(param)
-# 
-# 
+#
+#
 # 	def _checkForBatch(self,param):
 # 		if param._inBatch:
 # 			nIOp.getBatch().removeParam(param.pathToMaster)
@@ -249,7 +232,7 @@ class Parameter(pgParameter):
 # 	@property
 # 	def limits(self):
 # 		return self.opts['limits']
-# 
+#
 # 	@limits.setter
 # 	def _setLimits(self, l):
 # 		self.setOpts(limits=l)
@@ -273,8 +256,7 @@ class Parameter(pgParameter):
 # 		return c.opts['master'], l
 
 
-
-# 
+#
 # 	def _execMethodDebugMode(self, value, pmethod):
 # 		index = self.opts.get('index', None)
 # 		if index != None:
@@ -288,8 +270,8 @@ class Parameter(pgParameter):
 # 		except TypeError:
 # 			print traceback.print_exc()
 # 			return pmethod()
-# 
-# 
+#
+#
 # 	def _execMethodNormal(self, value, pmethod):
 # 		print value, pmethod
 # 		index = self.opts.get('index', None)
@@ -309,7 +291,7 @@ class Parameter(pgParameter):
 #	@property
 #	def value(self):
 #		return super(Parameter, self).value()
-#TODO: warum klappt dasnicht???
+# TODO: warum klappt dasnicht???
 
 # #	@value.setter
 # 	def setValue(self, value, blockSignal=None):
@@ -320,11 +302,10 @@ class Parameter(pgParameter):
 # 			self._execMethod(value, pmethod)
 # 		return super(Parameter, self).setValue(value, blockSignal)
 
-
-	#def logMethod(self, value, method=None):
-		#if not method:
-			#method = self._master.setParam
-		#self.container.logMethod(method, value)
+    # def logMethod(self, value, method=None):
+        # if not method:
+        #method = self._master.setParam
+        #self.container.logMethod(method, value)
 
 
 # 	def addToBatch(self, **kwargs):
@@ -333,18 +314,14 @@ class Parameter(pgParameter):
 # 		#self.container.logMethod(self._master.addParamToBatch, **kwargs)
 # 		self.session.batch.addParam(self, **kwargs)
 
-
-	#def _removeListEntry(self, entry):
-		#try:
-			#l = self.opts['limits']
-			#i = l.index(entry)
-			#l.pop(i)
-			#self.sigLimitsChanged.emit(self, l)
-		#except (KeyError, ValueError):
-			#pass
-
-
-
+    # def _removeListEntry(self, entry):
+        # try:
+        #l = self.opts['limits']
+        #i = l.index(entry)
+        # l.pop(i)
+        #self.sigLimitsChanged.emit(self, l)
+        # except (KeyError, ValueError):
+        # pass
 
 
 # 	def update(self, force=False):
@@ -369,7 +346,7 @@ class Parameter(pgParameter):
 # 			except KeyError:
 # 				pass
 
-# 
+#
 # 	def insertChild(self,pos, child):
 # 		"""
 # 		Insert a new child at pos.
@@ -379,7 +356,7 @@ class Parameter(pgParameter):
 # 		"""
 # 		if isinstance(child, dict):
 # 			child = Parameter.create(self.container, **child)
-# 		
+#
 # 		name = child.name()
 # 		if name in self.names and child is not self.names[name]:
 # 			#changed##
@@ -394,11 +371,11 @@ class Parameter(pgParameter):
 # 		#####old#####
 # 		if isinstance(pos, Parameter):
 # 			pos = self.childs.index(pos)
-# 			
+#
 # 		with self.treeChangeBlocker():
 # 			if child.parent() is not None:
 # 				child.remove()
-# 				
+#
 # 			self.names[name] = child
 # 			self.childs.insert(pos, child)
 # 			child.parentChanged(self)
@@ -408,61 +385,53 @@ class Parameter(pgParameter):
 # 			x = child.sigValueChanged
 # 			if child.isType('action'):
 # 				x = child.sigActivated
-# 
+#
 # 			x.connect(child._logValue)
 # 			if not child.opts.get('static', False):
 # 				x.connect(self.container.sigParamChanged.emit)
 # 				#also update when name change:
 # 				child.sigNameChanged.connect(self.container.sigParamChanged.emit)
-# 
+#
 # 			#child.findMaster()
-# 
+#
 # 			activeWith = ['getValue', 'getLimits', 'getName']
 # 			isActive = bool([i for i in activeWith if child.opts.get(i)])
-# 			
+#
 # 			if isActive:
 # 				self.container.sigParamChanged.connect(child)
 # 		child._is_child = True
 # 		return child
 
+    # to enable easy manipulation of the parameter:
+    #attr = property(pgParameter.value,_setValueViaCode,_remove)
 
+    # TODO: brauchich den wirklich?
+    # def makeProperty(self, inst):
+        # set a property for the given instance dynamically with access to
+        # the get, set and del-method of this class
+        #name = utils.legalizeFilename(self.name())
+        # inst.__setattr__('_get_'+name,self.value)
+        # inst.__setattr__('_set_'+name,self._setValueViaCode)
+        # inst.__setattr__('_del_'+name,self._remove)
+        # return property(
+        #lambda self: self.__getattribute__('_get_'+name)(),
+        #lambda self,val: self.__getattribute__('_set_'+name)(val),
+        # lambda self: self.__getattribute__('_del_'+name)() )
+# TODO: evtl. is folgendes schneller für priority
+# class HackedProperty(object):
+    # def __init__(self, f):
+    #self.f = f
+    # def __get__(self, inst, owner):
+    # return getattr(inst, self.f.__name__)()
 
-
-
-	#to enable easy manipulation of the parameter:
-	#attr = property(pgParameter.value,_setValueViaCode,_remove)
-
-
-
-
-
-	##TODO: brauchich den wirklich?
-	#def makeProperty(self, inst):
-		## set a property for the given instance dynamically with access to
-		## the get, set and del-method of this class
-		#name = utils.legalizeFilename(self.name())
-		#inst.__setattr__('_get_'+name,self.value)
-		#inst.__setattr__('_set_'+name,self._setValueViaCode)
-		#inst.__setattr__('_del_'+name,self._remove)
-		#return property(
-			#lambda self: self.__getattribute__('_get_'+name)(),
-			#lambda self,val: self.__getattribute__('_set_'+name)(val),
-			#lambda self: self.__getattribute__('_del_'+name)() )
-##TODO: evtl. is folgendes schneller für priority
-#class HackedProperty(object):
-    #def __init__(self, f):
-        #self.f = f
-    #def __get__(self, inst, owner):
-        #return getattr(inst, self.f.__name__)()
-
-#class Foo(object):
-    #def _get_age(self):
-        #return 11
+# class Foo(object):
+    # def _get_age(self):
+    # return 11
     #age = HackedProperty(_get_age)
 
-#class Bar(Foo):
-    #def _get_age(self):
-        #return 44
+# class Bar(Foo):
+    # def _get_age(self):
+    # return 44
 
-#print Bar().age
-#print Foo().age
+# print Bar().age
+# print Foo().age
