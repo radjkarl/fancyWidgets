@@ -33,7 +33,7 @@ class Dialogs(object):
 
     def getSaveFileName(self, *args, **kwargs):
         """
-        analog to QtWidgets.QFileDialog.getSaveFileNameAndFilter
+        analogue to QtWidgets.QFileDialog.getSaveFileNameAndFilter
         but returns the filename + chosen file ending even if not typed in gui
         """
         if 'directory' not in kwargs:

@@ -91,8 +91,8 @@ class ParameterItem(OldPI):
             if c == self.child(n):
                 c.param.slide(nPos)
                 cnew = self.child(n + nPos)
+                #TODO: c has no parent any more
                 return self.treeWidget().setCurrentItem(cnew, 0)
-        #self.treeWidget().setCurrentItem(c, 0)
 
     def treeWidgetChanged(self):
         super(ParameterItem, self).treeWidgetChanged()
