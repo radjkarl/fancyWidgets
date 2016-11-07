@@ -108,12 +108,6 @@ class ParameterItem(OldPI):
                 # TODO: does this work??
                 i.insertWidget(0, self.controls)
 
-#     def _setTextSliding(self, index, text):
-#         print index, text,99999999999
-#         #if there are sliding arrows at the left: move the item text a bit
-#         if index == 0:
-#             return OldPI.setText(self, index, '  %s'%text)
-#         return OldPI.setText(self, index, text)
 
     # WHERE DID THAT COME FROM???
     def updateDepth(self, depth):
@@ -146,16 +140,3 @@ class ParameterItem(OldPI):
                 self.setFont(c, font)
                 self.setSizeHint(0, QtCore.QSize(0, 20))
 
-
-#     def childRemoved(self, param, child):
-#         for i in range(self.childCount()):
-#             item = self.child(i)
-#             try:
-#                 # quit and dirty fix:
-#                 # all postprocesses have items of QTreeWidgetItem which don't have .param
-#                 # I dont know why ... but ignoring them allows me to make them removable
-#                 if item.param is child:
-#                     self.takeChild(i)
-#                     break
-#             except:
-#                 pass

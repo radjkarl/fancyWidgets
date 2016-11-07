@@ -5,18 +5,19 @@ from builtins import str
 
 # CHENGED RELATIVE TO ABSOLUTE IMPORTS:
 from qtpy import QtCore, QtGui, QtWidgets
-from pyqtgraph_karl.python2_3 import asUnicode
+
+from pyqtgraph.python2_3 import asUnicode
 from .Parameter import Parameter, registerParameterType  # !!!!CHANGED
 #from pyqtgraph_karl.parametertree.ParameterItem import ParameterItem
 from .ParameterItem import ParameterItem
-from pyqtgraph_karl.widgets.SpinBox import SpinBox
-from pyqtgraph_karl.widgets.ColorButton import ColorButton
+from pyqtgraph.widgets.SpinBox import SpinBox
+from pyqtgraph.widgets.ColorButton import ColorButton
 # from ..widgets.GradientWidget import GradientWidget ## creates import loop
-from pyqtgraph_karl.widgets.GradientWidget import GradientWidget
-from pyqtgraph_karl import pixmaps as pixmaps
-from pyqtgraph_karl import functions as fn
+from pyqtgraph.widgets.GradientWidget import GradientWidget
+from pyqtgraph import pixmaps as pixmaps
+from pyqtgraph import functions as fn
 import os
-from pyqtgraph_karl.pgcollections import OrderedDict
+from pyqtgraph.pgcollections import OrderedDict
 
 
 class WidgetParameterItem(ParameterItem):

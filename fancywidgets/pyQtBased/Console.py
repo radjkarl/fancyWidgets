@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
 
 from __future__ import print_function
-from qtpy import QtGui, QtPrintSupport, QtWidgets
+from qtpy import QtGui, QtWidgets
 
 
 class Console(QtWidgets.QTextEdit):

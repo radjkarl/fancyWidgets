@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from pyqtgraph_karl.dockarea import DockArea as pgDockArea
+
+
+from pyqtgraph_karl.dockarea.DockArea import DockArea as pgDockArea
 # from QtRec.QtGui import QWidget
 #
 # b = list(pgDockArea.__bases__)
@@ -15,10 +17,10 @@ class DockArea(pgDockArea):
     restores it if wished
     """
 
-    # TODO: does not match overriden method
+    # TODO: does not match overridden method
     def addDock(self, dock, *args, **kwargs):
         dock.init_position = kwargs
-        return super(DockArea, self).addDock(dock, *args, **kwargs)
+        return pgDockArea.addDock(self, dock, *args, **kwargs)
 
     def restore(self):
         for dock in self.docks:

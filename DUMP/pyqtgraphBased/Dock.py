@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
-from past.utils import old_div
-import pyqtgraph_karl.dockarea as pgDock
+
+from pyqtgraph_karl.dockarea.Dock  import Dock as pgDock
+
 from qtpy import QtGui, QtWidgets, QtCore
 import weakref
 
 
-class Dock(pgDock.Dock):
+class Dock(pgDock):
     """
     added function:
 
@@ -199,7 +200,7 @@ class DockLabelMenu(QtWidgets.QMenu):
             # transfer text to dockLabel when finished:
             self.editor.editingFinished.connect(self._setLabelNameFinished)
 
-        self.editor.move(old_div(self.dock.label.width(), 2) - 45, 0)
+        self.editor.move(self.dock.label.width()//2 - 45, 0)
         self.editor.show()
 
     def _setLabelNameFinished(self):
