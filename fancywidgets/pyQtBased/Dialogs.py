@@ -42,8 +42,15 @@ class Dialogs(object):
                     kwargs['directory'] = self.opts['save']
 
         fname = QtWidgets.QFileDialog.getSaveFileName(**kwargs)
+
         if fname:
-            p = PathStr(fname)
+            if type(fname) == tuple:
+                #only happened since qt5
+                #getSaveFileName returns (path, ftype)
+                p = PathStr(fname[0])
+                p = p.setFiletype(fname[1][2:])
+            else:
+                p = PathStr(fname)
             self.opts['save'] = p.dirname()
             if self.opts['open'] is None:
                 self.opts['open'] = self.opts['save']
