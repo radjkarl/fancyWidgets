@@ -1,6 +1,5 @@
 # coding=utf-8
 from __future__ import division
-from past.utils import old_div
 
 from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
 
@@ -29,7 +28,7 @@ class CircleWidget(QtWidgets.QWidget):
     def paintEvent(self, event):
         painter = QtGui.QPainter(self)
         painter.setRenderHint(QtGui.QPainter.Antialiasing, self.antialiased)
-        painter.translate(old_div(self.width(), 2), old_div(self.height(), 2))
+        painter.translate(self.width()// 2, self.height()// 2)
         painter.setBrush(self.circle_color)
         painter.setPen(QtGui.QPen(self.pen_color, self.pen_size))
 

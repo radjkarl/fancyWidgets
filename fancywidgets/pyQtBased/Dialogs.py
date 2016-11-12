@@ -40,21 +40,35 @@ class Dialogs(object):
             if self.opts['save']:
                 if self.opts['save']:
                     kwargs['directory'] = self.opts['save']
-
         fname = QtWidgets.QFileDialog.getSaveFileName(**kwargs)
-
         if fname:
             if type(fname) == tuple:
                 #only happened since qt5
                 #getSaveFileName returns (path, ftype)
+                if not fname[0]:
+                    return
                 p = PathStr(fname[0])
-                p = p.setFiletype(fname[1][2:])
+                if not p.filetype():
+                    ftyp = self._extractFtype(fname[1]) 
+                    p = p.setFiletype(ftyp)
             else:
                 p = PathStr(fname)
             self.opts['save'] = p.dirname()
             if self.opts['open'] is None:
                 self.opts['open'] = self.opts['save']
             return p
+
+    @staticmethod
+    def _extractFtype(ftypestr):
+        # extracts pbm from e.g. 'Portable image format (*.pbm *.pgm *.ppm)'
+        i0 = ftypestr.index('*')
+        for i1, d in enumerate(ftypestr[i0+1:]):
+            if not d.isalpha():
+                break
+        i1 += 1+i0
+        return ftypestr[i0,i1]
+        
+        
 
     def _processOpenKwargs(self, kwargs):
         if not kwargs.get('directory'):
