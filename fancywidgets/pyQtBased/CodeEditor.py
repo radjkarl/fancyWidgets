@@ -1,9 +1,10 @@
 # coding=utf-8
 from __future__ import print_function
+
 # from future import standard_library
 # standard_library.install_aliases()
 
-from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
+from qtpy import QtGui, QtWidgets, QtCore
 try:
     # py3-2 issue
     import __builtin__
@@ -21,7 +22,7 @@ from fancytools.fcollections.naturalSorting import naturalSorting
 # FIXME
 # in order to also have in in a frozen environment
 # see _getInstalledModules
-from . import _installed_modules
+from fancywidgets.pyQtBased import _installed_modules
 
 
 class CodeEditor(QtWidgets.QWidget):
