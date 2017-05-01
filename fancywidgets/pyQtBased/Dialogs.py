@@ -61,12 +61,12 @@ class Dialogs(object):
     @staticmethod
     def _extractFtype(ftypestr):
         # extracts pbm from e.g. 'Portable image format (*.pbm *.pgm *.ppm)'
-        i0 = ftypestr.index('*')
-        for i1, d in enumerate(ftypestr[i0+1:]):
+        i0 = ftypestr.index('*')+2
+        for i1, d in enumerate(ftypestr[i0:]):
             if not d.isalpha():
                 break
         i1 += 1+i0
-        return ftypestr[i0,i1]
+        return ftypestr[i0:i1]
         
         
 

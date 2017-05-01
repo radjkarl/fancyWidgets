@@ -1,7 +1,7 @@
 # coding=utf-8
 from __future__ import division
 
-from qtpy import QtGui, QtPrintSupport, QtWidgets, QtCore
+from qtpy import QtGui, QtWidgets, QtCore
 
 
 class CircleWidget(QtWidgets.QWidget):
@@ -32,8 +32,8 @@ class CircleWidget(QtWidgets.QWidget):
         painter.setBrush(self.circle_color)
         painter.setPen(QtGui.QPen(self.pen_color, self.pen_size))
 
-        painter.drawEllipse(QtCore.QRect(old_div(-self.circle_size, 2),
-                                         old_div(-self.circle_size, 2),
+        painter.drawEllipse(QtCore.QRect(-self.circle_size// 2,
+                                         -self.circle_size// 2,
                                          self.circle_size,
                                          self.circle_size))
 

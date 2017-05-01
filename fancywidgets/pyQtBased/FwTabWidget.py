@@ -23,22 +23,33 @@ class FwTabWidget(QtWidgets.QTabWidget):
         self.setTabBar(_TabBar())
         self._btn_add_height = None
         self.defaultTabWidget = defaultTabWidget
+        #allow to add more widget to top-right corner:
+        #to be added using self.cornerWidget().layout().addWidget(###)
+        w = QtWidgets.QWidget()
+        l = QtWidgets.QHBoxLayout()
+        l.setContentsMargins(0,0,0,0)
+        l.setSpacing(1)
+        l.setDirection(QtWidgets.QBoxLayout.RightToLeft)
+        w.setLayout(l)
+        self.setCornerWidget(w)
 
     def setTabsRenamable(self, renamable):
         self.tabBar().tabsRenamable = renamable
 
     def setTabsAddable(self, addable):
         if addable:
-            btn = QtWidgets.QToolButton(self)
-            btn.clicked.connect(lambda checked: self.addEmptyTab())
+            self._cwBtn = btn = QtWidgets.QToolButton(self)
+            btn.setToolTip('Add new tab')
+            btn.clicked.connect(lambda _: self.addEmptyTab())
             btn.setIcon(
                 QtWidgets.QApplication.style().standardIcon(
                     QtWidgets.QStyle.SP_FileDialogNewFolder))
-            self.setCornerWidget(btn)
+            self.cornerWidget().layout().addWidget(btn)
             self.tabCloseRequested.connect(self._mkAddBtnVisible)
-            self._mkAddBtnVisible()
+            self._mkAddBtnVisible()           
         else:
-            btn = self.cornerWidget()
+            btn = getattr(self, '_cwBtn')
+#             btn = self.cornerWidget()
             if btn:
                 btn.hide()
                 self.tabCloseRequested.disconnect(self._mkAddBtnVisible)
@@ -61,9 +72,12 @@ class FwTabWidget(QtWidgets.QTabWidget):
         Ensure that the Add button is visible also when there are no tabs
         """
         if not self._btn_add_height:
-            self._btn_add_height = self.cornerWidget().height()
+#             self._btn_add_height = self.cornerWidget().height()
+            self._btn_add_height = self._cwBtn.height()
         if self.count() == 0:
-            self.cornerWidget().setMinimumHeight(self._btn_add_height - 8)
+            
+#             self.cornerWidget().setMinimumHeight(self._btn_add_height - 8)
+            self._cwBtn.setMinimumHeight(self._btn_add_height - 8)
             self.setMinimumHeight(self._btn_add_height)
 
     def __iter__(self):
@@ -79,7 +93,7 @@ class FwTabWidget(QtWidgets.QTabWidget):
     def widgetByName(self, name):
         for i in range(self.count()):
             if self.tabText(i) == name:
-                return self.widet(i)
+                return self.widget(i)
 
     def removeTab(self, tab):
         """allows to remove a tab directly -not only by giving its index"""
