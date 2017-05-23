@@ -66,7 +66,12 @@ class Dialogs(object):
             if not d.isalpha():
                 break
         i1 += 1+i0
-        return ftypestr[i0:i1]
+        ftypestr = ftypestr[i0:i1]
+        
+        if ftypestr[-1] == ')':
+            #linux only:
+            return ftypestr[:-1]
+        return ftypestr
         
         
 
